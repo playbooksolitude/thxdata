@@ -11,6 +11,8 @@ getwd()
 (read_tsv("../thxdata/2th/files/people_2021_google.tsv", 
           skip = 1) -> people1_tsv)
 
+#url
+# https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1IN1503&conn_path=I2
 
 
 #2 평균연령 등 제외
