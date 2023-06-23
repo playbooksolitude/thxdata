@@ -34,7 +34,6 @@ people2_rename |> pivot_longer(
                         -1 * 인구),
          num = row_number()) -> people4_편집)
 
-
 people4_편집 |> print(n = Inf)
 
 
