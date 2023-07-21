@@ -71,7 +71,21 @@ ggplot(data = mpg,
     position = "fill") +
   scale_fill_brewer(palette = "Set1")
 
+#축 변환
+ggplot(data = mpg, 
+  aes(x = class,
+    y = after_stat(count),
+    fill = drv)) +
+  geom_bar(stat = "count") +
+  scale_fill_brewer(palette = "Set1")
 
+#
+mpg |> count(manufacturer, class) |> 
+  ggplot(aes(x = manufacturer, y = n)) + 
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  facet_wrap(.~class, scales = "free")
+  
 ```
 
 ```{r text, warning=FALSE }
