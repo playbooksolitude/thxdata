@@ -5,7 +5,10 @@ library(tidyverse)
 
 mpg
 mpg |> count(manufacturer)
-mpg |> count(manufacturer, class) |> arrange(manufacturer)
+mpg |> count(manufacturer, sort = T)
+mpg |> count(manufacturer, class, drv)
+mpg |> count(manufacturer, class) |> 
+  arrange(manufacturer)
 
 # without class
 mpg |> count(manufacturer) |> 
