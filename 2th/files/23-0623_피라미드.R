@@ -4,11 +4,14 @@
 library(tidyverse)
 library(showtext)
 showtext_auto()
+#install.packages("showtext")
+library(gt)
+#install.packages("gt")
 
 
 #1
 getwd()
-(read_tsv("../thxdata/2th/files/people_2021_google.tsv", 
+(read_tsv("./2th/files/people_2021_google.tsv", 
           skip = 1) -> people1_tsv)
 
 #url
@@ -43,21 +46,37 @@ people1_tsv |> select("연령별", "내국인_남자(명)", "내국인_여자(�
          num = row_number()) -> people4_편집)
 
 
-people4_편집 |> print(n = Inf)
+# people4_편집 |> print(n = Inf)
+# people4_편집 |> gt()
+# ?tidy()
 
-
-
-#5 그래프 #if_else
+#5 그래프 #if_else #범례 안보임
 people4_편집 |> 
   ggplot(aes(연령별 |> fct_reorder(num), 
              인구편집)) +
   geom_bar(stat = "identity",
-           fill = if_else(people4_편집$성별 == "남자", "blue", "red")) +
+           fill = if_else(people4_편집$성별 == "남자", "blue", "red"),
+           show.legend = T) +
   coord_flip() +
   geom_label(aes(label = round(인구/(1000),0))) +
   theme(axis.title = element_blank(),
         axis.text.x = element_blank(),
                 legend.position = "top")
+
+  #5-1 with()
+people4_편집 |> 
+  ggplot(aes(연령별 |> fct_reorder(num), 
+             인구편집)) +
+  geom_bar(stat = "identity",
+           aes(fill = if_else(people4_편집 |> with(성별) == "남자", 
+           "blue",
+           "red"))) +
+  coord_flip() +
+  geom_label(aes(label = round(인구/(1000),0))) +
+  theme(axis.title = element_blank(),
+        axis.text.x = element_blank(),
+        legend.position = "top")
+
 
 
 # 6 그래프 #scale_fill_manual
