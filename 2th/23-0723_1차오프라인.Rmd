@@ -39,12 +39,21 @@ ggplot(data = mpg,
       y = after_stat(count))) +
     geom_bar(stat = "count")
 
+```
+<br>
+
+```{r}
+
 #색깔
 ggplot(data = mpg, 
   aes(x = class,
       y = after_stat(count),
     fill = drv)) +
   geom_bar(stat = "count")
+
+```
+
+```{r}
 
 #그래프 옵션
 ggplot(data = mpg, 
@@ -62,7 +71,7 @@ ggplot(data = mpg,
   geom_bar(stat = "count",
     position = "fill")
 
-#그래프 비율
+#그래프 비율 색깔
 ggplot(data = mpg, 
   aes(x = class,
     y = after_stat(count),
@@ -70,9 +79,9 @@ ggplot(data = mpg,
   geom_bar(stat = "count",
     position = "fill") +
   scale_fill_brewer(palette = "Set1")
-
-
 ```
+
+
 
 ```{r text, warning=FALSE }
 
@@ -100,14 +109,26 @@ ggplot(data = mpg,
 mpg |> ggplot(aes(x = displ, y = hwy)) +
   geom_point(stat = "identity")
 
+```
+
+
+```{r}
 #색깔
 mpg |> ggplot(aes(x = displ, y = hwy, color = drv)) +
   geom_point(stat = "identity")
+
+```
+
+```{r}
 
 #면분할
 mpg |> ggplot(aes(x = displ, y = hwy, color = drv)) +
   geom_point(stat = "identity") +
   facet_wrap(.~drv, nrow = 2)
+
+```
+
+```{r}
 
 #면분할 응용
 mpg |> ggplot() +
@@ -118,7 +139,6 @@ mpg |> ggplot() +
   geom_point(aes(x = displ, y = hwy, color = drv),
     stat = "identity") +
   facet_wrap(.~drv, nrow = 2)
-
 ```
 
 <br><br>
