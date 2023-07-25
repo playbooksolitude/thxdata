@@ -142,7 +142,6 @@ france5_tidy |>
   labs(title = "마부뉴스 7월 13일", 
        subtitle = "프랑스는 관용의 나라인가?") + 
   scale_x_discrete(expand = c(.1, .1)) #여백주기
-  
 
 
 #8 이민자, 
@@ -167,6 +166,23 @@ france5_tidy |>
 
 
 
+#8-1 y값 지수 표현 해결 #예전에 실행했던 코드를 우연히 발견했다
+france5_tidy |> 
+  ggplot(aes(x = Year)) +
+  geom_line(aes(y = natural, group = 1), color = "blue", size = 1) +
+  geom_line(aes(y = net_migration, group = 1), 
+            color = "red", size =1) +
+  theme(axis.text.x = element_text(hjust = 1.5, vjust = 2.5, angle = 45),
+        axis.title = element_blank(),
+        panel.background = element_blank(),
+        axis.ticks = element_blank()) +
+  labs(title = "프랑스 이민자", 
+       subtitle = "단위: 천 명") +
+  annotate(geom = "text", x = "2000", y = 290, 
+           label = "비-이민자", color = "blue", size = 10) +
+  annotate(geom = "text", x = "1996", y = 100, 
+           label = "이민자", color = "red", size = 10) #+
+  scale_y_continuous(labels = scales::comma) 
 
 
 
