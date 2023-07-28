@@ -176,13 +176,11 @@ france5_tidy |>
         axis.title = element_blank(),
         panel.background = element_blank(),
         axis.ticks = element_blank()) +
-  labs(title = "프랑스 이민자", 
-       subtitle = "단위: 천 명") +
-  annotate(geom = "text", x = "2000", y = 290, 
+  labs(title = "프랑스 이민자") +
+  annotate(geom = "text", x = "2000", y = 290000, 
            label = "비-이민자", color = "blue", size = 10) +
-  annotate(geom = "text", x = "1996", y = 100, 
-           label = "이민자", color = "red", size = 10) #+
-  scale_y_continuous(labels = scales::comma) 
-
+  annotate(geom = "text", x = "1996", y = 100000, 
+           label = "이민자", color = "red", size = 10) +
+  scale_y_continuous(labels = scales::comma)  
 
 
