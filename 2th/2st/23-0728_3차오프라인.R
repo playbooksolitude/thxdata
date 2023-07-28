@@ -44,7 +44,7 @@ top_n(Cars93$Width, 5)
 Cars93  |> colnames()
 glimpse(Cars93)
 
-# table
+#7 table
   #count
   Cars93 |> count(Manufacturer)
   Cars93 |> count(Manufacturer, Origin)
@@ -53,11 +53,49 @@ glimpse(Cars93)
   #group_by()
   Cars93 |> group_by(Type, AirBags) |> 
   summarise(n = n())
+  
+  # table
+  table(Cars93$Manufacturer,Cars93$AirBags)
 
+#8 pivot
+  Cars93 |> count(Type, AirBags) |> 
+    pivot_wider(
+      names_from = "Type",
+      values_from = n
+    )
+  
+  Cars93 |> count(Type, AirBags) |> 
+    pivot_wider(
+      names_from = AirBags,
+      values_from = n
+    )
+  
+#9 colsum, rowsum
+
+  Cars93 |> count(Type, AirBags) |> 
+    pivot_wider(
+      names_from = AirBags,
+      values_from = n
+    ) -> temp1
+temp1
+
+  # error
+rowSums(temp1[1,2:4], na.rm = T, dims = 2L)
+colSums(temp1[,2:4], na.rm = T)
+
+  #chatGPT
+temp1 %>%
+  mutate(RowTotal = rowSums(., na.rm = TRUE))
+
+Cars93
+
+#
+  
   table(Cars93$Model)
-MASS::quine  
 ls('package:MASS')
 data()
 
 #
-Animals
+Animals |> transmute(
+  bperb = brain / body
+) |> arrange(desc(bperb))
