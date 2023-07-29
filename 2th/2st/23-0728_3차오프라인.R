@@ -2,7 +2,6 @@
 
 #
 library(tidyverse)
-data()
 #install.packages("MASS")
 library(MASS)
 #install.packages("ggthemes")
@@ -96,10 +95,22 @@ Animals |> transmute(
 ) |> arrange(desc(bperb))
 
 
-#10 
+# 10 
 Cars93 |> head()
 Cars93 |> count(Manufacturer, Type) |> 
   pivot_wider(names_from = Type, values_from = n)
+
+Cars93 |> count(Manufacturer, Type) |> 
+  ggplot(aes(x = Manufacturer, y = Type, fill = n)) + 
+  geom_tile() +
+  geom_text(aes(label = n), color = "white") +
+  coord_flip()
+
+#
+Cars93 |> count(Manufacturer, Type) |> 
+  pivot_wider(names_from = Type,
+              values_from = n)
+
 
 # heatmap
 Cars93 |> count(Manufacturer, Type)
@@ -127,4 +138,27 @@ Cars93 |> ggplot(aes(x = Type, y = Price)) +
             position = position_stack()) +
   theme_hc(style = "darkunica") #+
   scale_fill_hc("darkunica")
+
+# 합치기 복습
+mpg |> mutate(new_model = paste(model, trans, sep = "_"))
+mpg |> mutate(new_model = paste(model, trans))
+mpg |> count(manufacturer, model) |> 
+  ggplot(aes(x = manufacturer, y = model, fill = -n)) + 
+  geom_tile() +
+  geom_text(aes(label = n), color = "white")
+
+mpg |> count(manufacturer, class) |> 
+  ggplot(aes(x = manufacturer, y = class, fill = -n)) + 
+  geom_tile() +
+  geom_text(aes(label = n), color = "white")
+
+mpg |> count(drv, class) |> 
+  ggplot(aes(x = class, y = drv, fill = n)) + 
+  geom_tile(show.legend = F) +
+  geom_text(aes(label = n), color = "white", size = 10) +
+  bbc_style()
+
+library(bbplot)
+
+# 현대자동차
 
