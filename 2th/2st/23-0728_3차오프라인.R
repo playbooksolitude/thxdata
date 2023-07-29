@@ -2,7 +2,14 @@
 
 #
 library(tidyverse)
+data()
+#install.packages("MASS")
+library(MASS)
+#install.packages("ggthemes")
+library(ggthemes)
 
+?ggthemes
+example("ggthemes")
 
 #1 package 종류
 ls('package:tidyverse') 
@@ -77,25 +84,47 @@ glimpse(Cars93)
       names_from = AirBags,
       values_from = n
     ) -> temp1
-temp1
 
   # error
 rowSums(temp1[1,2:4], na.rm = T, dims = 2L)
 colSums(temp1[,2:4], na.rm = T)
 
-  #chatGPT
-temp1 %>%
-  mutate(RowTotal = rowSums(., na.rm = TRUE))
-
-Cars93
-
-#
-  
-  table(Cars93$Model)
-ls('package:MASS')
-data()
 
 #
 Animals |> transmute(
   bperb = brain / body
 ) |> arrange(desc(bperb))
+
+
+#10 
+Cars93 |> head()
+Cars93 |> count(Manufacturer, Type) |> 
+  pivot_wider(names_from = Type, values_from = n)
+
+# heatmap
+Cars93 |> count(Manufacturer, Type)
+Cars93 |> count(Manufacturer, Type) |> 
+  ggplot(aes(x = Manufacturer, y = Type, fill = n)) +
+  geom_tile() +
+  geom_text(aes(label = n), color = "white") +
+  coord_flip()
+
+# heatmap
+diamonds |> count(cut, color) |> 
+  ggplot(aes(x = cut, y = color, fill = n)) +
+  geom_tile() +
+  geom_label(aes(label = n))
+
+# 합치기
+mpg |> mutate(new_model = bind_cols(model, trans)) #error
+mpg |> mutate(new_model = as_factor(paste(model, trans, sep = "")))
+  
+
+#
+Cars93 |> ggplot(aes(x = Type, y = Price)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = Price, group = Type), stat = "identity",
+            position = position_stack()) +
+  theme_hc(style = "darkunica") #+
+  scale_fill_hc("darkunica")
+
