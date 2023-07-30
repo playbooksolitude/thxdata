@@ -7,7 +7,7 @@ editor: visual
 execute: 
   echo: true
 ---
-
+ 
 # 언론기사 그래프 따라그리기
 
 디자인 작업
