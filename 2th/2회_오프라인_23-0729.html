@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.353">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>23-0729 2차오프라인</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+<script src="2회_오프라인_23-0729_files/libs/clipboard/clipboard.min.js"></script>
+<script src="2회_오프라인_23-0729_files/libs/quarto-html/quarto.js"></script>
+<script src="2회_오프라인_23-0729_files/libs/quarto-html/popper.min.js"></script>
+<script src="2회_오프라인_23-0729_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="2회_오프라인_23-0729_files/libs/quarto-html/anchor.min.js"></script>
+<link href="2회_오프라인_23-0729_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="2회_오프라인_23-0729_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="2회_오프라인_23-0729_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="2회_오프라인_23-0729_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="2회_오프라인_23-0729_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+</head>
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title">23-0729 2차오프라인</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header><section id="언론기사-그래프-따라그리기" class="level1"><h1>언론기사 그래프 따라그리기</h1>
+<p>디자인 작업</p>
+<p><img src="2st/news_graph.png" class="img-fluid"></p>
+<p>그래프 원본</p>
+<p><img src="2st/news_graph_r.png" class="img-fluid"></p>
+<section id="데이터소스" class="level3"><h3 class="anchored" data-anchor-id="데이터소스">데이터소스</h3>
+<ul>
+<li><p>마부뉴스<a href="https://stibee.com/api/v1.0/emails/share/buIp1V8RSILA7Ehfs9uivPJexU8bLk8=" class="uri">https://stibee.com/api/v1.0/emails/share/buIp1V8RSILA7Ehfs9uivPJexU8bLk8=</a></p></li>
+<li><p>프랑스 통계기관 <a href="https://www.insee.fr/en/statistiques/6040011" class="uri">https://www.insee.fr/en/statistiques/6040011</a></p></li>
+</ul>
+<p><br><br></p>
+</section></section><section id="running-code" class="level1"><h1>Running Code</h1>
+<section id="파일-불러오기" class="level2"><h2 class="anchored" data-anchor-id="파일-불러오기">1. 파일 불러오기</h2>
+<section id="라이브러리-로드" class="level3"><h3 class="anchored" data-anchor-id="라이브러리-로드">1-1. 라이브러리 로드</h3>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#install.packages("readxl")</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://readxl.tidyverse.org">readxl</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><br></p>
+<section id="엑셀파일-불러오기" class="level4"><h4 class="anchored" data-anchor-id="엑셀파일-불러오기">엑셀파일 불러오기</h4>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel</a></span><span class="op">(</span><span class="st">"./2st/fe_dod_compo_crois_va.xlsx"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>New names:
+• `` -&gt; `...2`
+• `` -&gt; `...3`
+• `` -&gt; `...4`
+• `` -&gt; `...5`
+• `` -&gt; `...6`
+• `` -&gt; `...7`
+• `` -&gt; `...8`</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 50 × 8
+   Components of population changes,…¹ ...2  ...3  ...4  ...5  ...6  ...7  ...8 
+   &lt;chr&gt;                               &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;
+ 1 &lt;NA&gt;                                &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt; 
+ 2 Year                                &lt;NA&gt;  Popu… Birt… Deat… Natu… Net … Adju…
+ 3 1982                                &lt;NA&gt;  5557… 8232… 5507… 2725… 60300 0    
+ 4 1983                                &lt;NA&gt;  5590… 7754… 5677… 2076… 53029 0    
+ 5 1984                                &lt;NA&gt;  5616… 7874… 5502… 2371… 41403 0    
+ 6 1985                                &lt;NA&gt;  5644… 7961… 5603… 2357… 39442 0    
+ 7 1986                                &lt;NA&gt;  5671… 8055… 5547… 2508… 41528 0    
+ 8 1987                                &lt;NA&gt;  5701… 7957… 5353… 2604… 52384 0    
+ 9 1988                                &lt;NA&gt;  5732… 8005… 5325… 2680… 66456 0    
+10 1989                                &lt;NA&gt;  5765… 7961… 5375… 2585… 78285 0    
+# ℹ 40 more rows
+# ℹ abbreviated name: ¹​`Components of population changes, France`</code></pre>
+</div>
+</div>
+<p><br></p>
+</section><section id="스크린샷" class="level4"><h4 class="anchored" data-anchor-id="스크린샷">스크린샷</h4>
+<p><img src="2st/excel.png" class="img-fluid"></p>
+<p><br></p>
+</section><section id="데이터-저장하기" class="level4"><h4 class="anchored" data-anchor-id="데이터-저장하기">데이터 저장하기</h4>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel</a></span><span class="op">(</span><span class="st">"./2st/fe_dod_compo_crois_va.xlsx"</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">france1_excel</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>New names:
+• `` -&gt; `...2`
+• `` -&gt; `...3`
+• `` -&gt; `...4`
+• `` -&gt; `...5`
+• `` -&gt; `...6`
+• `` -&gt; `...7`
+• `` -&gt; `...8`</code></pre>
+</div>
+</div>
+<ul>
+<li>파일의 내용을 열어보는 것</li>
+<li>파일의 내용을 열어서 변수에 담는 것</li>
+<li>변수에 담은 파일의 내용을 불러오는 것</li>
+</ul>
+<p><br></p>
+</section><section id="불러오기-vs-저장하기-vs-호출하기" class="level4"><h4 class="anchored" data-anchor-id="불러오기-vs-저장하기-vs-호출하기">불러오기 vs 저장하기 vs 호출하기</h4>
+<div class="cell">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#불러오기</span></span>
+<span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel</a></span><span class="op">(</span><span class="st">"./2st/fe_dod_compo_crois_va.xlsx"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>New names:
+• `` -&gt; `...2`
+• `` -&gt; `...3`
+• `` -&gt; `...4`
+• `` -&gt; `...5`
+• `` -&gt; `...6`
+• `` -&gt; `...7`
+• `` -&gt; `...8`</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 50 × 8
+   Components of population changes,…¹ ...2  ...3  ...4  ...5  ...6  ...7  ...8 
+   &lt;chr&gt;                               &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;
+ 1 &lt;NA&gt;                                &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt; 
+ 2 Year                                &lt;NA&gt;  Popu… Birt… Deat… Natu… Net … Adju…
+ 3 1982                                &lt;NA&gt;  5557… 8232… 5507… 2725… 60300 0    
+ 4 1983                                &lt;NA&gt;  5590… 7754… 5677… 2076… 53029 0    
+ 5 1984                                &lt;NA&gt;  5616… 7874… 5502… 2371… 41403 0    
+ 6 1985                                &lt;NA&gt;  5644… 7961… 5603… 2357… 39442 0    
+ 7 1986                                &lt;NA&gt;  5671… 8055… 5547… 2508… 41528 0    
+ 8 1987                                &lt;NA&gt;  5701… 7957… 5353… 2604… 52384 0    
+ 9 1988                                &lt;NA&gt;  5732… 8005… 5325… 2680… 66456 0    
+10 1989                                &lt;NA&gt;  5765… 7961… 5375… 2585… 78285 0    
+# ℹ 40 more rows
+# ℹ abbreviated name: ¹​`Components of population changes, France`</code></pre>
+</div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#저장하기 (내용은 같음)</span></span>
+<span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel</a></span><span class="op">(</span><span class="st">"./2st/fe_dod_compo_crois_va.xlsx"</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">france1_excel</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>New names:
+• `` -&gt; `...2`
+• `` -&gt; `...3`
+• `` -&gt; `...4`
+• `` -&gt; `...5`
+• `` -&gt; `...6`
+• `` -&gt; `...7`
+• `` -&gt; `...8`</code></pre>
+</div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#저장된 이름으로 호출하기</span></span>
+<span><span class="va">france1_excel</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 50 × 8
+   Components of population changes,…¹ ...2  ...3  ...4  ...5  ...6  ...7  ...8 
+   &lt;chr&gt;                               &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;
+ 1 &lt;NA&gt;                                &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt; 
+ 2 Year                                &lt;NA&gt;  Popu… Birt… Deat… Natu… Net … Adju…
+ 3 1982                                &lt;NA&gt;  5557… 8232… 5507… 2725… 60300 0    
+ 4 1983                                &lt;NA&gt;  5590… 7754… 5677… 2076… 53029 0    
+ 5 1984                                &lt;NA&gt;  5616… 7874… 5502… 2371… 41403 0    
+ 6 1985                                &lt;NA&gt;  5644… 7961… 5603… 2357… 39442 0    
+ 7 1986                                &lt;NA&gt;  5671… 8055… 5547… 2508… 41528 0    
+ 8 1987                                &lt;NA&gt;  5701… 7957… 5353… 2604… 52384 0    
+ 9 1988                                &lt;NA&gt;  5732… 8005… 5325… 2680… 66456 0    
+10 1989                                &lt;NA&gt;  5765… 7961… 5375… 2585… 78285 0    
+# ℹ 40 more rows
+# ℹ abbreviated name: ¹​`Components of population changes, France`</code></pre>
+</div>
+</div>
+</section></section><section id="데이터-훑어보기" class="level3"><h3 class="anchored" data-anchor-id="데이터-훑어보기">1-2 데이터 훑어보기</h3>
+<section id="데이터-사이즈" class="level4"><h4 class="anchored" data-anchor-id="데이터-사이즈">데이터 사이즈</h4>
+<div class="cell">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">france1_excel</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="op">)</span>       <span class="co"># 데이터 사이즈 (가로 몇 행, 세로 몇 열)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 50  8</code></pre>
+</div>
+</div>
+<p><br></p>
+</section><section id="데이터-구조" class="level4"><h4 class="anchored" data-anchor-id="데이터-구조">데이터 구조</h4>
+<div class="cell">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">france1_excel</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="op">)</span>       <span class="co"># 구조</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>tibble [50 × 8] (S3: tbl_df/tbl/data.frame)
+ $ Components of population changes, France: chr [1:50] NA "Year" "1982" "1983" ...
+ $ ...2                                    : chr [1:50] NA NA NA NA ...
+ $ ...3                                    : chr [1:50] NA "Population on january, first" "55572624" "55905460" ...
+ $ ...4                                    : chr [1:50] NA "Births" "823260" "775441" ...
+ $ ...5                                    : chr [1:50] NA "Deaths" "550724" "567755" ...
+ $ ...6                                    : chr [1:50] NA "Natural increase" "272536" "207686" ...
+ $ ...7                                    : chr [1:50] NA "Net migration" "60300" "53029" ...
+ $ ...8                                    : chr [1:50] NA "Adjustment (a)" "0" "0" ...</code></pre>
+</div>
+</div>
+<p><br></p>
+</section><section id="컬럼-이름" class="level4"><h4 class="anchored" data-anchor-id="컬럼-이름">컬럼 이름</h4>
+<div class="cell">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">france1_excel</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="op">)</span>  <span class="co"># 컬럼 이름</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Components of population changes, France"
+[2] "...2"                                    
+[3] "...3"                                    
+[4] "...4"                                    
+[5] "...5"                                    
+[6] "...6"                                    
+[7] "...7"                                    
+[8] "...8"                                    </code></pre>
+</div>
+</div>
+<p><br></p>
+</section><section id="첫-6줄" class="level4"><h4 class="anchored" data-anchor-id="첫-6줄">첫 6줄</h4>
+<ul>
+<li>2번째 행에 NA 제거 필요</li>
+</ul>
+<div class="cell">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">france1_excel</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span>      <span class="co"># 첫 6줄</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 8
+  Components of population changes, …¹ ...2  ...3  ...4  ...5  ...6  ...7  ...8 
+  &lt;chr&gt;                                &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;
+1 &lt;NA&gt;                                 &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt; 
+2 Year                                 &lt;NA&gt;  Popu… Birt… Deat… Natu… Net … Adju…
+3 1982                                 &lt;NA&gt;  5557… 8232… 5507… 2725… 60300 0    
+4 1983                                 &lt;NA&gt;  5590… 7754… 5677… 2076… 53029 0    
+5 1984                                 &lt;NA&gt;  5616… 7874… 5502… 2371… 41403 0    
+6 1985                                 &lt;NA&gt;  5644… 7961… 5603… 2357… 39442 0    
+# ℹ abbreviated name: ¹​`Components of population changes, France`</code></pre>
+</div>
+</div>
+<p><br></p>
+</section><section id="마지막-6줄" class="level4"><h4 class="anchored" data-anchor-id="마지막-6줄">마지막 6줄</h4>
+<ul>
+<li>NA, a, p, na, Field, Source 등 확인 필요</li>
+</ul>
+<div class="cell">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">france1_excel</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">tail</a></span><span class="op">(</span><span class="op">)</span>      <span class="co"># 마지막 6줄</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 8
+  Components of population changes, …¹ ...2  ...3  ...4  ...5  ...6  ...7  ...8 
+  &lt;chr&gt;                                &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;
+1 &lt;NA&gt;                                 &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt; 
+2 a: Subsequent to a change of questi… &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt; 
+3 p: population 2020, 2021, 2022, vit… &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt; 
+4 na: not available.                   &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt; 
+5 Field: France except Mayotte until … &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt; 
+6 Source: INSEE, vital statistics and… &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt; 
+# ℹ abbreviated name: ¹​`Components of population changes, France`</code></pre>
+</div>
+</div>
+<p><br></p>
+</section><section id="데이터-보기" class="level4"><h4 class="anchored" data-anchor-id="데이터-보기">데이터 보기</h4>
+<div class="cell">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://gt.rstudio.com/">gt</a></span><span class="op">)</span></span>
+<span><span class="va">france1_excel</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://gt.rstudio.com/reference/gt.html">gt</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div id="hldqljkcks" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#hldqljkcks table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#hldqljkcks thead, #hldqljkcks tbody, #hldqljkcks tfoot, #hldqljkcks tr, #hldqljkcks td, #hldqljkcks th {
+  border-style: none;
+}
+
+#hldqljkcks p {
+  margin: 0;
+  padding: 0;
+}
+
+#hldqljkcks .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#hldqljkcks .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#hldqljkcks .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#hldqljkcks .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#hldqljkcks .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#hldqljkcks .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hldqljkcks .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#hldqljkcks .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#hldqljkcks .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#hldqljkcks .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#hldqljkcks .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#hldqljkcks .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#hldqljkcks .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#hldqljkcks .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#hldqljkcks .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#hldqljkcks .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#hldqljkcks .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#hldqljkcks .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#hldqljkcks .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hldqljkcks .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#hldqljkcks .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#hldqljkcks .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#hldqljkcks .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hldqljkcks .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#hldqljkcks .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#hldqljkcks .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hldqljkcks .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hldqljkcks .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#hldqljkcks .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hldqljkcks .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#hldqljkcks .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hldqljkcks .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#hldqljkcks .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hldqljkcks .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#hldqljkcks .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hldqljkcks .gt_left {
+  text-align: left;
+}
+
+#hldqljkcks .gt_center {
+  text-align: center;
+}
+
+#hldqljkcks .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#hldqljkcks .gt_font_normal {
+  font-weight: normal;
+}
+
+#hldqljkcks .gt_font_bold {
+  font-weight: bold;
+}
+
+#hldqljkcks .gt_font_italic {
+  font-style: italic;
+}
+
+#hldqljkcks .gt_super {
+  font-size: 65%;
+}
+
+#hldqljkcks .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#hldqljkcks .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#hldqljkcks .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#hldqljkcks .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#hldqljkcks .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#hldqljkcks .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#hldqljkcks .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead><tr class="gt_col_headings">
+<th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="Components of population changes, France">Components of population changes, France</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="...2">...2</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="...3">...3</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="...4">...4</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="...5">...5</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="...6">...6</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="...7">...7</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col" id="...8">...8</th>
+    </tr></thead>
+<tbody class="gt_table_body">
+<tr>
+<td headers="Components of population changes, France" class="gt_row gt_left">NA</td>
+<td headers="...2" class="gt_row gt_left">NA</td>
+<td headers="...3" class="gt_row gt_left">NA</td>
+<td headers="...4" class="gt_row gt_left">NA</td>
+<td headers="...5" class="gt_row gt_left">NA</td>
+<td headers="...6" class="gt_row gt_left">NA</td>
+<td headers="...7" class="gt_row gt_left">NA</td>
+<td headers="...8" class="gt_row gt_left">NA</td>
+</tr>
+<tr>
+<td headers="Components of population changes, France" class="gt_row gt_left">Year</td>
+<td headers="...2" class="gt_row gt_left">NA</td>
+<td headers="...3" class="gt_row gt_left">Population on january, first</td>
+<td headers="...4" class="gt_row gt_left">Births</td>
+<td headers="...5" class="gt_row gt_left">Deaths</td>
+<td headers="...6" class="gt_row gt_left">Natural increase</td>
+<td headers="...7" class="gt_row gt_left">Net migration</td>
+<td headers="...8" class="gt_row gt_left">Adjustment (a)</td>
+</tr>
+<tr>
+<td headers="Components of population changes, France" class="gt_row gt_left">1982</td>
+<td headers="...2" class="gt_row gt_left">NA</td>
+<td headers="...3" class="gt_row gt_left">55572624</td>
+<td headers="...4" class="gt_row gt_left">823260</td>
+<td headers="...5" class="gt_row gt_left">550724</td>
+<td headers="...6" class="gt_row gt_left">272536</td>
+<td headers="...7" class="gt_row gt_left">60300</td>
+<td headers="...8" class="gt_row gt_left">0</td>
+</tr>
+<tr>
+<td headers="Components of population changes, France" class="gt_row gt_left">1983</td>
+<td headers="...2" class="gt_row gt_left">NA</td>
+<td headers="...3" class="gt_row gt_left">55905460</td>
+<td headers="...4" class="gt_row gt_left">775441</td>
+<td headers="...5" class="gt_row gt_left">567755</td>
+<td headers="...6" class="gt_row gt_left">207686</td>
+<td headers="...7" class="gt_row gt_left">53029</td>
+<td headers="...8" class="gt_row gt_left">0</td>
+</tr>
+<tr>
+<td headers="Components of population changes, France" class="gt_row gt_left">1984</td>
+<td headers="...2" class="gt_row gt_left">NA</td>
+<td headers="...3" class="gt_row gt_left">56166175</td>
+<td headers="...4" class="gt_row gt_left">787429</td>
+<td headers="...5" class="gt_row gt_left">550259</td>
+<td headers="...6" class="gt_row gt_left">237170</td>
+<td headers="...7" class="gt_row gt_left">41403</td>
+<td headers="...8" class="gt_row gt_left">0</td>
+</tr>
+<tr>
+<td headers="Components of population changes, France" class="gt_row gt_left">1985</td>
+<td headers="...2" class="gt_row gt_left">NA</td>
+<td headers="...3" class="gt_row gt_left">56444748</td>
+<td headers="...4" class="gt_row gt_left">796138</td>
+<td headers="...5" class="gt_row gt_left">560393</td>
+<td headers="...6" class="gt_row gt_left">235745</td>
+<td headers="...7" class="gt_row gt_left">39442</td>
+<td headers="...8" class="gt_row gt_left">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p><br></p>
+</section></section></section><section id="전처리" class="level2"><h2 class="anchored" data-anchor-id="전처리">2 전처리</h2>
+<section id="라이브러리" class="level3"><h3 class="anchored" data-anchor-id="라이브러리">라이브러리</h3>
+<div class="cell">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#install.packages("tidyverse")</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.2     ✔ readr     2.1.4
+✔ forcats   1.0.0     ✔ stringr   1.5.0
+✔ ggplot2   3.4.2     ✔ tibble    3.2.1
+✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+✔ purrr     1.0.1     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+</div>
+<p><br></p>
+</section><section id="head에서-확인한-na-제거" class="level3"><h3 class="anchored" data-anchor-id="head에서-확인한-na-제거">head()에서 확인한 NA 제거</h3>
+<div class="cell">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">france1_excel</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 50 × 8
+   Components of population changes,…¹ ...2  ...3  ...4  ...5  ...6  ...7  ...8 
+   &lt;chr&gt;                               &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;
+ 1 &lt;NA&gt;                                &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt; 
+ 2 Year                                &lt;NA&gt;  Popu… Birt… Deat… Natu… Net … Adju…
+ 3 1982                                &lt;NA&gt;  5557… 8232… 5507… 2725… 60300 0    
+ 4 1983                                &lt;NA&gt;  5590… 7754… 5677… 2076… 53029 0    
+ 5 1984                                &lt;NA&gt;  5616… 7874… 5502… 2371… 41403 0    
+ 6 1985                                &lt;NA&gt;  5644… 7961… 5603… 2357… 39442 0    
+ 7 1986                                &lt;NA&gt;  5671… 8055… 5547… 2508… 41528 0    
+ 8 1987                                &lt;NA&gt;  5701… 7957… 5353… 2604… 52384 0    
+ 9 1988                                &lt;NA&gt;  5732… 8005… 5325… 2680… 66456 0    
+10 1989                                &lt;NA&gt;  5765… 7961… 5375… 2585… 78285 0    
+# ℹ 40 more rows
+# ℹ abbreviated name: ¹​`Components of population changes, France`</code></pre>
+</div>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">france1_excel</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 48 × 8
+   Components of population changes,…¹ ...2  ...3  ...4  ...5  ...6  ...7  ...8 
+   &lt;chr&gt;                               &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;
+ 1 1982                                &lt;NA&gt;  5557… 8232… 5507… 2725… 60300 0    
+ 2 1983                                &lt;NA&gt;  5590… 7754… 5677… 2076… 53029 0    
+ 3 1984                                &lt;NA&gt;  5616… 7874… 5502… 2371… 41403 0    
+ 4 1985                                &lt;NA&gt;  5644… 7961… 5603… 2357… 39442 0    
+ 5 1986                                &lt;NA&gt;  5671… 8055… 5547… 2508… 41528 0    
+ 6 1987                                &lt;NA&gt;  5701… 7957… 5353… 2604… 52384 0    
+ 7 1988                                &lt;NA&gt;  5732… 8005… 5325… 2680… 66456 0    
+ 8 1989                                &lt;NA&gt;  5765… 7961… 5375… 2585… 78285 0    
+ 9 1990                                &lt;NA&gt;  5799… 7930… 5343… 2586… 77393 -523…
+10 1991                                &lt;NA&gt;  5828… 7900… 5328… 2571… 88397 -544…
+# ℹ 38 more rows
+# ℹ abbreviated name: ¹​`Components of population changes, France`</code></pre>
+</div>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html">read_excel</a></span><span class="op">(</span><span class="st">"./2st/fe_dod_compo_crois_va.xlsx"</span>,skip <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>New names:
+• `` -&gt; `...2`</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 48 × 8
+   Year  ...2  `Population on january, first` Births Deaths `Natural increase`
+   &lt;chr&gt; &lt;chr&gt;                          &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt;             
+ 1 1982  &lt;NA&gt;                        55572624 823260 550724 272536            
+ 2 1983  &lt;NA&gt;                        55905460 775441 567755 207686            
+ 3 1984  &lt;NA&gt;                        56166175 787429 550259 237170            
+ 4 1985  &lt;NA&gt;                        56444748 796138 560393 235745            
+ 5 1986  &lt;NA&gt;                        56719935 805543 554738 250805            
+ 6 1987  &lt;NA&gt;                        57012268 795790 535389 260401            
+ 7 1988  &lt;NA&gt;                        57325053 800560 532527 268033            
+ 8 1989  &lt;NA&gt;                        57659542 796101 537527 258574            
+ 9 1990  &lt;NA&gt;                        57996401 793071 534386 258685            
+10 1991  &lt;NA&gt;                        58280135 790078 532887 257191            
+# ℹ 38 more rows
+# ℹ 2 more variables: `Net migration` &lt;chr&gt;, `Adjustment (a)` &lt;chr&gt;</code></pre>
+</div>
+</div>
+<p><br></p>
+</section><section id="열-제거" class="level3"><h3 class="anchored" data-anchor-id="열-제거">2열 제거</h3>
+<div class="cell">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">france1_excel</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="st">"...2"</span><span class="op">)</span> <span class="co">#병합된 2열 제거</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 50 × 7
+   Components of population changes, Franc…¹ ...3  ...4  ...5  ...6  ...7  ...8 
+   &lt;chr&gt;                                     &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;
+ 1 &lt;NA&gt;                                      &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt; 
+ 2 Year                                      Popu… Birt… Deat… Natu… Net … Adju…
+ 3 1982                                      5557… 8232… 5507… 2725… 60300 0    
+ 4 1983                                      5590… 7754… 5677… 2076… 53029 0    
+ 5 1984                                      5616… 7874… 5502… 2371… 41403 0    
+ 6 1985                                      5644… 7961… 5603… 2357… 39442 0    
+ 7 1986                                      5671… 8055… 5547… 2508… 41528 0    
+ 8 1987                                      5701… 7957… 5353… 2604… 52384 0    
+ 9 1988                                      5732… 8005… 5325… 2680… 66456 0    
+10 1989                                      5765… 7961… 5375… 2585… 78285 0    
+# ℹ 40 more rows
+# ℹ abbreviated name: ¹​`Components of population changes, France`</code></pre>
+</div>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">france1_excel</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="st">"...2"</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="va">france2_select</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><br></p>
+</section><section id="코딩하기-편하도록-이름-변경하기" class="level3"><h3 class="anchored" data-anchor-id="코딩하기-편하도록-이름-변경하기">코딩하기 편하도록 이름 변경하기</h3>
+</section></section></section></main><!-- /main column --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

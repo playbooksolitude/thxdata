@@ -1,6 +1,7 @@
 #23-0725 tue 16:02
 #마부뉴스
 #https://kkockko.substack.com/p/7d3?sd=pf
+#https://www.insee.fr/en/statistiques/6040011
 
 library(readxl)
 library(scales)
@@ -87,6 +88,8 @@ france5_tidy |>
            stat = "identity") # + coord_flip()
 
   #6-1 theme angle
+library(scales)
+
 france5_tidy |> 
   ggplot(aes(x = Year)) +
   geom_bar(aes(y = population/1000),
@@ -203,3 +206,4 @@ france5_tidy |>
   labs(title = "마부뉴스 7월 13일", 
        subtitle = "프랑스는 관용의 나라인가?") + 
   scale_x_discrete(expand = c(.1, .1)) #여백주기
+

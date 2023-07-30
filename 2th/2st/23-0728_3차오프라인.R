@@ -10,6 +10,9 @@ library(ggthemes)
 ?ggthemes
 example("ggthemes")
 
+data()
+?mcycle
+
 #1 package 종류
 ls('package:tidyverse') 
 ls('package:tidyverse') |> length()
