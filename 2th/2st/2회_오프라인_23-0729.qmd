@@ -7,7 +7,7 @@ editor: visual
 execute: 
   echo: true
 ---
- 
+
 # 언론기사 그래프 따라그리기
 
 디자인 작업
@@ -42,31 +42,37 @@ library(readxl)
 <br>
 
 #### 엑셀파일 불러오기
+
 ```{r}
 
 read_excel("./2st/fe_dod_compo_crois_va.xlsx")
 
 ```
+
 <br>
 
 #### 스크린샷
+
 ![](2st/excel.png)
 
 <br>
 
 #### 데이터 저장하기
+
 ```{r}
 
 read_excel("./2st/fe_dod_compo_crois_va.xlsx") -> france1_excel
 
 ```
-- 파일의 내용을 열어보는 것
-- 파일의 내용을 열어서 변수에 담는 것
-- 변수에 담은 파일의 내용을 불러오는 것
+
+-   파일의 내용을 열어보는 것
+-   파일의 내용을 열어서 변수에 담는 것
+-   변수에 담은 파일의 내용을 불러오는 것
 
 <br>
 
 #### 불러오기 vs 저장하기 vs 호출하기
+
 ```{r}
 #불러오기
 read_excel("./2st/fe_dod_compo_crois_va.xlsx")
@@ -77,9 +83,6 @@ read_excel("./2st/fe_dod_compo_crois_va.xlsx") -> france1_excel
 #저장된 이름으로 호출하기
 france1_excel
 ```
-
-
-
 
 ### 1-2 데이터 훑어보기
 
@@ -112,7 +115,9 @@ france1_excel |> colnames()  # 컬럼 이름
 <br>
 
 #### 첫 6줄
-- 2번째 행에 NA 제거 필요
+
+-   2번째 행에 NA 제거 필요
+
 ```{r}
 france1_excel |> head()      # 첫 6줄
 
@@ -122,7 +127,9 @@ france1_excel |> head()      # 첫 6줄
 <br>
 
 #### 마지막 6줄
-- NA, a, p, na, Field, Source 등 확인 필요
+
+-   NA, a, p, na, Field, Source 등 확인 필요
+
 ```{r}
 france1_excel |> tail()      # 마지막 6줄
 ```
@@ -130,50 +137,60 @@ france1_excel |> tail()      # 마지막 6줄
 <br>
 
 #### 데이터 보기
+
 ```{r}
 library(gt)
 france1_excel |> head() |> gt()
 
 ```
+
 <br>
 
 ## 2 전처리
+
 ### 라이브러리
+
 ```{r}
 
 #install.packages("tidyverse")
 library(tidyverse)
 
 ```
+
 <br>
 
 ### head()에서 확인한 NA 제거
+
 #### 데이터 원본
+
 ```{r}
 
 france1_excel
 
 ```
+
 <br>
 
 #### 방법1
+
 ```{r}
 france1_excel |> slice(-c(1:2)) 
 
 ```
+
 <br>
 
 #### 방법2
+
 ```{r}
 read_excel("./2st/fe_dod_compo_crois_va.xlsx",skip = 1)
 
 ```
 
-
-
 <br>
 
 ### 2열 제거
+
 ```{r}
 
 france1_excel |> select(-2) #병합된 2열 제거
@@ -184,6 +201,7 @@ france1_excel |> select(-2) -> france2_select
 <br>
 
 ### 코딩하기 편하도록 이름 변경하기
+
 ```{r}
 (france2_select |> 
   select(Year, `Population on january, first`,
@@ -192,14 +210,3 @@ france1_excel |> select(-2) -> france2_select
          natural = `Natural increase`,
          net_migration = `Net migration`) -> france3_tidy)
 ```
-
-
-
-
-
-
-
-
-
-
-
