@@ -10,9 +10,6 @@ library(ggthemes)
 ?ggthemes
 example("ggthemes")
 
-data()
-?mcycle
-
 #1 package 종류
 ls('package:tidyverse') 
 ls('package:tidyverse') |> length()
@@ -164,4 +161,26 @@ mpg |> count(drv, class) |>
 library(bbplot)
 
 # 현대자동차
+mpg |> count(manufacturer, class) |> 
+  ggplot(aes(manufacturer, class)) + 
+  geom_tile(aes(fill = n)) +
+  geom_text(aes(label = n), color = "white") +
+  coord_flip()
 
+#diamond
+diamonds |> count(cut, color) |> 
+  ggplot(aes(x = cut, color)) +
+  geom_tile(aes(fill = n)) +
+  geom_text(aes(label = n), color = "white") +
+  facet_wrap(.~cut, scales = "free")
+
+#합치기
+mpg |> 
+  mutate(new_model = paste(model, trans), 
+         .before = 1)
+
+#
+mpg |> 
+  ggplot(aes(x = manufacturer |> fct_infreq() |> fct_rev())) +
+  geom_bar() +
+  labs(x = "manufacturer")
