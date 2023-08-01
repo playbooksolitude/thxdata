@@ -45,7 +45,7 @@ library(readxl)
 
 ```{r}
 
-read_excel("./2st/fe_dod_compo_crois_va.xlsx")
+read_excel("fe_dod_compo_crois_va.xlsx")
 
 ```
 
@@ -61,7 +61,7 @@ read_excel("./2st/fe_dod_compo_crois_va.xlsx")
 
 ```{r}
 
-read_excel("./2st/fe_dod_compo_crois_va.xlsx") -> france1_excel
+read_excel("fe_dod_compo_crois_va.xlsx") -> france1_excel
 
 ```
 

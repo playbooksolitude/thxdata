@@ -6,7 +6,7 @@ library(tidyverse)
 library(MASS)
 #install.packages("ggthemes")
 library(ggthemes)
-
+data()
 ?ggthemes
 example("ggthemes")
 
@@ -160,12 +160,31 @@ mpg |> count(drv, class) |>
 
 library(bbplot)
 
-# 현대자동차
+# 자동차
 mpg |> count(manufacturer, class) |> 
   ggplot(aes(manufacturer, class)) + 
   geom_tile(aes(fill = n)) +
   geom_text(aes(label = n), color = "white") +
-  coord_flip()
+  coord_flip() +
+  scale_fill_continuous()
+
+
+mpg |> count(manufacturer, class) |> 
+  ggplot(aes(manufacturer, class)) + 
+  geom_tile(aes(fill = n)) +
+  geom_text(aes(label = n), color = "white") +
+  coord_flip() +
+  scale_fill_continuous(type = "viridis")
+
+
+#
+mpg |> count(manufacturer, class, drv) |> 
+  ggplot(aes(manufacturer, class)) + 
+  geom_tile(aes(fill = n)) +
+  geom_text(aes(label = n), color = "white") +
+  coord_flip() +
+  facet_wrap(.~drv, scales = "free", ncol = 2)
+
 
 #diamond
 diamonds |> count(cut, color) |> 
@@ -177,10 +196,22 @@ diamonds |> count(cut, color) |>
 #합치기
 mpg |> 
   mutate(new_model = paste(model, trans), 
-         .before = 1)
+         .before = 1) -> mpg2
+mpg2$new_model |> as_factor() -> mpg2$new_model
+mpg2
 
 #
 mpg |> 
   ggplot(aes(x = manufacturer |> fct_infreq() |> fct_rev())) +
   geom_bar() +
   labs(x = "manufacturer")
+
+# boston
+Boston
+cars
+world_bank_pop
+relig_income
+economics
+presidential
+midwest
+msleep
