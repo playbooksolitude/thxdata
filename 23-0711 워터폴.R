@@ -6,30 +6,28 @@ library(bbplot)
 #install.packages("waterfalls")
 library(waterfalls)
 
-#히트맵
+#히트맵 컬러 그라디언트
 diamonds |> count(cut, clarity) |> 
   ggplot(aes(clarity, cut, fill = n)) +
   geom_tile() +
   scale_fill_gradient(low = "white", high = "red") +
   geom_text(aes(label = n))
 
-#  
-data()
-
-
-#
-
-
-#
-
-
-#
+# count 계산하기
 diamonds |> count(cut, clarity) |> 
   count(cut == "Fair", wt = n)
 
 # dataset 으로 만들기
 (table(diamonds$cut) |> as.data.frame() -> tmp1)
 
+#그라디언트 응용
+diamonds |> count(cut, color) |> 
+  ggplot(aes(x = cut, y = color, fill = n)) + 
+  geom_tile() +
+  scale_fill_gradient(low = "white", high = "red") +
+  geom_text(aes(label = n))
+
+#
 tmp1 |> 
   waterfall()
 
@@ -44,12 +42,8 @@ ggplot(
   aes(x = Var1, y = Freq)) +
   waterfall()
   
-  
-  
 table(diamonds$cut) |> as.data.frame()
 
-
-  
 # tmp1 |> ggplot(aes(Var1, Freq)) +
 #   geom_tile() + 
 #   geom_text(aes(label = Freq), color = "white")
@@ -65,10 +59,7 @@ temp2 <- c(2000, 4000, 1000, 500,
 df <- data.frame(x = temp1, y = temp2) 
 waterfall(df)
 
-
 #
 example("waterfall")
 args(waterfall)
-
-
 

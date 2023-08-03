@@ -18,13 +18,14 @@ library(gt)
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-
 ### 1-1 Dataset
+
 ```{r cars, cache=TRUE, echo=TRUE}
 
 mpg
 
 ```
+
 <br>
 
 ### 1-2 ggplot 막대그래프
@@ -106,8 +107,8 @@ ggplot(data = mpg,
 
 ```
 
-
 ### 1-3 ggplot 산점도
+
 ```{r }
 
 #기본
@@ -141,8 +142,8 @@ mpg |> ggplot() +
 
 ### 5장 EDA
 
-<br>
-![](./images/Ideal-Princess-Cut-Diamond.jpeg)  
+<br> ![](./images/Ideal-Princess-Cut-Diamond.jpeg)
+
 ```{r, warning=FALSE}
 
 #원본 53,940개의 다이아몬드 중에 불량품 찾기
@@ -171,12 +172,12 @@ diamonds |> ggplot(aes(x = x, y = y)) +
 ## 7장 엑셀 파일 불러오기
 
 ### 통계청 자료
-https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1IN1503&conn_path=I2
 
+<https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1IN1503&conn_path=I2>
 
 ```{r}
-#2021년 통게청 대한민국 인구 분포
-read_tsv("./files/people_2021_google.tsv", 
+#2021년 통계청 대한민국 인구 분포
+read_tsv("../1st/people_2021_google.tsv", 
   skip = 1) -> people1_tsv
 
 head(people1_tsv) |> gt()
@@ -221,10 +222,9 @@ people4_편집 |>
 
 <br><br>
 
-![](./images/compare.png)
+![지원님 시각화 (탄자니아 인구 비교)](compare.png)
 
 <br>
-
 
 ## 9장 피벗
 
@@ -236,15 +236,12 @@ mpg |> count(manufacturer, drv) |>
 
 ```
 
-
 ```{r}
 mpg |> count(manufacturer, model, class) |> 
   pivot_wider(names_from = class,
     values_from = n)
 
 ```
-
-
 
 ```{r pressure, echo=FALSE}
 
@@ -262,4 +259,3 @@ mpg |> count(manufacturer, drv)
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 
 <br><br>
-
