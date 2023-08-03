@@ -1,4 +1,8 @@
+#23-0730 sun 14:00 2회차 오프라인
+
 library(tidyverse)
+
+
 
 ggplot(data = mpg) +
   geom_point(mapping = aes(x = displ
