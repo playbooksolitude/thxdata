@@ -1,5 +1,6 @@
 #23-0725 tue 16:02
 #마부뉴스
+#https://stibee.com/api/v1.0/emails/share/buIp1V8RSILA7Ehfs9uivPJexU8bLk8=
 #https://kkockko.substack.com/p/7d3?sd=pf
 #https://www.insee.fr/en/statistiques/6040011
 
@@ -100,16 +101,16 @@ france5_tidy |>
   coord_cartesian(ylim = c(0,80000))
 
 
-  #6-2 error goem_line 안보인다 (너무 작아서)
+  #6-2 error goem_line 안보인다 (너무 작아서) #natural
 france5_tidy |> 
   ggplot(aes(x = Year)) +
   geom_bar(aes(y = population/1000),
            stat = "identity") +
-  geom_line(aes(y = natural/1000, group = 1), 
-            stat = "identity", size = 2, color = "red") +
+  geom_line(aes(y = natural, group = 1), 
+              stat = "identity", size = 2, color = "red") +
   theme(axis.text.x = element_text(angle = 45, hjust = .7),
         axis.title = element_blank()) +
-  scale_y_continuous(breaks = c(20000,40000,60000, 80000)) +
+  scale_y_continuous(breaks = c(20000, 40000, 60000, 80000)) +
   coord_cartesian(ylim = c(0,80000))
 
 
@@ -126,11 +127,10 @@ france5_tidy$Year |> as.factor() -> france5_tidy$Year
 ########## ----------------------------------------------------- >>>>>
 
 
-
-
 #7 프랑스 인구, 이민자
 library(showtext)
 showtext_auto()
+
 
 france5_tidy |> 
   ggplot(aes(x = Year, y = population)) + 
@@ -142,21 +142,30 @@ france5_tidy |>
 
 
 #7-1 y값 지수 표현 해결 #예전에 실행했던 코드를 우연히 발견했다
+france5_tidy |> glimpse()
+france5_tidy |> 
+  ggplot(aes(x = Year)) +
+  geom_line(aes(y = as_factor(natural), group = 1), color = "blue", size = 1) +
+  geom_line(aes(y = as_factor(net_migration), group = 1), 
+            color = "red", size =1)
+
+
+#7-1_add
 france5_tidy |> 
   ggplot(aes(x = Year)) +
   geom_line(aes(y = natural, group = 1), color = "blue", size = 1) +
   geom_line(aes(y = net_migration, group = 1), 
             color = "red", size =1) +
-  theme(axis.text.x = element_text(hjust = 1.5, vjust = 2.5, 
-                                   angle = 45, size = 15),
+  theme(axis.text.x = element_text(hjust = 1.5, vjust = 2.5,
+                                   angle = 45, size = 10),
         axis.title = element_blank(),
         axis.text.y = element_text(size = 15),
         panel.background = element_blank(),
         axis.ticks = element_blank()) +
   labs(title = "프랑스 이민자") +
-  annotate(geom = "text", x = "2000", y = 290000, 
+  annotate(geom = "text", x = "2000", y = 290000,
            label = "비-이민자", color = "blue", size = 10) +
-  annotate(geom = "text", x = "1996", y = 100000, 
+  annotate(geom = "text", x = "1996", y = 100000,
            label = "이민자", color = "red", size = 10) +
   scale_y_continuous(labels = scales::comma)
 
@@ -165,11 +174,11 @@ france5_tidy |>
 #7-2 회귀선
 france5_tidy |> 
   ggplot(aes(x = Year)) +
-  geom_smooth(aes(y = natural, group = 1), color = "blue", size = 1) +
-  geom_smooth(aes(y = net_migration, group = 1), 
+  geom_smooth(aes(y = natural, group = 1), color = "blue", size = 1, se = F) +
+  geom_smooth(aes(y = net_migration, group = 1, se = F), 
               color = "red", size =1) +
   theme(axis.text.x = element_text(hjust = 1.5, vjust = 2.5, 
-                                   angle = 45, size = 15),
+                                   angle = 45, size = 10),
         axis.title = element_blank(),
         axis.text.y = element_text(size = 15),
         panel.background = element_blank(),
@@ -187,6 +196,8 @@ france5_tidy |>
 library(showtext)
 showtext_auto()
 
+
+#
 france5_tidy |> 
   ggplot(aes(x = Year)) +
   geom_bar(aes(y = population/225),

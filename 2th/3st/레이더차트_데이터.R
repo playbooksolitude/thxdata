@@ -34,12 +34,12 @@ thx4_csv |> slice(1,2,6) |>
              vlcex = 2) 
 
 #컬러에 알파값을 적용하고 
-library(RColorBrewer)
-brewer.pal.info
-coul <- brewer.pal(4, "Set3")
-(colors_border <- coul)
-library(scales)
-(colors_in <- alpha(coul, 0.5))
+# library(RColorBrewer)
+# brewer.pal.info
+# coul <- brewer.pal(4, "Set3")
+# (colors_border <- coul)
+# library(scales)
+# (colors_in <- alpha(coul, 0.5))
 
 
 #화면 분할
