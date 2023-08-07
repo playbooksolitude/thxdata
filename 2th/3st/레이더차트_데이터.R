@@ -68,7 +68,7 @@ library(scales) #alpha 값 추출 함수
   (alpha(coul, 0.3) -> colors_in) #알파값 추출
 
 
-#화면 분할
+#화면 4분할
 #op <- par(mar=c(1, 2, 2, 1), mfrow=c(2, 2))
 op <- par(mfrow=c(2, 2))
 op
@@ -76,7 +76,7 @@ op
 #화면 분할 해제
 dev.off()
 
-# 지원님
+#
 thx4_csv |>  
   radarchart(
     pcol = colors_in,           #테두리
