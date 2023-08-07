@@ -47,3 +47,14 @@ ggplot(data = economics) +
 
 #두 데이터의 date 기간 통일
 presidential2 <- subset(presidential, start > economics$date[1]) 
+
+#
+ggplot(data = economics) + 
+  geom_line(aes(x = date, y = unemploy)) +
+  geom_rect(data = presidential2,
+    aes(xmin = start, xmax = end, 
+      ymin = 0, ymax = Inf, fill = party),
+    alpha = .5) +
+  scale_fill_manual(values = c("Democratic" = "red",
+    "Republican" = "blue"))
+
