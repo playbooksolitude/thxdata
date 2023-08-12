@@ -3,6 +3,11 @@
 #
 library(tidyverse)
 library(bbplot)
+library(showtext)
+showtext_auto()
+
+#
+#23년 1월~6월 극장관객수 (기간별)
 
 #
 read_csv("./2th/4st/thxdata - KOBIS_23-01-06.csv", 
@@ -28,20 +33,66 @@ kobis_2날짜 |> tail()
 colSums(is.na(kobis_2날짜)) |> as.data.frame()
 kobis_2날짜 |> filter(is.na(연도))
 
+#
 kobis_2날짜 |> 
-  ggplot(aes(x = 순위, y = 누적매출액, fill = 누적매출액)) +
-  geom_tile()
+  drop_na(연도, 월, 일) |> 
+  filter(순위 < 101) -> kobis_3top100
+
 
 #
-glimpse(kobis_2날짜)
-
-kobis_2날짜 |> filter(순위 < 101) |> 
+kobis_3top100 |> filter(순위 < 101) |> 
   ggplot(aes(x = 순위, y = 대표국적, fill = 관객수)) +
   geom_tile() +
   scale_fill_gradient(low = "grey", high = "red")
 
+# 시청등급
+table(kobis_2날짜$등급)
+table(kobis_2날짜$등급) |> data.frame()
+
+kobis_3top100 |> view()
+
+#관객수
+kobis_3top100 |> 
+  mutate(
+    스크린ROI = round(관객수 / 스크린수,0),
+    상영횟수ROI = round(관객수 / 상영횟수,0),
+  ) |> select(
+    순위, 
+    영화명, 대표국적,
+    연도, 월, 일,
+    매출액, 누적매출액, 관객수, 누적관객수,
+    스크린수, 상영횟수, 스크린ROI, 상영횟수ROI
+  ) -> kobis_4ROI
+
+kobis_4ROI |> gt::gt()
+
+
 #
-table(kobis_2날짜$등급) |> as.data.frame()
+kobis_4ROI |> ggplot(aes(x = 스크린ROI, 
+                         y = 상영횟수ROI)) +
+  geom_point()
+
+#
+kobis_4ROI |> filter(스크린ROI > 2000)
+
+kobis_4ROI |> ggplot(aes(x = 스크린ROI, 
+                         y = 상영횟수ROI)) +
+  geom_point(color = 
+               if_else(kobis_4ROI$대표국적 == "한국", "red", "grey")) +
+  geom_text(data = kobis_4ROI |> 
+              filter(스크린ROI > 2000 | 상영횟수ROI > 30), 
+            aes(label = paste(영화명, 상영횟수ROI), 
+                y = 상영횟수ROI + 1.5,
+                x = 스크린ROI + 100), 
+            stat = "identity") +
+  geom_rect(aes(xmin = 0, xmax = 2000,
+                ymin = 20, ymax = 30), alpha = .005, fill = "yellow") +
+  geom_rect(aes(xmin = 0, xmax = 1050,
+                ymin = 30, ymax = 55), alpha = .005, fill = "blue") +
+  geom_rect(aes(xmin = 0, xmax = 2000,
+                ymin = 0, ymax = 20), alpha = .005, fill = "black") +
+  geom_rect(aes(xmin = 2000, xmax = 5000,
+                ymin = 20, ymax = 40), alpha = .005, fill = "red")
 
 
 #
