@@ -36,4 +36,9 @@ penguins |> view()
 penguins |> drop_na(sex, bill_length_mm)
 
 #
+penguins |> 
+  gt::gt()
 
+colSums(is.na(penguins)) |> as.data.frame()
+colSums(is.na(penguins)) |> table()
+colSums(is.na(penguins)) |> data.frame()
