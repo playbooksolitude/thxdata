@@ -5,6 +5,9 @@ library(tidyverse)
 library(bbplot)
 library(showtext)
 showtext_auto()
+library(ggrepel)
+library(patchwork)
+install.packages("patchwork")
 
 #
 #23년 1월~6월 극장관객수 (기간별)
@@ -79,11 +82,11 @@ kobis_4ROI |> ggplot(aes(x = 스크린ROI,
                          y = 상영횟수ROI)) +
   geom_point(color = 
                if_else(kobis_4ROI$대표국적 == "한국", "red", "grey")) +
-  geom_text(data = kobis_4ROI |> 
+  geom_text_repel(data = kobis_4ROI |> 
               filter(스크린ROI > 2000 | 상영횟수ROI > 30), 
-            aes(label = paste(영화명, 상영횟수ROI), 
-                y = 상영횟수ROI + 1.5,
-                x = 스크린ROI + 100), 
+            aes(label = 영화명, 
+                y = 상영횟수ROI,
+                x = 스크린ROI), 
             stat = "identity") +
   geom_rect(aes(xmin = 0, xmax = 2000,
                 ymin = 20, ymax = 30), alpha = .005, fill = "yellow") +
@@ -94,6 +97,42 @@ kobis_4ROI |> ggplot(aes(x = 스크린ROI,
   geom_rect(aes(xmin = 2000, xmax = 5000,
                 ymin = 20, ymax = 40), alpha = .005, fill = "red")
 
+#
+kobis_4ROI |> filter(상영횟수ROI > 30) |> 
+  view()
+
+#
+library(scales)
+kobis_4ROI |> 
+  ggplot(aes(x = 관객수, y = 매출액)) +
+  geom_point() +
+  scale_y_continuous(labels = comma) +
+  scale_x_continuous(labels = comma) +
+  geom_smooth(method = "lm") +
+  geom_text(data = kobis_4ROI |> filter(관객수 > 3000000, 
+                                        관객수 < 4000000),
+            aes(label = 영화명))
+
+#
+kobis_4ROI |> 
+  ggplot(aes(x = 스크린수, y = 관객수)) +
+  geom_smooth() +
+  geom_point() +
+  geom_text_repel(data = kobis_4ROI |> filter(스크린수 > 1500 |
+                                                관객수 > 1700000), 
+            aes(label = paste(영화명, comma(상영횟수)))) +
+  scale_y_continuous(labels = comma) -> kobis_5smooth
+
+kobis_4ROI |> 
+  ggplot(aes(x = 스크린수, y = 관객수)) +
+  geom_smooth(method = "lm") +
+  geom_point() +
+  geom_text_repel(data = kobis_4ROI |> filter(스크린수 > 1500 |
+                                                관객수 > 1700000), 
+                  aes(label = paste(영화명, comma(상영횟수)))) +
+  scale_y_continuous(labels = comma) -> kobis_5lm
+
+kobis_5lm / kobis_5smooth
 
 #
 kobis_2날짜 |> 
@@ -101,6 +140,10 @@ kobis_2날짜 |>
   ggplot(aes(x = 순위, y = as.factor(월), fill = 누적관객수)) +
   geom_tile() +
   geom_text(aes(label = round(누적관객수/10000,0)), color = "white")
+
+#
+
+
 
 
 #
