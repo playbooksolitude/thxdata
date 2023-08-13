@@ -3,8 +3,12 @@
 #
 library(tidyverse)
 library(bbplot)
+
+#
 library(showtext)
 showtext_auto()
+
+#
 library(ggrepel)
 library(patchwork)
 install.packages("patchwork")
@@ -32,9 +36,11 @@ kobis_2날짜 |> drop_na(순위)
 kobis_2날짜 |> filter(is.na(순위))
 kobis_2날짜 |> tail()
 
+
 # na check
 colSums(is.na(kobis_2날짜)) |> as.data.frame()
 kobis_2날짜 |> filter(is.na(연도))
+
 
 #
 kobis_2날짜 |> 
@@ -48,11 +54,12 @@ kobis_3top100 |> filter(순위 < 101) |>
   geom_tile() +
   scale_fill_gradient(low = "grey", high = "red")
 
+
 # 시청등급
 table(kobis_2날짜$등급)
 table(kobis_2날짜$등급) |> data.frame()
-
 kobis_3top100 |> view()
+
 
 #관객수
 kobis_3top100 |> 
@@ -66,6 +73,7 @@ kobis_3top100 |>
     매출액, 누적매출액, 관객수, 누적관객수,
     스크린수, 상영횟수, 스크린ROI, 상영횟수ROI
   ) -> kobis_4ROI
+
 
 kobis_4ROI |> gt::gt()
 
@@ -173,27 +181,30 @@ kobis_2날짜 |>
 #
 
 
-
+#
+read_csv("./2th/4st/thxdata - KOBIS_SLAMDUNK.csv",
+         skip = 3) -> slam_1csv
 
 #
-kobis_2날짜 |> filter(순위 < 21) |> 
-  ggplot(aes(x = 영화명 |> fct_reorder(desc(순위)), 
-    y = 매출액)) +
-  geom_bar(stat = "identity") +
-  coord_flip() +
-  labs(y = "순위", x = "영화명")
+slam_1csv |> 
+  ggplot(aes(x = 날짜, y = 관객수)) +
+  geom_point()
 
+#
+slam_1csv |> 
+  ggplot(aes(x = 날짜, y = 관객수)) +
+  geom_point() +
+  geom_line(group = 1)
 
+  
+#
+slam_1csv |> 
+  ggplot(aes(x = 날짜)) +
+  geom_line(aes(y = 스크린수))
 
+#
+slam_1csv |> 
+  ggplot(aes(x = 관객수)) +
+  geom_density(adjust = 1)
 
-
-
-
-
-
-
-
-
-
-
-
+#
