@@ -16,7 +16,7 @@ library(patchwork)   #그래프를 나란히 2개 보여주는 함수
 
 #1 불러오기 ------------------------------------------------
 #1-1 Import Dataset
-
+#https://www.kobis.or.kr/kobis/business/stat/boxs/findPeriodBoxOfficeList.do
 
 #1-2
 read_csv("./2th/4st/thxdata - KOBIS_23-01-06.csv",
@@ -150,7 +150,7 @@ kobis_4ROI |>
   scale_x_continuous(labels = comma)
   
 
-# 스크린수 vs 관객수
+# 스크린수 vs 관객수 paste
 kobis_4ROI |> 
     ggplot(aes(x = 상영횟수, y = 관객수)) +
     geom_smooth() +
