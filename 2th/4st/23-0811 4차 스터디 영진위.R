@@ -114,25 +114,54 @@ kobis_4ROI |>
             aes(label = 영화명))
 
 #
+# 스크린수 vs 관객수
 kobis_4ROI |> 
+    ggplot(aes(x = 상영횟수, y = 관객수)) +
+    geom_smooth() +
+    geom_point() +
+    geom_text_repel(data = kobis_4ROI |> filter(스크린수 > 1500 |
+                                                  관객수 > 1700000), 
+                    aes(label = paste(영화명, comma(상영횟수)))) +
+    scale_y_continuous(labels = comma)
+
+
+# 스크린수 vs 관객수
+(kobis_4ROI |> 
   ggplot(aes(x = 스크린수, y = 관객수)) +
   geom_smooth() +
   geom_point() +
   geom_text_repel(data = kobis_4ROI |> filter(스크린수 > 1500 |
                                                 관객수 > 1700000), 
             aes(label = paste(영화명, comma(상영횟수)))) +
-  scale_y_continuous(labels = comma) -> kobis_5smooth
+  scale_y_continuous(labels = comma) -> kobis_5smooth)
 
-kobis_4ROI |> 
+# 스크린수 vs 관객수 선형회귀
+(kobis_4ROI |> 
   ggplot(aes(x = 스크린수, y = 관객수)) +
   geom_smooth(method = "lm") +
   geom_point() +
   geom_text_repel(data = kobis_4ROI |> filter(스크린수 > 1500 |
                                                 관객수 > 1700000), 
                   aes(label = paste(영화명, comma(상영횟수)))) +
-  scale_y_continuous(labels = comma) -> kobis_5lm
+  scale_y_continuous(labels = comma) -> kobis_5lm)
 
 kobis_5lm / kobis_5smooth
+
+
+# 스크린수 vs 상영횟수
+kobis_4ROI |> 
+  ggplot(aes(x = 스크린수, y = 상영횟수)) +
+  geom_smooth() +
+  geom_point() +
+  geom_text_repel(data = kobis_4ROI |> filter(스크린수 > 1500 |
+                                                관객수 > 1700000), 
+                  aes(label = paste(영화명, "(관객수)", comma(관객수)))) +
+  scale_y_continuous(labels = comma)
+
+?paste0
+(nth <- paste0(1:12, c("st", "nd", "rd", rep("th", 9))))
+paste(month.abb, "is the", nth, "month of the year.")
+
 
 #
 kobis_2날짜 |> 
