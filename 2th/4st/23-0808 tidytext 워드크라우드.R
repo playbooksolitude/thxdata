@@ -35,7 +35,18 @@ tidy_3austen |> with(wordcloud(words = word,
                   max.words = 50,
                   random.order = F))
 
+colors = brewer.pal(12, "Set1"))
+
+
+
+brewer.pal.info
+
 #
+tidy_3austen |> with(wordcloud(words = word,
+                               freq = n,
+                               max.words = 50,
+                               random.order = F,
+                               colors = brewer_pal(8, "Dark2")))
 
 
 

@@ -16,7 +16,6 @@ austen_books() |>
   filter(book %in% c("Sense & Sensibility")) -> temp_1
 
 # 
-temp_1 |> print(n = 100)
 temp_1 |> unnest_tokens(word, text) |> 
   count(word, sort = T) |> 
   anti_join(stop_words, by = "word") |> 
@@ -24,8 +23,7 @@ temp_1 |> unnest_tokens(word, text) |>
     wordcloud(word, 
               freq = n,
               max.words = 500,
-              min.freq = 100,
-              colors = ))
+              min.freq = 100))
 
 #
 penguins |> drop_na(bill_length_mm)
