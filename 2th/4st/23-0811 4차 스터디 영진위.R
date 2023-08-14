@@ -293,7 +293,7 @@ kobis_4ROI |>
   ) |> gt()
 
 #  매출액
-kobis_4ROI |> filter(순위 < 31) |> 
+kobis_4ROI |> filter(순위 < 21) |> 
   ggplot(aes(area = 매출액, 
              fill = 대표국적, 
              label = 영화명,
@@ -310,7 +310,7 @@ kobis_4ROI |> filter(순위 < 31) |>
   geom_treemap_subgroup2_text(color = "grey", size = 20)
 
 #매출액 표
-kobis_4ROI |> filter(순위 < 31) |> 
+kobis_4ROI |> filter(순위 < 21) |> 
   group_by(대표국적) |> 
   summarise(sum = sum(매출액)) |> mutate(
     매출액합계 = sum(sum),
@@ -320,7 +320,7 @@ kobis_4ROI |> filter(순위 < 31) |>
 
 
 #  관객수
-kobis_4ROI |> filter(순위 < 31) |> 
+kobis_4ROI |> filter(순위 < 21) |> 
   ggplot(aes(area = 관객수, 
              fill = 대표국적, 
              label = 영화명,
@@ -338,7 +338,7 @@ kobis_4ROI |> filter(순위 < 31) |>
 
 
 # 관객수 표
-kobis_4ROI |> filter(순위 < 31) |> 
+kobis_4ROI |> filter(순위 < 21) |> 
   group_by(대표국적) |> 
   summarise(sum = sum(관객수)) |> mutate(
     관객수합계 = sum(sum),
