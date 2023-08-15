@@ -309,14 +309,14 @@ kobis_4ROI |> filter(순위 < 21) |>
   theme(legend.position = "none") +
   geom_treemap_subgroup2_text(color = "grey", size = 20)
 
+
 #매출액 표
 kobis_4ROI |> filter(순위 < 21) |> 
   group_by(대표국적) |> 
-  summarise(sum = sum(매출액)) |> mutate(
+  summarise(sum = sum(매출액)) |> 
+  mutate(
     매출액합계 = sum(sum),
-    비율 = round(sum / 매출액합계,3) * 100
-  )
-
+    비율 = round(sum / 매출액합계,3) * 100)
 
 
 #  관객수
@@ -333,8 +333,8 @@ kobis_4ROI |> filter(순위 < 21) |>
                              min.size = 0,
                              alpha = .2,
                              fontface = "italic") +
-  theme(legend.position = "none") +
-  geom_treemap_subgroup2_text(color = "grey", size = 20)
+  theme(legend.position = "none") #+
+  #geom_treemap_subgroup2_text(color = "grey", size = 20)
 
 
 # 관객수 표
