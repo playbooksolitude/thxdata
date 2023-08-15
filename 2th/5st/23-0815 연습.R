@@ -1,4 +1,6 @@
 #23-0815 tue 09:32
+# today()
+
 
 #
 library(tidyverse)
@@ -29,4 +31,9 @@ colSums((is.na(starwars))) |>
     values_from = 값
   )
 
-                    
+starwars |> 
+  write_csv("./2th/5st/starwars.csv")
+
+write_csv()
+#
+
