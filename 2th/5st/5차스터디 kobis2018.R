@@ -24,3 +24,71 @@ kobis2018_2select |> head()
 kobis2018_2select |> 
   slice(3990:4000) |>
   select(1:9)
+
+kobis2018_2select |> dim()
+kobis2018_2select |> 
+  filter(관객수 > 1000)
+
+
+# ----------------------------------------------------------
+library(nycflights13)
+flights |> count(origin)
+flights |> count(dest)
+
+# 
+flights |> 
+  group_by(origin, dest) |> 
+  summarise(n = n())
+
+#
+flights |> 
+  group_by(origin, dest) |> 
+  summarise(n = n()) |> 
+  filter(n > 1000) |> 
+  ggplot(aes(x = origin, 
+             y = dest,
+             fill = n)) +
+  geom_tile() +
+  geom_text(aes(label = n), color = "white") +
+  scale_fill_gradient(low = "grey", high = "red")
+
+#
+flights |> 
+  group_by(origin, dest, distance) |> 
+  summarise()
+
+#
+flights |> 
+  group_by(origin, dest, distance) |> 
+  summarise() |> 
+  filter(distance > 1000) |> 
+  ggplot(aes(x = origin, 
+             y = dest,
+             fill = distance)) +
+  geom_tile() +
+  geom_text(aes(label = distance), color = "white") +
+  scale_fill_gradient(low = "grey", high = "red") +
+  #facet_wrap(.~origin, scales = "free") +
+  labs(title = "origin ~ dest, distance") +
+  theme(legend.position = "top",
+        panel.background = element_blank())
+
+
+#
+flights |> 
+  ggplot(aes(x = arr_delay, y = distance)) +
+  geom_point()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
