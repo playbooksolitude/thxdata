@@ -5,8 +5,8 @@ library(tidyverse)
 library(readxl)
 
 #
-read_excel("./2th/5st/excel/KOBIS_2018.xlsx",
-           skip = 4) -> kobis2018_1excel
+(read_excel("./2th/5st/excel/KOBIS_2018.xlsx",
+           skip = 4) -> kobis2018_1excel)
 
 #2
 kobis2018_1excel |> glimpse()
@@ -106,11 +106,23 @@ flights |>
 
 
 
+# 2019년
+(read_excel("./2th/5st/excel/KOBIS_2019.xlsx",
+           skip = 4) -> kobis2019_1excel)
 
+# 2020년
+(read_excel("./2th/5st/excel/KOBIS_2020.xlsx",
+            skip = 4) -> kobis2020_1excel)
 
+# 2021년
+(read_excel("./2th/5st/excel/KOBIS_2021.xlsx",
+            skip = 4) -> kobis2021_1excel)
 
+# 2022년
+(read_excel("./2th/5st/excel/KOBIS_2022.xlsx",
+            skip = 4) -> kobis2022_1excel)
 
-
+# 
 
 
 
