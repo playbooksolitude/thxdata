@@ -3,6 +3,9 @@
 #
 library(tidyverse)
 library(readxl)
+library(showtext)
+showtext_auto()
+data()
 
 #1 불러오기
 (read_excel("./2th/5st/excel/KOBIS_2022.xlsx",
@@ -25,38 +28,24 @@ kobis2022_2select |> head()
 kobis2022_2select |> 
   slice(3990:4000) |>
   select(1:9)
-
 kobis2022_2select |> dim()
+
+
 (kobis2022_2select |> 
   filter(관객수 > 1000) -> kobis2022_3under) #5004 -> #774
 
 
 
 # ----------------------------------------------------------
-# 2018년
-(read_excel("./2th/5st/excel/KOBIS_2018.xlsx",
-            skip = 4) -> kobis2018_1excel)
-
-# 2019년
-(read_excel("./2th/5st/excel/KOBIS_2019.xlsx",
-           skip = 4) -> kobis2019_1excel)
-
-# 2020년
-(read_excel("./2th/5st/excel/KOBIS_2020.xlsx",
-            skip = 4) -> kobis2020_1excel)
-
-# 2021년
-(read_excel("./2th/5st/excel/KOBIS_2021.xlsx",
-            skip = 4) -> kobis2021_1excel)
 
 
-# ----------------------------------------------------------
 kobis2022_3under |> 
   drop_na(월) |> 
   count(대표국적, 월, sort = T) |> 
   ggplot(aes(x= 대표국적, y = n)) +
   geom_bar(stat = "identity") +
-  facet_wrap(.~월, scales = "free")
+  facet_wrap(.~월, scales = "free") +
+  coord_flip()
 
 #
 kobis2022_3under |> 
@@ -69,21 +58,23 @@ kobis2022_3under |>
 
 #
 kobis2022_3under |> 
-  filter(연도 == "2023") |> 
+  filter(연도 == "2022") |> 
   drop_na(월) |> 
   count(대표국적, 월, sort = T) |> 
   ggplot(aes(x= 대표국적, y = 월, fill = n)) +
   geom_tile() +
   geom_text(aes(label = n)) +
   scale_fill_gradient(low = "grey", high = "red") +
-  scale_y_continuous(breaks = c(1,2,3,4,5,6)) +
+  scale_y_continuous(breaks = c(1:12)) +
   theme(axis.title = element_blank(),
-        panel.background = element_blank())
+        panel.background = element_blank()) +
+  coord_flip()
 
 #------------------------------
 #
+library(gt)
 kobis2022_3under |> 
-  filter(연도 == "2023") |> 
+  filter(연도 == "2022") |> 
   drop_na(월) |> 
   count(대표국적, 월) |> 
   arrange(월) |> 
@@ -93,12 +84,14 @@ kobis2022_3under |>
   ) |> gt()
 
 #  매출액
+library(treemapify)
 kobis2022_3under |> filter(순위 < 21) |> 
   ggplot(aes(area = 매출액, 
              fill = 대표국적, 
              label = 영화명,
              subgroup = 대표국적,
-             subgroup2 = paste(연도, 월))) +
+             subgroup2 = 
+               paste(round(관객수/10000,0),"만명"))) +
   geom_treemap() +
   geom_treemap_text(color = "white") +
   geom_treemap_subgroup_text(place = "centre",
@@ -107,7 +100,8 @@ kobis2022_3under |> filter(순위 < 21) |>
                              alpha = .2,
                              fontface = "italic") +
   theme(legend.position = "none") +
-  geom_treemap_subgroup2_text(color = "grey", size = 20)
+  geom_treemap_subgroup2_text(color = "white", size = 12,
+                              place = "center")
 
 
 #매출액 표
@@ -125,7 +119,8 @@ kobis2022_3under |> filter(순위 < 21) |>
              fill = 대표국적, 
              label = 영화명,
              subgroup = 대표국적,
-             subgroup2 = paste(round(관객수/10000,0), "만명"))) +
+             subgroup2 = 
+               paste(round(관객수/10000,0), "만명"))) +
   geom_treemap(alpha = .5) +
   geom_treemap_text(color = "white") +
   geom_treemap_subgroup_text(place = "centre",
@@ -154,7 +149,6 @@ kobis2022_3under |> filter(순위 < 21) |>
 
 
 #
-kobis2022_3under |> filter(영화명 == "리바운드")
 
 G20
 G20  |> 
@@ -169,6 +163,110 @@ G20 |> mutate(num = row_number(), .before = 1) |>
 #
 kobis2022_3under |> 
   filter(연도 != "2023") |> select(1:5)
+
+
+
+# ----------------------------------------------------------
+# 2018년
+(read_excel("./2th/5st/excel/KOBIS_2018.xlsx",
+            skip = 4) -> kobis2018_1excel)
+
+# 2019년
+(read_excel("./2th/5st/excel/KOBIS_2019.xlsx",
+            skip = 4) -> kobis2019_1excel)
+
+# 2020년
+(read_excel("./2th/5st/excel/KOBIS_2020.xlsx",
+            skip = 4) -> kobis2020_1excel)
+
+# 2021년
+(read_excel("./2th/5st/excel/KOBIS_2021.xlsx",
+            skip = 4) -> kobis2021_1excel)
+
+
+
+# colorspace -------------------------------------
+install.packages("colorspace")
+library(colorspace)
+
+colorspace::hcl_palettes()
+colorspace::hcl_palettes(plot = T)
+colorspace::hcl_palettes(plot = T, type = "Qualitative")
+colorspace::hcl_palettes(plot = T, 
+                         type = "Qualitative",
+                         palette = "Cold", 
+                         n = 6)
+
+colorspace::hcl_palettes(plot = T, 
+                         type = "Qualitative",
+                         palette = "Cold", 
+                         n = 6)
+
+#컬러코드를 알고 싶을 때
+colorspace::qualitative_hcl(6, palette = "Dark 3")
+colorspace::qualitative_hcl(n = 6, 
+                            palette = "Cold")
+
+
+
+library(palmerpenguins)
+library(tidyverse)
+penguins |> 
+  drop_na() |> 
+  ggplot(aes(x = species, 
+             y = body_mass_g, 
+             color = body_mass_g)) +
+  geom_jitter(width = .2)
+
+
+
+#
+penguins |> 
+  drop_na() |> 
+  ggplot(aes(x = species, 
+             y = body_mass_g, 
+             color = body_mass_g)) +
+  geom_jitter(width = .2) +
+  colorspace::scale_color_continuous_sequential(
+    palette = "Teal", begin = .1, end = .9)
+
+hcl_palettes(plot = T, type = "Sequential")
+
+penguins |> 
+  drop_na() |> 
+  ggplot(aes(x = species, 
+             y = body_mass_g, 
+             color = body_mass_g)) +
+  geom_jitter(width = .2) +
+  colorspace::scale_color_continuous_sequential(
+    palette = "Teal", begin = .9, end = .1)
+
+
+# 이산형
+penguins |> 
+  ggplot(aes(x = body_mass_g, fill = species)) +
+  geom_histogram(bins = 10, color = "white") +
+  scale_fill_discrete_qualitative(palette = "cold",
+                                  alpha = .8, 
+                                  order = c(2,3,1)) +
+  labs(title = "colorspace")
+
+hcl_palettes(plot = T)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
