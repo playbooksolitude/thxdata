@@ -2,11 +2,9 @@
 
 #
 library(tidyverse)
-
-#
 library(rfm)
 
-
+#
 rfm_data_customer
 rfm_data_orders
 rfm_data_orders |> 
@@ -39,10 +37,6 @@ rfm_data_customer |>
               labels = F)) |> 
   rename(recency_days = 1) 
 
-#
-
-
-#
 
 #
 rfm_data_customer |> count(number_of_orders) |> print(n = Inf)
@@ -59,3 +53,4 @@ mutate(grade = if_else(number_of_orders < 6, "L1",
   ggplot(aes(x = grade, y = as.factor(number_of_orders), 
              fill = n)) +
   geom_tile()
+
