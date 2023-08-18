@@ -91,7 +91,8 @@ kobis2022_4월별관객수 |>
              hjust = .8) +
   scale_y_continuous(labels = comma) +
   coord_flip() +
-  bbc_style()
+  bbc_style() +
+  labs(title = "2022년 월별 극장관객수")
 
 
 #check
