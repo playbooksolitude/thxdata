@@ -49,6 +49,7 @@ kobis2022_3under |>
   facet_wrap(.~월, scales = "free") +
   coord_flip()
 
+
 # 월별, 개봉작, 대표국적, 히트맵
 kobis2022_3under |> 
   filter(연도 == "2022") |> 
@@ -73,12 +74,12 @@ kobis2022_3under |> filter(
 
 #월별 극장관객수
 library(scales)
-kobis2022_3under |> 
+(kobis2022_3under |> 
   drop_na(월) |> 
   filter(연도 == "2022") |> 
   group_by(월) |> 
   summarise(관객수합계 = 
-              sum(관객수)) -> kobis2022_4월별관객수
+              sum(관객수)) -> kobis2022_4월별관객수)
 
 
 library(bbplot)
@@ -108,14 +109,6 @@ kobis2022_3under |> filter(월 == "6")  |>
 
 kobis2022_3under |> filter(월 == "4")  |> 
   select(1:5, 관객수) |> print(n = 30) |> gt()
-
-
-
-  
-  
-
-  
-
 
 
 #------------------------------
@@ -184,58 +177,19 @@ kobis2022_3under |> filter(순위 < 21) |>
                        c("한국" = "blue", 
                          "미국" = "red"))
 
-?geom_treemap_subgroup2_text()
-
-
-
 # 관객수 표
 kobis2022_3under |> filter(순위 < 21) |> 
   group_by(대표국적) |> 
   summarise(sum = sum(관객수)) |> mutate(
     관객수합계 = sum(sum),
-    비율 = round(sum / 관객수합계,3) * 100
-  )
+    비율 = round(sum / 관객수합계,3) * 100)
 
 
-#
-
-G20
-G20  |> 
-  treemapify(aes(area = region, fill = country))
-
-G20 |> mutate(num = row_number(), .before = 1) |> 
-  ggplot(aes(area = gdp_mil_usd, fill = hdi,
-             label = paste(num, country, hdi))) +
-  geom_treemap() +
-  geom_treemap_text(color = "white")
-
-#
-kobis2022_3under |> 
-  filter(연도 != "2023") |> select(1:5)
-
-
-
-# ----------------------------------------------------------
-# 2018년
-(read_excel("./2th/5st/excel/KOBIS_2018.xlsx",
-            skip = 4) -> kobis2018_1excel)
-
-# 2019년
-(read_excel("./2th/5st/excel/KOBIS_2019.xlsx",
-            skip = 4) -> kobis2019_1excel)
-
-# 2020년
-(read_excel("./2th/5st/excel/KOBIS_2020.xlsx",
-            skip = 4) -> kobis2020_1excel)
-
-# 2021년
-(read_excel("./2th/5st/excel/KOBIS_2021.xlsx",
-            skip = 4) -> kobis2021_1excel)
 
 
 
 # colorspace -------------------------------------
-install.packages("colorspace")
+#install.packages("colorspace")
 library(colorspace)
 
 colorspace::hcl_palettes()
