@@ -232,8 +232,6 @@ penguins |>
 
 hcl_palettes(plot = T, type = "Sequential")
 
-
-library(colorspace)
 penguins |> 
   drop_na() |> 
   ggplot(aes(x = species, 
@@ -255,43 +253,7 @@ penguins |>
 
 hcl_palettes(plot = T)
 
-#geom_text vs histogram
-penguins |> 
-  ggplot(aes(x = body_mass_g, fill = species)) +
-  geom_histogram(bins = 20, 
-                 color = "white") +
-  scale_fill_discrete_qualitative(palette = "cold",
-                                  alpha = .8, 
-                                  order = c(2,3,1)) +
-  labs(title = "colorspace")  +
-  stat_bin(aes(label = after_stat(count)), 
-            stat = "count", 
-            bins = 20, geom = "text")
 
-# 
-# https://stackoverflow.com/questions/66841848/whats-the-right-way-to-add-text-to-geom-histogram-in-ggplot
-
-
-#density() 그릴 것
-penguins |> 
-  ggplot(aes(x = body_mass_g, fill = species)) +
-  geom_histogram(bins = 20, 
-                 color = "white") +
-  scale_fill_discrete_qualitative(palette = "cold",
-                                  alpha = .8, 
-                                  order = c(2,3,1)) +
-  labs(title = "colorspace") #density() 그릴 것
-
-
-
-#
-penguins |> 
-  ggplot(aes(x = species, y = after_stat(count), 
-             fill = sex)) + 
-  geom_bar() +
-  geom_text(aes(label = after_stat(count)), 
-            stat = "count",
-            position = position_stack(vjust = .9))
 
 
 
