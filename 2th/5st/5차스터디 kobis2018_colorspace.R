@@ -2,9 +2,10 @@
 
 #
 library(tidyverse)
-library(readxl)    
+library(readxl)
 library(showtext)
 showtext_auto()
+data()
 
 #1 불러오기
 (read_excel("./2th/5st/excel/KOBIS_2022.xlsx",
@@ -24,18 +25,15 @@ kobis2022_1excel |> glimpse()
 
 #3 adult 유의미한 콘텐츠 구분
 kobis2022_2select |> head()
-kobis2022_2select |> tail()
-
-  # 성인 제외 필요
 kobis2022_2select |> 
   slice(3990:4000) |>
   select(1:9)
+kobis2022_2select |> dim()
 
-kobis2022_2select |> dim()   #4618편
 
-  #관객수 1000명 이상인 것만! 
 (kobis2022_2select |> 
-  filter(관객수 > 1000) -> kobis2022_3under) #4618 -> #564
+  filter(관객수 > 1000) -> kobis2022_3under) #5004 -> #774
+
 
 
 # ----------------------------------------------------------
@@ -49,7 +47,16 @@ kobis2022_3under |>
   facet_wrap(.~월, scales = "free") +
   coord_flip()
 
-# 월별, 개봉작, 대표국적, 히트맵
+#
+kobis2022_3under |> 
+  drop_na(월) |> 
+  count(대표국적, 월, sort = T) |> 
+  ggplot(aes(x= 대표국적, y = n)) +
+  geom_bar(stat = "identity") +
+  facet_wrap(.~월) +
+  coord_flip()
+
+#
 kobis2022_3under |> 
   filter(연도 == "2022") |> 
   drop_na(월) |> 
@@ -62,61 +69,6 @@ kobis2022_3under |>
   theme(axis.title = element_blank(),
         panel.background = element_blank()) +
   coord_flip()
-
-
-# drop_na()
-kobis2022_3under |> 
-  drop_na(월) 
-
-kobis2022_3under |> filter(
-  is.na(월)) |> select(1:5, 관객수)
-
-#월별 극장관객수
-library(scales)
-kobis2022_3under |> 
-  drop_na(월) |> 
-  filter(연도 == "2022") |> 
-  group_by(월) |> 
-  summarise(관객수합계 = 
-              sum(관객수)) -> kobis2022_4월별관객수
-
-
-library(bbplot)
-kobis2022_4월별관객수 |> 
-  ggplot(aes(x = as.factor(월) |> fct_reorder(desc(월)), 
-             y = 관객수합계)) + 
-  geom_bar(stat = "identity") +
-  labs(x = "월", y = "월별 누적 관객수") +
-  geom_label(aes(label = comma(관객수합계)), size = 5, 
-             hjust = .8) +
-  scale_y_continuous(labels = comma) +
-  coord_flip() +
-  bbc_style() +
-  labs(title = "2022년 월별 극장관객수")
-
-
-#check
-kobis2022_3under |> 
-  drop_na(월) |> 
-  filter(연도 == "2022")
-
-kobis2022_3under |> filter(월 == "5")  |> 
-  select(1:5, 관객수) |> print(n = 30) |> gt()
-
-kobis2022_3under |> filter(월 == "6")  |> 
-  select(1:5, 관객수) |> print(n = 30) |> gt()
-
-kobis2022_3under |> filter(월 == "4")  |> 
-  select(1:5, 관객수) |> print(n = 30) |> gt()
-
-
-
-  
-  
-
-  
-
-
 
 #------------------------------
 #
@@ -131,8 +83,7 @@ kobis2022_3under |>
     values_from = n
   ) |> gt()
 
-
-#  매출액 Top 20
+#  매출액
 library(treemapify)
 kobis2022_3under |> filter(순위 < 21) |> 
   ggplot(aes(area = 매출액, 
@@ -281,8 +232,6 @@ penguins |>
 
 hcl_palettes(plot = T, type = "Sequential")
 
-
-library(colorspace)
 penguins |> 
   drop_na() |> 
   ggplot(aes(x = species, 
@@ -304,52 +253,7 @@ penguins |>
 
 hcl_palettes(plot = T)
 
-#geom_text vs histogram
-penguins |> 
-  ggplot(aes(x = body_mass_g, fill = species)) +
-  geom_histogram(bins = 20, 
-                 color = "white") +
-  scale_fill_discrete_qualitative(palette = "cold",
-                                  alpha = .8, 
-                                  order = c(2,3,1)) +
-  labs(title = "colorspace")  +
-  stat_bin(aes(label = after_stat(count)), 
-            stat = "count", 
-            bins = 20, geom = "text")
 
-# 
-# https://stackoverflow.com/questions/66841848/whats-the-right-way-to-add-text-to-geom-histogram-in-ggplot
-
-#
-diamonds |> count(color, cut) |> 
-  ggplot(aes(x = color, y = cut, fill = n)) +
-  geom_tile() +
-  geom_text(aes(label = n), color = "white") +
-  scale_fill_continuous_sequential(palette = "dark mint", 
-                                   begin = .3, 
-                                   end = .9)
-
-
-#density() 그릴 것
-penguins |> 
-  ggplot(aes(x = body_mass_g, fill = species)) +
-  geom_histogram(bins = 20, 
-                 color = "white") +
-  scale_fill_discrete_qualitative(palette = "cold",
-                                  alpha = .8, 
-                                  order = c(2,3,1)) +
-  labs(title = "colorspace") #density() 그릴 것
-
-
-
-#
-penguins |> 
-  ggplot(aes(x = species, y = after_stat(count), 
-             fill = sex)) + 
-  geom_bar() +
-  geom_text(aes(label = after_stat(count)), 
-            stat = "count",
-            position = position_stack(vjust = .9))
 
 
 
