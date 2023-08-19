@@ -57,6 +57,7 @@ kobis2021_3up1000 |>
   write_csv("./2th/5st/excel/up_1000/KOBIS_2021_c1000.xlsx")
 
 
+
 #1 #2020년 =================================================
 (read_excel("./2th/5st/excel/rawdata/KOBIS_2020.xlsx",
             skip = 4) -> kobis2020_1excel)
@@ -135,5 +136,6 @@ kobis2019_3up1000 |>
 #write
 kobis2018_3up1000 |> 
   write_csv("./2th/5st/excel/up_1000/KOBIS_2018_c1000.xlsx")
+
 
 
