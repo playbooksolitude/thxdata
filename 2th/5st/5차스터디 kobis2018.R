@@ -40,7 +40,6 @@ kobis2022_2select |> dim()   #4618편
 
 # ----------------------------------------------------------
 
-
 kobis2022_3under |> 
   drop_na(월) |> 
   count(대표국적, 월, sort = T) |> 
@@ -48,6 +47,14 @@ kobis2022_3under |>
   geom_bar(stat = "identity") +
   facet_wrap(.~월, scales = "free") +
   coord_flip()
+
+#
+colSums(is.na(kobis2022_2select)) |> knitr::kable()
+colSums(is.na(kobis2022_2select)) |> gt::gt()
+colSums(is.na(kobis2022_2select)) |> data.frame()
+is.na(kobis2022_2select) |> colSums() |> knitr::kable()
+
+colSums(is.na(mrcQ2_3mutate)) |> knitr::kable() #NA 2개 #na 있는 컬럼 찾기
 
 
 # 월별, 개봉작, 대표국적, 히트맵
@@ -81,25 +88,38 @@ library(scales)
   summarise(관객수합계 = 
               sum(관객수)) -> kobis2022_4월별관객수)
 
-
+#월별 관객수
 library(bbplot)
 kobis2022_4월별관객수 |> 
-  ggplot(aes(x = as.factor(월) |> fct_reorder(desc(월)), 
-             y = 관객수합계)) + 
+  ggplot(aes(x = as.factor(월) |> fct_reorder((월)), 
+             y = 관객수합계/1000000)) + 
   geom_bar(stat = "identity") +
   labs(x = "월", y = "월별 누적 관객수") +
-  geom_label(aes(label = comma(관객수합계)), size = 5, 
-             hjust = .8) +
-  scale_y_continuous(labels = comma) +
-  coord_flip() +
-  bbc_style() +
-  labs(title = "2022년 월별 극장관객수")
+  geom_label(aes(label = round(관객수합계/1000000,1)), size = 7) +
+  scale_y_continuous(breaks = c(5,10,15,20)) +
+  labs(title = "2022년 월별 극장관객수", 
+       subtitle = "단위: 백만 명
+       ") +
+  theme(panel.background = element_blank(),
+        plot.title = element_text(size = 28), 
+        plot.subtitle = element_text(size = 22), 
+        panel.grid.major.y = element_line(color = "grey"),
+        axis.text = element_text(size = 18),
+        axis.title = element_blank(),
+        axis.ticks = element_blank())
 
 
 #check
+library(gt)
 kobis2022_3under |> 
   drop_na(월) |> 
   filter(연도 == "2022")
+
+kobis2022_3under |> filter(월 == "2")  |> 
+  select(1:5, 관객수, 장르) |> print(n = 30) |> gt()
+
+kobis2022_3under |> filter(월 == "4")  |> 
+  select(1:5, 관객수) |> print(n = 30) |> gt()
 
 kobis2022_3under |> filter(월 == "5")  |> 
   select(1:5, 관객수) |> print(n = 30) |> gt()
@@ -107,12 +127,10 @@ kobis2022_3under |> filter(월 == "5")  |>
 kobis2022_3under |> filter(월 == "6")  |> 
   select(1:5, 관객수) |> print(n = 30) |> gt()
 
-kobis2022_3under |> filter(월 == "4")  |> 
-  select(1:5, 관객수) |> print(n = 30) |> gt()
 
 
 #------------------------------
-#
+
 library(gt)
 kobis2022_3under |> 
   filter(연도 == "2022") |> 
@@ -135,7 +153,7 @@ kobis2022_3under |> filter(순위 < 21) |>
              subgroup2 = 
                paste(round(관객수/10000,0),"만명"))) +
   geom_treemap() +
-  geom_treemap_text(color = "white") +
+  geom_treemap_text(color = "black", alpha = .7) +
   geom_treemap_subgroup_text(place = "centre",
                              grow = T,
                              min.size = 0,
@@ -155,7 +173,7 @@ kobis2022_3under |> filter(순위 < 21) |>
     비율 = round(sum / 매출액합계,3) * 100)
 
 
-#  관객수
+#  관객수 히트맵
 kobis2022_3under |> filter(순위 < 21) |> 
   ggplot(aes(area = 관객수, 
              fill = 대표국적, 
@@ -164,7 +182,7 @@ kobis2022_3under |> filter(순위 < 21) |>
              subgroup2 = 
                paste(round(관객수/10000,0), "만명"))) +
   geom_treemap(alpha = .5) +
-  geom_treemap_text(color = "white") +
+  geom_treemap_text(color = "black", alpha = .7) +
   geom_treemap_subgroup_text(place = "centre",
                              grow = T,
                              min.size = 0,
@@ -185,3 +203,15 @@ kobis2022_3under |> filter(순위 < 21) |>
     비율 = round(sum / 관객수합계,3) * 100)
 
 
+#coord_polar
+kobis2022_3under |> filter(순위 < 21) |> 
+  group_by(대표국적) |> 
+  summarise(sum = sum(관객수)) |> mutate(
+    관객수합계 = sum(sum),
+    비율 = round(sum / 관객수합계,3) * 100) |> 
+  ggplot(aes(y = 대표국적, fill = factor(비율))) + 
+  geom_bar(stat = "count", width = 1) +
+  coord_polar(theta = "y") 
+  
+
+ 
