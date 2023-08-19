@@ -57,7 +57,7 @@ is.na(kobis2022_2select) |> colSums() |> knitr::kable()
 colSums(is.na(mrcQ2_3mutate)) |> knitr::kable() #NA 2개 #na 있는 컬럼 찾기
 
 
-# 월별, 개봉작, 대표국적, 히트맵
+# 월별, 개봉작, 대표국적, geom_tile()
 kobis2022_3under |> 
   filter(연도 == "2022") |> 
   drop_na(월) |> 
@@ -70,6 +70,24 @@ kobis2022_3under |>
   theme(axis.title = element_blank(),
         panel.background = element_blank()) +
   coord_flip()
+
+
+#
+kobis2022_3under |> 
+  drop_na(월) |> 
+  group_by(월, 대표국적) |> 
+  summarise(관객수합계 = sum(관객수)) |> 
+  ggplot(aes(x = factor(월), y = 대표국적, fill = 관객수합계)) +
+  geom_tile() +
+  geom_text(aes(label = comma(관객수합계)), color = "white") +
+  labs(x = "월") +
+  scale_fill_gradient(low = "grey", high = "red")
+
+
+#
+kobis2022_3under |> 
+  drop_na(월) |>
+  filter(월 == "1")
 
 
 # drop_na()
