@@ -5,7 +5,7 @@ library(tidyverse)
 library(readxl)
 
 #1 #2022년 =================================================
-(read_excel("./2th/5st/excel/KOBIS_2022.xlsx",
+(read_excel("./2th/5st/excel/rawdata/KOBIS_2022.xlsx",
             skip = 4) -> kobis2022_1excel)
 
 
@@ -32,7 +32,7 @@ kobis2022_3up1000 |>
 
 
 #1 #2021년 =================================================
-(read_excel("./2th/5st/excel/KOBIS_2021.xlsx",
+(read_excel("./2th/5st/excel/rawdata/KOBIS_2021.xlsx",
             skip = 4) -> kobis2021_1excel)
 
 
@@ -58,7 +58,7 @@ kobis2021_3up1000 |>
 
 
 #1 #2020년 =================================================
-(read_excel("./2th/5st/excel/KOBIS_2020.xlsx",
+(read_excel("./2th/5st/excel/rawdata/KOBIS_2020.xlsx",
             skip = 4) -> kobis2020_1excel)
 
 
@@ -85,7 +85,7 @@ kobis2020_3up1000 |>
 
 
 #1 #2019년 =================================================
-(read_excel("./2th/5st/excel/KOBIS_2019.xlsx",
+(read_excel("./2th/5st/excel/rawdata/KOBIS_2019.xlsx",
             skip = 4) -> kobis2019_1excel)
 
 
@@ -112,7 +112,7 @@ kobis2019_3up1000 |>
 
 
 #1 #2018년 =================================================
-(read_excel("./2th/5st/excel/KOBIS_2018.xlsx",
+(read_excel("./2th/5st/excel/rawdata/KOBIS_2018.xlsx",
             skip = 4) -> kobis2018_1excel)
 
 
@@ -135,7 +135,5 @@ kobis2019_3up1000 |>
 #write
 kobis2018_3up1000 |> 
   write_csv("./2th/5st/excel/up_1000/KOBIS_2018_c1000.xlsx")
-
-
 
 
