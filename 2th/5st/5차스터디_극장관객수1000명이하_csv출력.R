@@ -2,6 +2,7 @@
 
 #
 library(tidyverse)
+library(readxl)
 
 #2022
 (read_excel("./2th/5st/excel/KOBIS_2022.xlsx",
