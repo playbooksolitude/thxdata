@@ -1,6 +1,16 @@
 #23-0815 화 22:31
 
 #
+#scales()
+#geom_tile() vs geom_point()
+#``
+#select(-c())
+#getwd()
+#set as working() 상대경로
+
+
+
+#
 library(tidyverse)
 library(readxl)    
 library(showtext)
