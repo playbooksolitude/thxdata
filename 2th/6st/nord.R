@@ -8,7 +8,7 @@ library(nord)
 mpg |> count(manufacturer, trans, sort = T) |> 
   ggplot(aes(x = manufacturer, y = n, fill = trans)) +
   geom_bar(stat = "identity", position = "stack") +
-  scale_fill_nord(palette = "afternoon_prarie") +
+  scale_fill_nord(palette = "victory_bonds", reverse = T) #+
   geom_text(aes(label = n),
             position = position_stack(vjust = .5)) +
   facet_wrap(.~trans, scales = "free") +
@@ -16,8 +16,18 @@ mpg |> count(manufacturer, trans, sort = T) |>
   #theme_void() +
   theme(legend.position = "none")
 
+nord_palettes
+nord_show_palette("afternoon_prarie")
 
-nord_palettes()
+?nord
+
+#
+image(volcano, col = nord("aurora", 5))
+image(volcano, col = nord("aurora", 15))
+image(volcano, col = nord("aurora", 25))
+
+image(volcano, col = nord("baie_mouton", 5))
+
 
 #
 library(nord)
@@ -28,3 +38,5 @@ viridis.map
 #
 library(colorspace)
 colorspace::hcl_palettes(plot = T)
+
+#

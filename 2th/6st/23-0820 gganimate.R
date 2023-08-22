@@ -128,16 +128,5 @@ txhousing |> filter(city %in% c("Abilene",
   #                   state_length = 1) +
   shadow_trail(distance = .1, alpha = .5)
  
-#
 
-
-#
-library(nord)
-viridis_pal()
-viridis.map
-?viridis
-
-#
-library(colorspace)
-colorspace::hcl_palettes(plot = T)
 
