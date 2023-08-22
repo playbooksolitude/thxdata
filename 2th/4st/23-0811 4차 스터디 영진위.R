@@ -44,12 +44,12 @@ kobis_1csv
 
 
 #2 #연도, 월, 일 나누기 #컬럼 제거 -------------------------
-kobis_1csv |> 
+(kobis_1csv |> 
   mutate(
     연도 = year(개봉일), 
     월 = month(개봉일),
-    일 = day(개봉일), .before = 3
-  ) |> select(-c(`매출액\n점유율`, 개봉일)) -> kobis_2날짜
+    일 = day(개봉일), .before = 3) |> 
+  select(-c(`매출액\n점유율`, 개봉일)) -> kobis_2날짜)
 
 kobis_1csv |> dim()
 
@@ -213,8 +213,8 @@ kobis_2날짜 |>
 
 
 #
-read_csv("./2th/4st/thxdata - KOBIS_SLAMDUNK.csv",
-         skip = 3) -> slam_1csv
+(read_csv("./2th/4st/thxdata - KOBIS_SLAMDUNK.csv",
+         skip = 3) -> slam_1csv)
 
 #
 slam_1csv |> 
@@ -227,16 +227,14 @@ slam_1csv |>
   geom_point() +
   geom_line(group = 1)
 
-  
-#
-slam_1csv |> 
-  ggplot(aes(x = 날짜)) +
-  geom_line(aes(y = 스크린수))
 
 #
 slam_1csv |> 
   ggplot(aes(x = 관객수)) +
   geom_density(adjust = 1)
+
+slam_1csv |> 
+  transmute(sum(관객수))
 
 #
 kobis_2날짜
@@ -246,122 +244,5 @@ kobis_2날짜 |> count(대표국적) |> count(wt = n)
 kobis_2날짜 |> count(대표국적, sort = T) |> 
   ggplot(aes(x= 대표국적, y = n)) +
   geom_bar(stat = "identity")
-
-
-#
-kobis_4ROI |> 
-  filter(연도 == "2023") |> 
-  drop_na(월) |> 
-  count(대표국적, 월, sort = T) |> 
-  ggplot(aes(x= 대표국적, y = n)) +
-  geom_bar(stat = "identity") +
-  facet_wrap(.~월, scales = "free")
-
-#
-kobis_4ROI |> 
-  filter(연도 == "2023") |> 
-  drop_na(월) |> 
-  count(대표국적, 월, sort = T) |> 
-  ggplot(aes(x= 대표국적, y = n)) +
-  geom_bar(stat = "identity") +
-  facet_wrap(.~월) +
-  coord_flip()
-
-#
-kobis_4ROI |> 
-  filter(연도 == "2023") |> 
-  drop_na(월) |> 
-  count(대표국적, 월, sort = T) |> 
-  ggplot(aes(x= 대표국적, y = 월, fill = n)) +
-  geom_tile() +
-  geom_text(aes(label = n)) +
-  scale_fill_gradient(low = "grey", high = "red") +
-  scale_y_continuous(breaks = c(1,2,3,4,5,6)) +
-  theme(axis.title = element_blank(),
-        panel.background = element_blank())
-
-#------------------------------
-#
-kobis_4ROI |> 
-  filter(연도 == "2023") |> 
-  drop_na(월) |> 
-  count(대표국적, 월) |> 
-  arrange(월) |> 
-  pivot_wider(
-    names_from = 월,
-    values_from = n
-  ) |> gt()
-
-#  매출액
-kobis_4ROI |> filter(순위 < 21) |> 
-  ggplot(aes(area = 매출액, 
-             fill = 대표국적, 
-             label = 영화명,
-             subgroup = 대표국적,
-             subgroup2 = paste(연도, 월))) +
-  geom_treemap() +
-  geom_treemap_text(color = "white") +
-  geom_treemap_subgroup_text(place = "centre",
-                             grow = T,
-                             min.size = 0,
-                             alpha = .2,
-                             fontface = "italic") +
-  theme(legend.position = "none") +
-  geom_treemap_subgroup2_text(color = "grey", size = 20)
-
-
-#매출액 표
-kobis_4ROI |> filter(순위 < 21) |> 
-  group_by(대표국적) |> 
-  summarise(sum = sum(매출액)) |> 
-  mutate(
-    매출액합계 = sum(sum),
-    비율 = round(sum / 매출액합계,3) * 100)
-
-
-#  관객수
-kobis_4ROI |> filter(순위 < 21) |> 
-  ggplot(aes(area = 관객수, 
-             fill = 대표국적, 
-             label = 영화명,
-             subgroup = 대표국적,
-             subgroup2 = paste(연도, 월))) +
-  geom_treemap() +
-  geom_treemap_text(color = "white") +
-  geom_treemap_subgroup_text(place = "centre",
-                             grow = T,
-                             min.size = 0,
-                             alpha = .2,
-                             fontface = "italic") +
-  theme(legend.position = "none") #+
-  #geom_treemap_subgroup2_text(color = "grey", size = 20)
-
-
-# 관객수 표
-kobis_4ROI |> filter(순위 < 21) |> 
-  group_by(대표국적) |> 
-  summarise(sum = sum(관객수)) |> mutate(
-    관객수합계 = sum(sum),
-    비율 = round(sum / 관객수합계,3) * 100
-  )
-
-
-#
-kobis_4ROI |> filter(영화명 == "리바운드")
-
-G20
-G20  |> 
-  treemapify(aes(area = region, fill = country))
-
-G20 |> mutate(num = row_number(), .before = 1) |> 
-  ggplot(aes(area = gdp_mil_usd, fill = hdi,
-             label = paste(num, country, hdi))) +
-  geom_treemap() +
-  geom_treemap_text(color = "white")
-
-#
-kobis_4ROI |> 
-  filter(연도 != "2023") |> select(1:5)
-
 
 #
