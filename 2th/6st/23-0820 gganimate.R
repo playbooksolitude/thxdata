@@ -47,8 +47,8 @@ a +
 #                       Deep = depth >= 60) -> c1
 
 #render error
-# install.packages("gifski")
-# library(gifski)
+#install.packages("gifski")
+#library(gifski)
 
 
 #
@@ -97,7 +97,8 @@ anim_a + shadow_wake(wake_length = 0.05)
 library(gapminder)
 
 ggplot(gapminder, 
-       aes(gdpPercap, lifeExp, size = pop, colour = country)) +
+       aes(gdpPercap, lifeExp, 
+           size = pop, colour = country)) +
   geom_point(alpha = 0.7, show.legend = FALSE) +
   scale_colour_manual(values = country_colors) +
   scale_size(range = c(2, 12)) +
@@ -109,3 +110,65 @@ ggplot(gapminder,
        y = 'life expectancy') +
   transition_time(year) +
   ease_aes('linear')
+
+
+#
+billboard |> range(date.entered)
+range(billboard$date.entered)
+
+(billboard |> 
+  count(artist, sort = T) |> 
+  slice(1:10) |> select(1) -> billboard_top10
+)
+
+#
+billboard |> 
+  pivot_longer(cols = contains("wk"),
+               names_to = "week",
+               values_to = "value") -> billboard_pivot
+filter(billboard_pivot$artist == billboard_top10$artist)
+
+
+billboard |> 
+  pivot_longer(cols = contains("wk"),
+               names_to = "week",
+               values_to = "value") |> 
+  filter(artist %in% c("Jay-Z", 
+                       "DMX", "Dixie Chicks, The")) |> 
+  ggplot(aes(date.entered, value, color = track)) +
+  geom_point(alpha = .7, show.legend = F) +
+  transition_time(date.entered) +
+  labs(title = "week: {frame_time}")
+
+#
+billboard |> 
+  ggplot(aes(date.entered, value, color = track)) +
+  geom_point(alpha = .7, show.legend = F) +
+  transition_time(date.entered) +
+  labs(title = "week: {frame_time}")
+
+#
+data()
+?txhousing
+table(txhousing$year)
+txhousing$year |> table()
+
+#
+txhousing |> filter(city %in% c("Abilene", 
+                                "Amarillo", 
+                                "Austin", "Bay Area")) |> 
+  ggplot(aes(x = year, y = sales, color = city)) +
+           geom_point() +
+  labs(title = "date: {frame_time}") +
+  transition_time(round(date,1)) +
+  # transition_states(date, 
+  #                   transition_length = .2, 
+  #                   state_length = 1) +
+  shadow_trail(distance = .1, alpha = .5)
+ 
+#
+library(viridis)
+library(nord)
+viridis_pal()
+viridis.map
+?viridis
