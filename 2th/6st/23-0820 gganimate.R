@@ -38,6 +38,7 @@ ggplot(mtcars) +
 #install.packages("gapminder")
 library(gapminder)
 
+#gganimate
 ggplot(gapminder, 
        aes(gdpPercap, lifeExp, 
            size = pop, colour = country)) +
@@ -53,8 +54,8 @@ ggplot(gapminder,
   transition_time(year) +
   ease_aes('linear') -> temp_1
 
-#동영상 출력
-#animate(temp_1, renderer = av_renderer())
+#동영상 출력 -----------------------------------------------
+animate(temp_1, renderer = av_renderer())
 
 
 #
@@ -101,10 +102,10 @@ billboard |>
                values_to = "value") |> 
   filter(artist %in% c("Jay-Z", 
                        "DMX", "Dixie Chicks, The")) |> 
-  ggplot(aes(date.entered, value, color = track)) +
+  ggplot(aes(week, value, color = track)) +
   geom_point(alpha = .7, show.legend = F) +
   transition_time(date.entered) +
-  labs(title = "week: {frame_time}")
+  labs(title = "date: {frame_time}")
 
 #
 billboard |> 
@@ -113,19 +114,14 @@ billboard |>
   transition_time(date.entered) +
   labs(title = "week: {frame_time}")
 
-#
-data()
-?txhousing
-table(txhousing$year)
-txhousing$year |> table()
 
-#
+#잔상 남기기
 txhousing |> filter(city %in% c("Abilene", 
                                 "Amarillo", 
                                 "Austin", "Bay Area")) |> 
   ggplot(aes(x = year, y = sales, color = city)) +
            geom_point() +
-  labs(title = "date: {frame_time}") +
+  labs(title = "date: {frame_time}") + #frame 반올림
   transition_time(round(date,1)) +
   # transition_states(date, 
   #                   transition_length = .2, 
@@ -133,7 +129,9 @@ txhousing |> filter(city %in% c("Abilene",
   shadow_trail(distance = .1, alpha = .5)
  
 #
-library(viridis)
+
+
+#
 library(nord)
 viridis_pal()
 viridis.map
