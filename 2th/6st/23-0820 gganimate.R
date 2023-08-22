@@ -129,4 +129,28 @@ txhousing |> filter(city %in% c("Abilene",
   shadow_trail(distance = .1, alpha = .5)
  
 
+# 선그리기
+txhousing |> filter(city %in% c("Abilene", 
+                                "Amarillo", 
+                                "Austin", "Bay Area")) |> 
+  ggplot(aes(x = year, y = sales, color = city)) +
+  geom_point() +
+  labs(title = "date: {frame_time}") + #frame 반올림
+  transition_time(round(date,1)) +
+  # transition_states(date, 
+  #                   transition_length = .2, 
+  #                   state_length = 1) +
+  shadow_trail(distance = .01, alpha = .5)
 
+#
+txhousing |> filter(city %in% c("Abilene", 
+                                "Amarillo", 
+                                "Austin", "Bay Area")) |> 
+  ggplot(aes(x = year, y = sales, color = city)) +
+  geom_point() +
+  labs(title = "date: {frame_time}") + #frame 반올림
+  transition_time(round(date,1)) +
+  # transition_states(date, 
+  #                   transition_length = .2, 
+  #                   state_length = 1) +
+  shadow_wake(wake_length = .9, alpha = F)

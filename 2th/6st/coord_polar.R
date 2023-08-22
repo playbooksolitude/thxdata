@@ -52,7 +52,7 @@ ggplot(df,
             angle = lb$angle, inherit.aes = F)
 
 #
-mpg |> count(manufacturer, model, sort = T) |> 
+mpg |> count(manufacturer, model, drv, sort = T) |> 
   mutate(num = row_number(), .before = 1) -> temp_d
 temp_d -> temp_l
 
@@ -65,7 +65,7 @@ ggplot(temp_d,
        aes(x = as.factor(num),
            y = n)) +
   geom_bar(stat = "identity", alpha = .7,
-           aes(fill = manufacturer)) +
+           aes(fill = drv)) +
   coord_polar() +
   ylim(-3, 14) +
   theme_void() +
@@ -80,9 +80,16 @@ ggplot(temp_d,
 nord_palettes
 
 #
-
+par(mfrow = c(2,2))
+ggplot(mpg, aes(x = drv)) +
+  geom_bar(stat = "count")
 
 #
+ggplot(mpg, aes(x = trans)) +
+  geom_bar(stat = "count")
 
+#
+op <- par(mfrow=c(2, 2))
+op
 
 #
