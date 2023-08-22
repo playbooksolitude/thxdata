@@ -4,31 +4,15 @@
 library(tidyverse)
 #install.packages("gganimate")
 library(gganimate)
-
+install.packages("av")
+library(av)
 #
 
-
-  
 #
 ggplot(mtcars) + 
   geom_boxplot(aes(factor(cyl), mpg)) + 
   transition_manual(gear)
 
-#
-ggplot(diamonds, aes(carat, price)) +
-  geom_point() -> a
-
-ggplot(txhousing, aes(month, sales)) +
-  geom_bar(stat = "identity") -> b
-
-ggplot(economics, aes(date, psavert)) +
-  geom_line() -> c
-
-#
-a + 
-  transition_states(color, 
-                    transition_length = 3,
-                    state_length = 1)
 
 #directory 권한 변경
 #https://www.youtube.com/watch?v=VfLRhPEuYDc
@@ -40,59 +24,17 @@ a +
 # animate(b1, renderer = gifski_renderer())
 
 
-#
+
 # c + transition_filter(transition_length = 3,
 #                       filter_length = 1,
 #                       cut == "Ideal",
 #                       Deep = depth >= 60) -> c1
 
+
 #render error
 #install.packages("gifski")
 #library(gifski)
 
-
-#
-a + 
-  transition_states(color, 
-                    transition_length = 3, 
-                    state_length = 1) -> anim_a
-
-anim_a + 
-  view_follow(fixed_x = T,
-              fixed_y = c(2500, NA))
-
-
-#view
-anim_a +
-  view_follow(fixed_x = TRUE, fixed_y = c(2500, NA))
-
-
-#view_step()
-anim_a +
-  view_step(pause_length = 2, step_length = 1, nstep = 7)
-
-
-#
-anim_a + enter_fade()
-
-
-anim_a + exit_shrink()
-
-
-anim_a + enter_fly(x_loc = 0,
-                   y_loc = 0)
-
-
-anim_a + exit_drift(x_mod = 3, y_mod = -2)
-
-
-anim_a + enter_recolour(color = "red")
-
-
-anim_a + shadow_wake(wake_length = 0.05)
-
-
-#
 #install.packages("gapminder")
 library(gapminder)
 
@@ -109,23 +51,47 @@ ggplot(gapminder,
        x = 'GDP per capita', 
        y = 'life expectancy') +
   transition_time(year) +
-  ease_aes('linear')
+  ease_aes('linear') -> temp_1
+
+#동영상 출력
+#animate(temp_1, renderer = av_renderer())
 
 
 #
-billboard |> range(date.entered)
-range(billboard$date.entered)
+anim <- ggplot(mtcars, aes(mpg, disp)) +
+  geom_point(aes(color = gear)) +
+  transition_states(gear, transition_length = 2, 
+                    state_length = 1) +
+  enter_fade() +
+  exit_fade()
 
+#
+animate(anim)
+
+# Change duration and framerate
+animate(anim, fps = 20, duration = 15)
+
+# Make the animation pause at the end and then rewind
+animate(anim, nframes = 100, end_pause = 10, rewind = TRUE)
+
+# Use a different renderer
+animate(anim, renderer = file_renderer('~/animation/'))[1:6]
+
+# Specify device dimensions and/or resolution
+animate(anim, height = 2, width = 3, units = "in", res = 150)
+
+
+#
 (billboard |> 
   count(artist, sort = T) |> 
-  slice(1:10) |> select(1) -> billboard_top10
-)
+  slice(1:10) |> select(1) -> billboard_top10)
 
 #
 billboard |> 
   pivot_longer(cols = contains("wk"),
                names_to = "week",
                values_to = "value") -> billboard_pivot
+
 filter(billboard_pivot$artist == billboard_top10$artist)
 
 
@@ -172,3 +138,8 @@ library(nord)
 viridis_pal()
 viridis.map
 ?viridis
+
+#
+library(colorspace)
+colorspace::hcl_palettes(plot = T)
+
