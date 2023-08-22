@@ -65,36 +65,24 @@ ggplot(temp_d,
        aes(x = as.factor(num),
            y = n)) +
   geom_bar(stat = "identity", alpha = .7,
-           fill = "pink") +
+           aes(fill = manufacturer)) +
   coord_polar() +
-  ylim(-3, 11) +
+  ylim(-3, 14) +
   theme_void() +
   geom_text(data = temp_l,
-            aes(x = num, y = n,
+            aes(x = num, y = n+1,
                 label = model, 
                 hjust = hjust),
             color = "black", size = 4,
-            angle = temp_l$angle2, inherit.aes = F)
+            angle = temp_l$angle2, inherit.aes = F) +
+  scale_fill_nord("afternoon_prarie")
+
+nord_palettes
 
 #
-(temp_l -> temp_l2)
-(temp_l2 |> 
-  mutate(n2 = n+1) -> temp_l2)
-temp_l2
 
 
-#n+1
-ggplot(temp_d,
-       aes(x = as.factor(num),
-           y = n)) +
-  geom_bar(stat = "identity", alpha = .7,
-           fill = "pink") +
-  coord_polar() +
-  ylim(-3, 11) +
-  theme_void() +
-  geom_text(data = temp_l2,
-            aes(x = num, y = n-2,
-                label = model, 
-                hjust = hjust),
-            color = "black", size = 4,
-            angle = temp_l$angle2, inherit.aes = F)
+#
+
+
+#
