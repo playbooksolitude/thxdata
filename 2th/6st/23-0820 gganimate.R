@@ -96,6 +96,8 @@ anim_a + shadow_wake(wake_length = 0.05)
 #install.packages("gapminder")
 library(gapminder)
 
+gapminder
+
 ggplot(gapminder, 
        aes(gdpPercap, lifeExp, size = pop, colour = country)) +
   geom_point(alpha = 0.7, show.legend = FALSE) +
@@ -109,3 +111,17 @@ ggplot(gapminder,
        y = 'life expectancy') +
   transition_time(year) +
   ease_aes('linear')
+
+#
+gapminder |> 
+  ggplot(aes(x = pop, y = lifeExp, size = gdpPercap)) +
+  geom_point() +
+  facet_wrap(.~continent) + 
+  transition_time(year) +
+  labs(title = "year: {frame_time}",
+       x = "인구수", 
+       y = "기대수명")
+
+country_colors
+gapminder::
+
