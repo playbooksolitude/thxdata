@@ -142,7 +142,7 @@ txhousing |> filter(city %in% c("Abilene",
   #                   state_length = 1) +
   shadow_trail(distance = .01, alpha = .5)
 
-<<<<<<< HEAD
+#<<<<<<< HEAD
 gapminder
 
 ggplot(gapminder, 
@@ -172,7 +172,7 @@ gapminder |>
 country_colors
 gapminder::
 
-=======
+#=======
 #
 txhousing |> filter(city %in% c("Abilene", 
                                 "Amarillo", 
@@ -185,4 +185,4 @@ txhousing |> filter(city %in% c("Abilene",
   #                   transition_length = .2, 
   #                   state_length = 1) +
   shadow_wake(wake_length = .9, alpha = F)
->>>>>>> f0d955cc9cb9efbd431a9bd6b27113d75d6c6db7
+#>>>>>>> f0d955cc9cb9efbd431a9bd6b27113d75d6c6db7
