@@ -72,7 +72,7 @@ library(scales) #alpha 값 추출 함수
 #op <- par(mar=c(1, 2, 2, 1), mfrow=c(2, 2))
 op <- par(mfrow=c(2, 2))
 op
-
+par(mfrow = c(1,1))
 #화면 분할 해제
 dev.off()
 
