@@ -4,9 +4,12 @@
 library(tidyverse)
 #install.packages("gganimate")
 library(gganimate)
+#install.packages("gifski")
+library(gifski)
+library(gapminder)
 
 #
-
+getwd()
 
   
 #
@@ -47,8 +50,6 @@ a +
 #                       Deep = depth >= 60) -> c1
 
 #render error
-# install.packages("gifski")
-# library(gifski)
 
 
 #
@@ -91,13 +92,14 @@ anim_a + enter_recolour(color = "red")
 
 anim_a + shadow_wake(wake_length = 0.05)
 
-
+getwd()
 #
 #install.packages("gapminder")
-library(gapminder)
+
 
 ggplot(gapminder, 
-       aes(gdpPercap, lifeExp, size = pop, colour = country)) +
+       aes(x = gdpPercap, y = lifeExp, 
+         size = pop, colour = country)) +
   geom_point(alpha = 0.7, show.legend = FALSE) +
   scale_colour_manual(values = country_colors) +
   scale_size(range = c(2, 12)) +

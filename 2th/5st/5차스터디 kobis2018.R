@@ -2,16 +2,19 @@
 
 #
 library(tidyverse)
+#install.packages("readxl")
 library(readxl)    
 library(showtext)
 showtext_auto()
 
+
 #1 불러오기
-(read_excel("./2th/5st/excel/KOBIS_2022.xlsx",
-           skip = 4) -> kobis2022_1excel)
+(read_excel("./2th/5st/excel/rawdata/KOBIS_2022.xlsx",
+           skip = 4, ) -> kobis2022_1excel)
 
 #2 구조파악
 kobis2022_1excel |> glimpse()
+kobis2022_1excel |> str()
 
 (kobis2022_1excel |> 
   mutate(
@@ -21,10 +24,9 @@ kobis2022_1excel |> glimpse()
   select(-c(개봉일, 
             `매출액\n점유율`,국적)) -> kobis2022_2select)
 
-
 #3 adult 유의미한 콘텐츠 구분
-kobis2022_2select |> head()
-kobis2022_2select |> tail()
+kobis2022_2select |> head(20)
+kobis2022_2select |> tail(15)
 
   # 성인 제외 필요
 kobis2022_2select |> 
@@ -35,7 +37,7 @@ kobis2022_2select |> dim()   #4618편
 
   #관객수 1000명 이상인 것만! 
 (kobis2022_2select |> 
-  filter(관객수 > 1000) -> kobis2022_3under) #4618 -> #564
+  filter(관객수 > 1000) -> kobis2022_3under) #564
 
 
 # ----------------------------------------------------------
@@ -50,11 +52,8 @@ kobis2022_3under |>
 
 #
 colSums(is.na(kobis2022_2select)) |> knitr::kable()
-colSums(is.na(kobis2022_2select)) |> gt::gt()
 colSums(is.na(kobis2022_2select)) |> data.frame()
 is.na(kobis2022_2select) |> colSums() |> knitr::kable()
-
-colSums(is.na(mrcQ2_3mutate)) |> knitr::kable() #NA 2개 #na 있는 컬럼 찾기
 
 
 # 월별, 개봉작, 대표국적, geom_tile()
@@ -77,11 +76,15 @@ kobis2022_3under |>
   drop_na(월) |> 
   group_by(월, 대표국적) |> 
   summarise(관객수합계 = sum(관객수)) |> 
-  ggplot(aes(x = factor(월), y = 대표국적, fill = 관객수합계)) +
+  ggplot(aes(x = factor(월), y = 대표국적, 
+    fill = 관객수합계)) +
   geom_tile() +
-  geom_text(aes(label = comma(관객수합계)), color = "white") +
+  geom_text(aes(label = round(관객수합계/10000,1)), color = "white") +
   labs(x = "월") +
-  scale_fill_gradient(low = "grey", high = "red")
+  scale_fill_gradient(low = "grey", high = "red") +
+  labs(subtitle = "단위: 만 명",
+    title = "2022년 극장관객수") +
+  theme(legend.position = "none")
 
 
 #
@@ -89,13 +92,16 @@ kobis2022_3under |>
   drop_na(월) |>
   filter(월 == "1")
 
-
 # drop_na()
 kobis2022_3under |> 
   drop_na(월) 
 
 kobis2022_3under |> filter(
   is.na(월)) |> select(1:5, 관객수)
+
+
+kobis2022_3under |> 
+  drop_na(월) |> print(n = 30)
 
 #월별 극장관객수
 library(scales)
@@ -118,6 +124,7 @@ kobis2022_4월별관객수 |>
   labs(title = "2022년 월별 극장관객수", 
        subtitle = "단위: 백만 명
        ") +
+  #bbc_style()
   theme(panel.background = element_blank(),
         plot.title = element_text(size = 28), 
         plot.subtitle = element_text(size = 22), 
@@ -125,7 +132,8 @@ kobis2022_4월별관객수 |>
         axis.text = element_text(size = 18),
         axis.title = element_blank(),
         axis.ticks = element_blank())
-
+bbc_style
+geom_point
 
 #check
 library(gt)
@@ -192,7 +200,7 @@ kobis2022_3under |> filter(순위 < 21) |>
 
 
 #  관객수 히트맵
-kobis2022_3under |> filter(순위 < 21) |> 
+kobis2022_3under |> filter(순위 < 51) |> 
   ggplot(aes(area = 관객수, 
              fill = 대표국적, 
              label = 영화명,
@@ -214,22 +222,22 @@ kobis2022_3under |> filter(순위 < 21) |>
                          "미국" = "red"))
 
 # 관객수 표
-kobis2022_3under |> filter(순위 < 21) |> 
+kobis2022_3under |> filter(순위 < 51) |> 
   group_by(대표국적) |> 
   summarise(sum = sum(관객수)) |> mutate(
     관객수합계 = sum(sum),
     비율 = round(sum / 관객수합계,3) * 100)
 
 
-#coord_polar
-kobis2022_3under |> filter(순위 < 21) |> 
-  group_by(대표국적) |> 
-  summarise(sum = sum(관객수)) |> mutate(
-    관객수합계 = sum(sum),
-    비율 = round(sum / 관객수합계,3) * 100) |> 
-  ggplot(aes(y = 대표국적, fill = factor(비율))) + 
-  geom_bar(stat = "count", width = 1) +
-  coord_polar(theta = "y") 
+# #coord_polar
+# kobis2022_3under |> filter(순위 < 21) |> 
+#   group_by(대표국적) |> 
+#   summarise(sum = sum(관객수)) |> mutate(
+#     관객수합계 = sum(sum),
+#     비율 = round(sum / 관객수합계,3) * 100) |> 
+#   ggplot(aes(y = 대표국적, fill = factor(비율))) + 
+#   geom_bar(stat = "count", width = 1) +
+#   coord_polar(theta = "y") 
   
 
  
