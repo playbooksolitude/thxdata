@@ -28,7 +28,7 @@ image(volcano, col = nord("aurora", 25))
 
 image(volcano, col = nord("baie_mouton", 5))
 
-
+?image()
 #
 library(nord)
 viridis_pal()
