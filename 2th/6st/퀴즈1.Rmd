@@ -426,3 +426,6 @@ full_join(kobis2019_2date,
 
 
 # 퀴즈1 끝
+
+<br>
+
