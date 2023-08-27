@@ -281,3 +281,114 @@ kobis2019_3year |>
   scale_fill_gradient(low = "grey",high = "red")
 
 
+### ------------------------------- 나중에 할께요
+
+
+# 일별 관객수
+kobis2019_3year |> 
+  drop_na(일) |> 
+  count(일, sort = T) |> 
+  ggplot(aes(x = factor(일), y = n, fill = n)) +
+  geom_bar(stat = "identity") +
+  scale_fill_gradient(low = "grey", high = "red")
+
+
+# 감독
+kobis2019_3year |> 
+  drop_na(연도) |> 
+  filter(관객수 > 1000000) |> 
+  group_by(감독) |> 
+  summarise(관객수, n = n()) |> 
+  arrange(desc(n)) 
+
+
+# 배우
+kobis2019_3year |> 
+  drop_na(연도) |> 
+  filter(관객수 > 1000000) |> 
+  separate(col = 배우, 
+    into = c("배우1", "배우2", "배우3", "배우4", "배우5"),
+    sep = ",") |> 
+  select(영화명, 관객수, 배우1, 배우2, 
+    배우3, 배우4, 배우5) |> 
+  pivot_longer(cols = c(3:7), 
+    names_to = "배우리스트", 
+    values_to = "배우이름") |> 
+  drop_na(배우이름) |> 
+  count(배우이름, sort = T)
+
+
+
+# 시청 등급 * 국적 * 10만명 이상 영화편수
+kobis2019_3year |> 
+  drop_na(월) |> 
+  filter(관객수 > 100000) |> 
+  group_by(등급, 대표국적) |> 
+  summarise(관객수합계 = sum(누적관객수), n = n()) |> 
+  ggplot(aes(x = 등급, y = 대표국적, fill = n)) +
+  geom_tile() +
+  scale_fill_gradient(low = "grey", high = "red") +
+  geom_text(aes(label = n))
+
+
+
+# 시청 등급 * 국적 * 10만명 이상 * 누적관객수 
+# 순서 변경 필요 sample A
+kobis2019_3year |> 
+  drop_na(월) |> 
+  filter(관객수 > 100000) |> 
+  group_by(대표국적, 등급) |> 
+  summarise(관객수합계 = sum(누적관객수)) |> 
+  ggplot(aes(x = 등급, y = 대표국적, fill = 관객수합계)) +
+  geom_tile() +
+  geom_text(aes(label = comma(관객수합계)), 
+    color = "white") +
+  theme(legend.position = "none") +
+  scale_fill_gradient(low = "grey", high = "red")
+
+
+#
+kobis2019_3year |> 
+  drop_na(월) |> 
+  filter(관객수 > 100000) |> 
+  group_by(대표국적, 등급) |> 
+  summarise(관객수합계 = sum(누적관객수)) -> kobis2019_4levels
+
+#
+(fct_relevel(kobis2019_4levels$등급, 
+  c("전체관람가",
+    "12세이상관람가",
+    "15세이상관람가", 
+    "청소년관람불가")) -> kobis2019_4levels$등급)
+
+#
+kobis2019_4levels$등급 |> fct_relevel()
+kobis2019_3year$등급 |> fct_relevel()
+
+
+# 순서 변경 완료 sample B
+kobis2019_4levels |> 
+  ggplot(aes(x = 등급, y = 대표국적, fill = 관객수합계)) +
+  geom_tile() +
+  geom_text(aes(label = comma(관객수합계)), 
+    color = "white") +
+  theme(legend.position = "none") +
+  scale_fill_gradient(low = "grey", high = "red")
+
+
+#한국영화 top
+kobis2019_3year |> 
+  filter(대표국적 == "한국") |> 
+  select(1:2, 관객수, 등급)
+
+# 미국 영화 top
+kobis2019_3year |> 
+  filter(대표국적 == "미국") |> 
+  select(1:2, 관객수, 등급)
+
+# 기타 영화
+kobis2019_3year |> 
+  filter(대표국적 %in% 
+      c("프랑스", "벨기에", "러시아", "대만")) |> 
+  select(1:2, 등급, 대표국적, 관객수)
+

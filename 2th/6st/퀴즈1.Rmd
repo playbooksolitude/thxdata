@@ -1,5 +1,5 @@
 ---
-title: "퀴즈1"
+title: "THX 2기 퀴즈1"
 author: "최요한"
 date: "2023-08-27"
 output: html_document
@@ -37,7 +37,8 @@ starwars
 
 ## 1. 데이터셋 사이즈 starwars 구조를 확인하시오
 
-> table()
+> glimpse() <br>
+> str()
 
 ```{r cars}
 
@@ -118,7 +119,7 @@ starwars
 
 <br>
 
-### 1-7 starwars 에서 NA는 몇개나 있는지 확인하시오
+### 1-7 starwars$gender 에서 NA는 몇개나 있는지 확인하시오
 
 > table(useNA)
 
@@ -127,6 +128,30 @@ starwars
 
 
 ```
+
+<br>
+
+### 1-8 starwars 에서 NA는 얼마나 있는지 확인하시오 (번외)
+
+```{r}
+
+colSums(is.na(starwars)) |> 
+  as.data.frame()
+
+```
+
+
+
+
+### 1-9 starwars의 세로줄(컬럼)만 출력하시오
+> colnames()
+
+```{r}
+
+
+
+```
+
 
 <br><br>
 
@@ -143,8 +168,8 @@ starwars
 library(readxl)
 library(scales)
 library(bbplot)
-library(showtext)
-showtext_auto()
+library(showtext) #번외
+showtext_auto()   #번외
 
 ```
 
@@ -173,21 +198,10 @@ showtext_auto()
 
 ```
 
-<br>
-
-### 2-3 세로줄 "월"에 값이 없는 것들을 제거해 변수에 저장하시오
-
-> drop_na() <br> 변수명: kobis2019_2date
-
-```{r}
-
-
-
-```
 
 <br>
 
-### 2-4 세로줄 "개봉일"을 "연도", "월", "일"로 나누시오
+### 2-3 세로줄 "개봉일"을 "연도", "월", "일"로 나누시오
 
 > mutate() <br> year() <br> month() <br> day()
 
@@ -203,9 +217,23 @@ kobis2019_1excel |>
 
 <br>
 
+### 2-4 세로줄 "월"에 값이 없는 것들을 제거하고 몇행으로 줄어드는지 확인하시오 (번외)
+> drop_na()
+
+```{r}
+
+kobis2019_2date |> 
+  drop_na(월)
+
+```
+
+<br>
+
 ### 2-5 2019년 월별 극장 관객수를 구하시오
 
-> drop_na() <br> group_by() <br> summarise() <br>
+> drop_na() <br> 
+group_by() <br> 
+summarise() <br>
 
 ```{r}
 
@@ -232,7 +260,7 @@ kobis2019_1excel |>
 
 <br>
 
-### 2-7 (2-6 결과를 바탕으로) 그래프 심미성을 높이시오
+### 2-7 (2-6 결과를 바탕으로) 그래프 심미성을 높이시오 (번외)
 
 > scale_y_continuous(labels = ) <br> 
 labs() <br> 
@@ -246,7 +274,7 @@ bbc_style()
 
 ```
 
-### 2-8 bbc_style을 theme을 활용해 구현하시오 (선택)
+### 2-8 bbc_style을 theme을 활용해 구현하시오 (번외)
 
 > theme() 
 
@@ -363,7 +391,7 @@ full_join(kobis2019_2date,
 > geom_bar() <br>
 > position = "dodge"
 
-![](Covid-19 전_후 극장관객수 비교 normal.png)
+![](Covid-19 전_후 극장관객수 비교 normal0.png)
 
 ```{r}
 
@@ -374,8 +402,20 @@ full_join(kobis2019_2date,
 <br>
 
 ### 4-5 (4-4 그래프의) 심미성을 높이시오
->library(nord)<br>
-> nord()
+> bbc_sytle()
+
+![](Covid-19 전_후 극장관객수 비교 normal.png)
+
+```{r}
+
+
+```
+
+<br>
+
+### 4-6 (4-5 그래프의) 심미성을 높이시오
+> library(nord) <br>
+> nord
 
 ![](Covid-19 전_후 극장관객수 비교 nord.png)
 
@@ -385,7 +425,4 @@ full_join(kobis2019_2date,
 ```
 
 
-
-
-
-
+# 퀴즈1 끝
