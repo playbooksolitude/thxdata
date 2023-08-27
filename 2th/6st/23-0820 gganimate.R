@@ -4,7 +4,6 @@
 library(tidyverse)
 #install.packages("gganimate")
 library(gganimate)
-<<<<<<< HEAD
 #install.packages("gifski")
 library(gifski)
 library(gapminder)
@@ -13,12 +12,11 @@ library(gapminder)
 getwd()
 
   
-=======
 install.packages("av")
 library(av)
 #
 
->>>>>>> e22ff0373f368fb8029412093f6f3c0b68bc99a1
+
 #
 ggplot(mtcars) + 
   geom_boxplot(aes(factor(cyl), mpg)) + 
@@ -41,7 +39,7 @@ ggplot(mtcars) +
 #                       cut == "Ideal",
 #                       Deep = depth >= 60) -> c1
 
-<<<<<<< HEAD
+
 #render error
 
 
@@ -54,8 +52,7 @@ a +
 anim_a + 
   view_follow(fixed_x = T,
               fixed_y = c(2500, NA))
-=======
->>>>>>> e22ff0373f368fb8029412093f6f3c0b68bc99a1
+
 
 #render error
 #install.packages("gifski")
@@ -122,12 +119,12 @@ billboard |>
 filter(billboard_pivot$artist == billboard_top10$artist)
 
 
-<<<<<<< HEAD
+
 getwd()
 #
 #install.packages("gapminder")
 
-=======
+
 billboard |> 
   pivot_longer(cols = contains("wk"),
                names_to = "week",
@@ -176,7 +173,7 @@ txhousing |> filter(city %in% c("Abilene",
 
 #<<<<<<< HEAD
 gapminder
->>>>>>> e22ff0373f368fb8029412093f6f3c0b68bc99a1
+
 
 ggplot(gapminder, 
        aes(x = gdpPercap, y = lifeExp, 

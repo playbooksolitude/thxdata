@@ -11,25 +11,8 @@ starwars |> dim() #87 * 14
 starwars |> drop_na() |> dim()  #29 * 14
 
 #
-starwars
-
-# pivot #예습
-# dataset size check
-colSums(is.na(starwars)) |> 
-  as.data.frame() |> 
-  rownames_to_column(var = "name") |> 
-  rename("NA" = 2) |> 
-  pivot_wider(names_from = "name", 
-    values_from = "NA") #|> 
-  view()
-
-
-# 몇개의 인수가 있는지 확인하기
-  # useNA 중요
-  # "ifany" 와 "always" 용법 차이
-starwars$gender |> table(useNA = "always")
-mpg$manufacturer |> table(useNA = "always")
-mpg$manufacturer |> table(useNA = "ifany")
+starwars |> glimpse()
+starwars |> str()
 
 
 #
@@ -47,7 +30,7 @@ starwars |>
 
 #
 starwars |> 
-  count(species, sex, sort = T) |> dim() #41 * 3
+  count(species, sex, gender, sort = T)# |> dim() #41 * 3
 
 
 #
@@ -64,6 +47,23 @@ starwars |> names()
 #
 data()
 
+# pivot #예습
+# dataset size check
+colSums(is.na(starwars)) |> 
+  as.data.frame() |> 
+  rownames_to_column(var = "name") |> 
+  rename("NA" = 2) |> 
+  pivot_wider(names_from = "name", 
+              values_from = "NA") #|> 
+view()
+
+
+# 몇개의 인수가 있는지 확인하기
+# useNA 중요
+# "ifany" 와 "always" 용법 차이
+starwars$gender |> table(useNA = "always")
+mpg$manufacturer |> table(useNA = "always")
+mpg$manufacturer |> table(useNA = "ifany")
 
 #
 library(readxl)
@@ -78,10 +78,7 @@ library(readxl)
     월 = month(개봉일),
     일 = day(개봉일), .before = 3) -> kobis2019_2date)
 
-#
-(kobis2019_2date |> 
-  drop_na(월) |> 
-  summarise(누적관객수 = sum(관객수))) #226172268
+
 
 
 # --------------------------------------------------------
@@ -90,6 +87,15 @@ library(bbplot)
 library(showtext)
 showtext_auto()
 library(ggrepel)
+
+
+# 월별 관객수
+kobis2019_2date |> 
+  drop_na(월) |> 
+  group_by(월) |> 
+  summarise(월별관객수 = sum(관객수))
+  
+
 #
 kobis2019_2date |> 
   drop_na(월) |> 
@@ -98,12 +104,26 @@ kobis2019_2date |>
   ggplot(aes(x = factor(월), y = 월별관객수/10000)) +
   geom_bar(stat = "identity") +
   scale_y_continuous(labels = comma) +
-  bbc_style() +
+  #bbc_style() +
   geom_label(aes(label = comma(월별관객수/10000)), size = 5) +
   labs(subtitle = "단위: 만 명", 
-    title = "2019년 월별 극장관객수")
+  title = "2019년 월별 극장관객수")
 
 
+#bbc_style
+theme(panel.background = element_blank(),
+      plot.title = element_text(size = 28), 
+      plot.subtitle = element_text(size = 22), 
+      panel.grid.major.y = element_line(color = "grey"),
+      axis.text = element_text(size = 18),
+      axis.title = element_blank(),
+      axis.ticks = element_blank())
+
+
+# 연간 누적 관객수
+(kobis2019_2date |> 
+    drop_na(월) |> 
+    summarise(누적관객수 = sum(관객수))) #226,172,268
 
 # --------------------------------------------------------
 # 극장관객수 2020
@@ -130,10 +150,17 @@ kobis2020_2date |>
   ggplot(aes(x = factor(월), y = 월별관객수/10000)) +
   geom_bar(stat = "identity") +
   scale_y_continuous(labels = comma) +
-  bbc_style() +
+  #bbc_style() +
   geom_label(aes(label = comma(월별관객수/10000)), size = 5) +
   labs(subtitle = "단위: 만 명", 
     title = "2020년 월별 극장관객수")
+
+
+#
+#
+(kobis2019_2date |> 
+  drop_na(월) |> 
+  summarise(누적관객수 = sum(관객수))) #226,172,268
 
 
 # 2019년 2020년 합치기
