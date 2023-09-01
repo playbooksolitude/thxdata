@@ -1,0 +1,435 @@
+---
+title: "THX 2기 퀴즈1 - 답안지"
+author: "최요한"
+date: "2023-08-27"
+output: html_document
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# install.packages('devtools')
+devtools::install_github('bbc/bbplot')
+
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax
+for authoring HTML, PDF, and MS Word documents. For more details on
+using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that
+includes both content as well as the output of any embedded R code
+chunks within the document. You can embed an R code chunk like this:
+
+<br>
+
+## 0. tidyverse, starwars
+
+```{r message=FALSE}
+
+library(tidyverse)
+starwars
+
+```
+
+<br>
+
+## 1. 데이터셋 사이즈 starwars 구조를 확인하시오
+
+> glimpse() <br>
+> str()
+
+```{r cars}
+
+starwars
+
+```
+
+<br>
+
+### 1-1 starwars 데이터셋은 몇행 몇열인가?
+
+> dim() <br> nrow() <br> ncol() <br>
+
+```{r pressure, echo=FALSE}
+
+
+
+```
+
+<br>
+
+### 1-2 geom_point(산점도)를 그리시오
+
+> x = gender, y = birth_year <br> nrow()
+
+```{r}
+
+
+```
+
+<br>
+
+### 1-3 geom_boxplot()을 그리시오
+
+> x = gender, y = birth_year
+
+```{r}
+
+
+
+```
+
+<br>
+
+### 1-4 species(종족), gender (성별) 조합을 확인하시오
+
+> count()
+
+```{r}
+
+
+
+```
+
+<br>
+
+### 1-5 species(종족), gender (성별), sex(생물학적 성별)을 확인하시오
+
+> count()
+
+```{r}
+
+
+
+```
+
+<br>
+
+### 1-6 (1-4의 결과를 활용해) 히트맵을 그리시오
+
+> geom_tile() <br> scales_fill_gradient()
+
+```{r}
+
+
+
+```
+
+<br>
+
+### 1-7 starwars$gender 에서 NA는 몇개나 있는지 확인하시오
+
+> table(useNA)
+
+```{r, eval=FALSE}
+
+starwars |> str()
+
+```
+
+<br>
+
+### 1-8 starwars 에서 NA는 얼마나 있는지 확인하시오 (번외)
+
+```{r}
+
+colSums(is.na(starwars)) |> 
+  as.data.frame()
+
+```
+
+
+
+
+### 1-9 starwars의 세로줄(컬럼)만 출력하시오
+> colnames()
+
+```{r}
+
+
+
+```
+
+
+<br><br>
+
+---
+
+<br>
+
+## 2 극장관객수
+
+<br>
+
+```{r message=FALSE}
+
+library(readxl)
+library(scales)
+library(bbplot)
+library(showtext) #번외
+showtext_auto()   #번외
+
+```
+
+<br>
+
+### 2-1 2019년 극장관객수 xlsx 파일을 불러오시오
+
+> read_excel() <br> 변수명: kobis2019_1excel
+
+```{r echo=FALSE}
+
+(read_excel("../5st/excel/rawdata/KOBIS_2020.xlsx", 
+  skip = 4) -> kobis2019_1excel)
+
+```
+
+<br>
+
+### 2-2 데이터 구조를 파악하시오
+
+> glimpse() <br> str()
+
+```{r}
+
+
+
+```
+
+
+<br>
+
+### 2-3 세로줄 "개봉일"을 "연도", "월", "일"로 나누시오
+
+> mutate() <br> year() <br> month() <br> day()
+
+```{r echo=FALSE}
+
+kobis2019_1excel |> 
+  mutate(
+    연도 = year(개봉일),
+    월 = month(개봉일),
+    일 = day(개봉일), .before = 3) -> kobis2019_2date
+
+```
+
+<br>
+
+### 2-4 세로줄 "월"에 값이 없는 것들을 제거하고 몇행으로 줄어드는지 확인하시오 (번외)
+> drop_na()
+
+```{r}
+
+kobis2019_2date |> 
+  drop_na(월)
+
+```
+
+<br>
+
+### 2-5 2019년 월별 극장 관객수를 구하시오
+
+> drop_na() <br> 
+group_by() <br> 
+summarise() <br>
+
+```{r}
+
+
+```
+
+<br>
+
+### 2-6 (2-5 결과를 활용해) 막대 그래프로 그리시오
+
+> geom_bar()
+
+<br>
+
+![](2019%20월별%20극장관객수%20normal.png)
+
+<br>
+
+```{r}
+
+
+
+```
+
+<br>
+
+### 2-7 (2-6 결과를 바탕으로) 그래프 심미성을 높이시오 (번외)
+
+> scale_y_continuous(labels = ) <br> 
+labs() <br> 
+bbc_style()
+
+<br>
+
+![](2019년 월별 관객수 bbc_style.png)
+
+```{r}
+
+```
+
+### 2-8 bbc_style을 theme을 활용해 구현하시오 (번외)
+
+> theme() 
+
+```{r}
+
+
+
+```
+
+<br>
+
+### 2-9 2019년 관객수 총합은 얼마인지 구하시오
+
+> drop_na(월) <br>
+summarise()
+
+<br>
+
+```{r}
+
+```
+
+<br>
+
+---
+
+<br>
+
+### 3. 2020년도 극장관객수를 불러오시오
+
+> read_excel() <br>
+변수명: kobis2020_1excel
+
+```{r message=FALSE}
+
+(read_excel("../5st/excel/rawdata/KOBIS_2020.xlsx", 
+  skip = 4) -> kobis2020_1excel)
+
+```
+
+<br>
+
+### 3-1 (2-3부터 2-6까지 코드를 활용해) 2020년도 데이터를 분석하시오
+
+> 변수명: kobis2020_2date
+
+![](2020 월별 극장관객수 normal.png)
+
+```{r}
+
+kobis2020_1excel |> 
+  mutate(
+    연도 = year(개봉일),
+    월 = month(개봉일),
+    일 = day(개봉일), .before = 3) -> kobis2020_2date
+
+```
+
+<br>
+
+### 3-2 그래프 심미성을 높이시오
+> bbc_sytle()
+
+![](2020년 월별 관객수 bbc_style.png)    
+
+```{r}
+
+```
+
+<br><br>
+
+---
+
+<br><br>
+
+## 4 데이터 합치기
+### 4-1 kobis2019_2date 데이터셋에 개봉연도 2019년을 추가하시오
+> 변수명: kobis2019_2date -> kobis2019_3year <br>
+
+```{r}
+
+kobis2019_2date |> 
+  mutate(개봉연도 = "2019", .before = 3) -> kobis2019_3year
+
+```
+
+<br>
+
+### 4-2 kobis2020_2date 데이터셋에 개봉연도 2020년을 추가하시오
+
+> 변수명: kobis2020_2date -> kobis2020_3year <br>
+
+```{r}
+
+kobis2020_2date |> 
+  mutate(개봉연도 = "2020", .before = 3) -> kobis2020_3year
+
+```
+
+<br>
+
+### 4-3 kobis2020_3year 데이터셋과 kobis2019_3year을 하나로 합치시오
+> full_join() <br>
+
+```{r}
+
+full_join(kobis2019_2date, 
+  kobis2020_2date)
+
+```
+
+
+### 4-4 2019년과 2020년 극장관객수를 비교하시오
+> geom_bar() <br>
+> position = "dodge"
+
+![](Covid-19 전_후 극장관객수 비교 normal0.png)
+
+```{r}
+
+
+
+```
+
+<br>
+
+### 4-5 (4-4 그래프의) 심미성을 높이시오
+> bbc_sytle()
+
+![](Covid-19 전_후 극장관객수 비교 normal.png)
+
+```{r}
+
+
+```
+
+<br>
+
+### 4-6 (4-5 그래프의) 심미성을 높이시오
+> library(nord) <br>
+> nord
+
+![](Covid-19 전_후 극장관객수 비교 nord.png)
+
+```{r}
+
+
+```
+
+
+# 퀴즈1 끝
+
+<br>
+
