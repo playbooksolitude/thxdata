@@ -5,6 +5,7 @@
 library(fmsb)
 library(showtext)
 showtext_auto()
+library(tidyverse)
 
 #1 csv
 (read_tsv("./2th/files/data_job8.tsv") -> thx4_csv)

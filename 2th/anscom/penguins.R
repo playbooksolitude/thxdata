@@ -36,3 +36,14 @@ penguins |>
     color = species)) +
   geom_point() +
   geom_smooth(method = "lm", se = F)
+
+
+#
+penguins |> 
+  drop_na(sex) |> 
+  ggplot(aes(x = bill_length_mm, 
+    y = bill_depth_mm,
+    color = species)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = F) +
+  facet_wrap(.~island)
