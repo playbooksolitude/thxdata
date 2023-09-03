@@ -11,11 +11,9 @@ library(gapminder)
 #
 getwd()
 
-  
+#
 install.packages("av")
 library(av)
-#
-
 
 #
 ggplot(mtcars) + 
@@ -31,27 +29,15 @@ ggplot(mtcars) +
 # b + transition_time(year, 
 #                     range = c(2000L, 2006L)) -> b1
 # animate(b1, renderer = gifski_renderer())
-
-
-
-# c + transition_filter(transition_length = 3,
-#                       filter_length = 1,
-#                       cut == "Ideal",
-#                       Deep = depth >= 60) -> c1
-
-
 #render error
-
-
-#
-a + 
-  transition_states(color, 
-                    transition_length = 3, 
-                    state_length = 1) -> anim_a
-
-anim_a + 
-  view_follow(fixed_x = T,
-              fixed_y = c(2500, NA))
+# a + 
+#   transition_states(color, 
+#                     transition_length = 3, 
+#                     state_length = 1) -> anim_a
+# 
+# anim_a + 
+#   view_follow(fixed_x = T,
+#               fixed_y = c(2500, NA))
 
 
 #render error
@@ -117,9 +103,6 @@ billboard |>
                values_to = "value") -> billboard_pivot
 
 filter(billboard_pivot$artist == billboard_top10$artist)
-
-
-
 getwd()
 #
 #install.packages("gapminder")

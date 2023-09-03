@@ -10,23 +10,23 @@ anscombe
 
 # --------------------------- dataset
 tibble(
-  x1 = anscombe$x1,
-  y1 = anscombe$y1
+  x1 = anscombe$x,
+  y1 = anscombe$y
 ) -> anscombe_1
 
 tibble(
-  x1 = anscombe$x2,
-  y1 = anscombe$y2
+  x1 = anscombe$x.1,
+  y1 = anscombe$y.1
 ) -> anscombe_2
 
 tibble(
-  x1 = anscombe$x3,
-  y1 = anscombe$y3
+  x1 = anscombe$x.2,
+  y1 = anscombe$y.2
 ) -> anscombe_3
 
 tibble(
-  x1 = anscombe$x4,
-  y1 = anscombe$y4
+  x1 = anscombe$x.3,
+  y1 = anscombe$y.3
 ) -> anscombe_4
 
 anscombe_1;anscombe_1;anscombe_3;anscombe_4
