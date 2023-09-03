@@ -86,7 +86,7 @@ library(readxl)
 
 #2-2 데이터 구조를 파악하시오
 kobis2019_1excel |> glimpse()
-kobis2019_1excel |> str()
+#kobis2019_1excel |> str()
 
 
 #2-3 세로줄 "개봉일"을 "연도", "월", "일"로 나누시오
@@ -110,11 +110,14 @@ kobis2019_2date |>
   
 
 #2-6 (2-5 결과를 활용해) 막대 그래프로 그리시오
+library(scales)
+
 kobis2019_2date |> 
   drop_na(월) |> 
   group_by(월) |> 
   summarise(월별관객수 = sum(관객수)) |> 
-  ggplot(aes(x = factor(월), y = 월별관객수/10000)) +
+  ggplot(aes(x = factor(월), 
+    y = 월별관객수/10000)) +
   geom_bar(stat = "identity") +
   scale_y_continuous(labels = comma) +
   geom_label(aes(label = comma(월별관객수/10000)), size = 5) +
