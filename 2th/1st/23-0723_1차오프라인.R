@@ -1,11 +1,10 @@
 #23-0723 sun 15:30
 
-
 # 땡쓰데이터 2기 1차 오프라인 스터디
 
 # 1 패키지 다운로드 (설치)
-# 실행 ctrl + Enter
-# 실행 command + Enter
+#실행 ctrl + Enter
+#실행 command + Enter
 # 블럭으로 잡고 쌍따옴표
 # 단축키 command + shift + m |>
 # count()
