@@ -46,4 +46,4 @@ penguins |>
     color = species)) +
   geom_point() +
   geom_smooth(method = "lm", se = F) +
-  facet_wrap(.~island)
+  facet_wrap(.~sex)

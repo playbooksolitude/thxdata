@@ -9,11 +9,14 @@ library(datasauRus)
 datasauRus::datasaurus_dozen_wide
 datasauRus::datasaurus_dozen
 
-(table(datasaurus_dozen$dataset) |> as.data.frame() |> as_tibble() |> 
-  select(1) -> cairo)
+(table(datasaurus_dozen$dataset) |> 
+    as.data.frame() |> 
+    as_tibble() |> 
+    select(1) -> cairo)
 
 #cor
-datasaurus_dozen |> group_by(dataset) |> 
+datasaurus_dozen |> 
+  group_by(dataset) |> 
   summarise(mean = mean(x), 
             sd = sd(x),
             cor = cor(x,y))
@@ -43,14 +46,16 @@ datasaurus_dozen |> filter(dataset == "dino") |>
 
 
   #circle
-datasaurus_dozen |> filter(dataset == "circle") |> 
+datasaurus_dozen |> 
+  filter(dataset == "circle") |> 
   ggplot(aes(x = x, y = y)) + geom_point() +
   facet_wrap(.~dataset, nrow = 4) +
   geom_smooth(se = F) + geom_smooth(se = F, method = "lm")
 
 
   #dots
-datasaurus_dozen |> filter(dataset == "dots") |> 
+datasaurus_dozen |> 
+  filter(dataset == "dots") |> 
   ggplot(aes(x = x, y = y)) + geom_point() +
   facet_wrap(.~dataset, nrow = 4) +
   geom_smooth(se = F) + geom_smooth(se = F, method = "lm")

@@ -2,73 +2,86 @@
 
 #
 library(tidyverse)
+library(palmerpenguins)
 
-#1. 데이터셋 사이즈 starwars 구조를 확인하시오
-starwars |> glimpse()
-starwars |> str()
+#penguins
+#1. 데이터셋 구조를 확인하시오
+penguins |> glimpse()
 
+# 데이터셋은 몇행 몇열인가?
+penguins |> dim() #344 * 8
 
-# starwars 데이터셋은 몇행 몇열인가?
-starwars |> dim() #87 * 14
-
-  # 참고
-starwars |> drop_na() |> dim()  #29 * 14
-
-
-#1-2 geom_point(산점도)를 그리시오
-ggplot(starwars, aes(x = gender, y = birth_year)) +
-  geom_point()
+  # 참고 -11
+penguins |> 
+  drop_na() |> dim()  #333 * 8
 
 
-#1-3 geom_boxplot()을 그리시오
-starwars |> 
-  ggplot(aes(x = gender, y = birth_year)) +
-  geom_boxplot()
+#1-2 수컷과 암컷 비중을 geom_bar()로 그리시오
+#na 제거(drop_na(sex))
+ggplot(penguins |> drop_na(sex), 
+  aes(x = sex, y = after_stat(count))) +
+  geom_bar(stat = "count") +
+  geom_label((aes(label = after_stat(count))), 
+    stat = "count", size = 7)
 
 
-#1-4 species(종족), gender (성별) 조합을 확인하시오
-starwars |> 
-  count(species, gender, sort = T) #|> dim() #42 * 3
+#1-3 geom_boxplot()을 활용해 분포를 파악하시오
+#geom_point() 활용
+#x = island, y = flipper_length_mm
+?penguins
+penguins |> 
+  drop_na() |> 
+  ggplot(aes(x = island, y = flipper_length_mm)) +
+  geom_boxplot(outlier.colour = "red") +
+  geom_jitter(width = .1, alpha = .2)
 
 
-#1-5 species(종족), gender (성별), sex(생물학적 성별)을 확인하시오
-starwars |> 
-  count(species, sex, gender, sort = T)# |> dim() #41 * 3
+#1-4 island, sex 조합을 확인하시오
+penguins |> 
+  count(island, sex, sort = T)
+
+penguins |> filter(is.na(sex)) |> dim() #11
+
+
+#1-5 island, sex,year 조합을 확인하시오
+penguins |> 
+  count(island, sex, year, sort = T)# |> dim() #41 * 3
 
 
 #1-6 (1-4의 결과를 활용해) 히트맵을 그리시오
-starwars |> count(species, gender) |> 
-  ggplot(aes(x = gender, y = species, fill = n)) +
+penguins |> drop_na(sex) |> 
+  count(island, sex) |> 
+  ggplot(aes(x = island, y = sex, fill = n)) +
   geom_tile() +
   scale_fill_gradient(low = "grey", high = "red") +
   geom_text(aes(label = n))
 
 
-#1-7 starwars$gender 에서 NA는 몇개나 있는지 확인하시오
-starwars$gender |> table(useNA = "always")
+#1-7 penguins 에서 NA는 몇개나 있는지 확인하시오
+penguins$sex |> table(useNA = "always")
 
 # 몇개의 인수가 있는지 확인하기
 # useNA 중요
 # "ifany" 와 "always" 용법 차이
-starwars$gender |> table(useNA = "always")
+penguins$sex |> table(useNA = "ifany")
 mpg$manufacturer |> table(useNA = "always")
 mpg$manufacturer |> table(useNA = "ifany")
 
 
 #1-8 starwars 에서 NA는 얼마나 있는지 확인하시오 (번외)
-colSums(is.na(starwars)) |> 
+colSums(is.na(penguins)) |> 
   as.data.frame()
 
   # 지원님 참고 (이렇게 보면 예뻐요)
-colSums(is.na(starwars)) |> 
+colSums(is.na(penguins)) |> 
   as.data.frame() |> 
   rownames_to_column(var = "name") |> 
   rename("NA" = 2) |> 
   pivot_wider(names_from = "name", 
-              values_from = "NA") |> view()
+              values_from = "NA")
 
 #1-9 starwars의 세로줄(컬럼)만 출력하시오
-starwars |> colnames()
+penguins |> colnames()
 
 
 # --------------------------------------------------------
