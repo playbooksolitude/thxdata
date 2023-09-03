@@ -8,7 +8,6 @@ library()
 
 #https://economic-analysis-with-r.uni-goettingen.de/statistical-models.html
 
-#https://blog.naver.com/PostView.naver?blogId=bestinall&logNo=222579966945
 
 #
 penguins |> 

@@ -49,12 +49,14 @@ penguins |>
 
 
 #1-6 (1-4의 결과를 활용해) 히트맵을 그리시오
+# x = sex, y = island
+
 penguins |> drop_na(sex) |> 
   count(island, sex) |> 
-  ggplot(aes(x = island, y = sex, fill = n)) +
+  ggplot(aes(x = sex, y = island, fill = n)) +
   geom_tile() +
   scale_fill_gradient(low = "grey", high = "red") +
-  geom_text(aes(label = n))
+  geom_text(aes(label = n), color = "white", size = 5)
 
 
 #1-7 penguins 에서 NA는 몇개나 있는지 확인하시오
@@ -93,7 +95,7 @@ showtext_auto()
 #2-1 2019년 극장관객수 xlsx 파일을 불러오시오
 library(readxl)
 # 극장관객수
-(read_excel("./2th/5st/excel/rawdata/KOBIS_2019.xlsx", 
+(read_excel("./2th/5th/excel/rawdata/KOBIS_2019.xlsx", 
   skip = 4) -> kobis2019_1excel)
 
 
@@ -179,7 +181,7 @@ theme(panel.background = element_blank(),
 
 # --------------------------------------------------------
 # 2020년도 극장관객수를 불러오시오
-(read_excel("./2th/5st/excel/rawdata/KOBIS_2020.xlsx", 
+(read_excel("./2th/5th/excel/rawdata/KOBIS_2020.xlsx", 
   skip = 4) -> kobis2020_1excel)
 
 
@@ -211,14 +213,14 @@ kobis2020_2date |>
     title = "2020년 월별 극장관객수")
 
 #
-(kobis2019_2date |> 
+(kobis2020_2date |> 
   drop_na(월) |> 
   summarise(누적관객수 = sum(관객수))) #226,172,268
 
 
 #4 -----------------
 ### 4-1 kobis2019_2date 데이터셋에 개봉연도 2019년을 추가하시오
-#
+
 kobis2019_2date |> 
   mutate(개봉연도 = "2019", .before = 3) -> kobis2019_3year
   
@@ -229,12 +231,13 @@ kobis2020_2date |>
 
 
 ### 4-3 kobis2020_3year 데이터셋과 kobis2019_3year을 하나로 합치시오
-full_join(kobis2019_3year, 
-  kobis2020_3year) -> kobis_3join
+(full_join(kobis2019_3year, 
+  kobis2020_3year) -> kobis_3join)
 
 
 ### 4-4 2019년과 2020년 극장관객수를 비교하시오
 library(nord)
+
 # Covid-19 극장관객수 비교 2019 vs 2020
 kobis_3join |> 
   drop_na(월) |> 
@@ -293,6 +296,25 @@ kobis2019_3year |>
 
 
 ### ------------------------------- 나중에 할께요
+
+#한국영화 top
+kobis2019_3year |> 
+  filter(대표국적 == "한국") |> 
+  select(1:2, 관객수, 등급)
+
+# 미국 영화 top
+kobis2019_3year |> 
+  filter(대표국적 == "미국") |> 
+  select(1:2, 관객수, 등급)
+
+# 기타 영화
+kobis2019_3year |> 
+  filter(대표국적 %in% 
+           c("프랑스", "벨기에", "러시아", "대만")) |> 
+  select(1:2, 등급, 대표국적, 관객수)
+
+#
+
 
 
 # 일별 관객수
@@ -387,19 +409,4 @@ kobis2019_4levels |>
   scale_fill_gradient(low = "grey", high = "red")
 
 
-#한국영화 top
-kobis2019_3year |> 
-  filter(대표국적 == "한국") |> 
-  select(1:2, 관객수, 등급)
-
-# 미국 영화 top
-kobis2019_3year |> 
-  filter(대표국적 == "미국") |> 
-  select(1:2, 관객수, 등급)
-
-# 기타 영화
-kobis2019_3year |> 
-  filter(대표국적 %in% 
-      c("프랑스", "벨기에", "러시아", "대만")) |> 
-  select(1:2, 등급, 대표국적, 관객수)
 
