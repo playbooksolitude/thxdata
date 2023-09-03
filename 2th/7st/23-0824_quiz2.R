@@ -197,8 +197,6 @@ kobis2020_2date |>
   labs(subtitle = "단위: 만 명", 
     title = "2020년 월별 극장관객수")
 
-
-#
 #
 (kobis2019_2date |> 
   drop_na(월) |> 
