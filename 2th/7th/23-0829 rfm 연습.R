@@ -122,6 +122,47 @@ rfm_data_customer |>
   labs(title = "RFM 분석 예시: 가입기간 * 구매건수 추세", 
        subtitle = " ")
 
-rfm_data_customer
+
+# 히트맵
+rfm_data_customer$number_of_orders |> table() #|> dim() #24
+rfm_data_customer$recency_days |> table() #|> dim() #720
+
+
+#지수 표현 처리 필요
+rfm_data_customer |> 
+  count(
+  cut_width(recency_days, center = 15, width = 30)) |> 
+  print(n = Inf)
+  
 
 #
+rfm_data_customer |> 
+  count(
+    cut_width(recency_days, center = 15, width = 30)) |> 
+  mutate(num = row_number(),
+         days_edit = row_number() * 30) |> 
+  select(num, days_edit, n) |> 
+  print( n = Inf)
+
+
+rfm_data_customer |> 
+  count(number_of_orders) |> 
+  mutate(num = row_number(), .before = 1) |> 
+  print(n = Inf)
+  
+
+  
+  
+
+# 구간 나누기 확인 #초과 #이하
+rfm_data_customer |> 
+  filter(recency_days <= 30)
+
+#
+rfm_data_customer |> 
+  filter(recency_days <= 120 , recency_days > 90)
+
+
+
+
+

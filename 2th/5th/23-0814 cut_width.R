@@ -54,3 +54,17 @@ mutate(grade = if_else(number_of_orders < 6, "L1",
              fill = n)) +
   geom_tile()
 
+
+#
+#지수 표현 처리 필요
+rfm_data_customer |> 
+  count(
+    cut_width(recency_days, center = 15, width = 30)) |> 
+  print(n = Inf)
+
+
+#
+rfm_data_customer |> 
+  count(
+    cut_width(recency_days, center = 15, width = 30)) |> 
+  mutate(num = row_number() * 30) |> print(n = Inf)
