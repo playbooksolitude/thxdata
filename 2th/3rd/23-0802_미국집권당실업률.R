@@ -2,14 +2,18 @@
 
 #
 library(tidyverse)
+library(showtext)
+showtext_auto()
 
 presidential #1953
 economics    #1967
 
 #1 subset
 subset(presidential, start > economics$date[1])
-subset(presidential, start > economics$date[1]) -> temp1
+(subset(presidential, start > economics$date[1]) -> temp1)
 
+
+#
 ggplot() +
   geom_line(data = economics,
               aes(x = date, y = unemploy)) +
@@ -19,7 +23,9 @@ ggplot() +
                 ymin = 0, ymax = Inf, 
                 fill = party), alpha = .4) +
   scale_fill_manual(values = c("Democratic" = "blue",
-                               "Republican" = "red"))
+                               "Republican" = "red")) +
+  theme(legend.position = "top")
+
 
 #대통령 이름
 ggplot() +
@@ -45,5 +51,4 @@ ggplot() +
   labs(title = "미국 집권당에 따른 unemploy") +
   theme(legend.position = "top")
 
-library(showtext)
-showtext_auto()
+

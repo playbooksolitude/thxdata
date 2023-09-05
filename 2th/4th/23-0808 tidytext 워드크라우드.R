@@ -2,11 +2,11 @@
 
 #
 library(tidyverse)
-install.packages("tidytext")
+#install.packages("tidytext")
 library(tidytext)
-install.packages("wordcloud")
+#install.packages("wordcloud")
 library(wordcloud)
-install.packages("janeaustenr")
+#install.packages("janeaustenr")
 library(janeaustenr)
 
 #
@@ -21,6 +21,8 @@ glimpse(sensesensibility)
 austen_books() |> dim()
 austen_books() |> count(book)
 austen_books() |> print(n = 20)
+
+#
 austen_books() |> 
   filter(book == "Sense & Sensibility") -> tidy_austen
 
@@ -36,17 +38,15 @@ tidy_3austen |> with(wordcloud(words = word,
                   random.order = F))
 
 
-
-
-
 brewer.pal.info
 
 #
-tidy_3austen |> with(wordcloud(words = word,
-                               freq = n,
-                               max.words = 50,
-                               random.order = F,
-                               colors = brewer_pal(8, "Dark2")))
+tidy_3austen |> 
+  with(wordcloud(words = word,
+                 freq = n,
+                 max.words = 50,
+                 random.order = F,
+                 colors = brewer.pal(8,"Dark2")))
 
 
 

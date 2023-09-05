@@ -1,4 +1,9 @@
+
+
+
 library("ggplot2")
+library("ggthemes")
+
 
 p <- ggplot(mtcars) + geom_point(aes(x = wt, y = mpg,
                                      colour = factor(gear))) + facet_wrap(~am)
