@@ -151,12 +151,26 @@ rfm_data_customer |>
   print(n = Inf)
   
 
-  
-  
+# 지수 표현 대신 30으로 나누기
+rfm_data_customer |> 
+  mutate(days_30_ceiling = ceiling(recency_days / 30),
+         order_ceiling = ceiling(number_of_orders / 3))
 
+  #count
+rfm_data_customer |> 
+  mutate(days_30_ceiling = ceiling(recency_days / 30),
+         order_ceiling = ceiling(number_of_orders / 5)) |> 
+  count(order_ceiling, days_30_ceiling) |> 
+  ggplot(aes(x = factor(order_ceiling),
+             y = factor(days_30_ceiling), 
+             fill = n)) +
+  geom_tile()
+
+  
 # 구간 나누기 확인 #초과 #이하
 rfm_data_customer |> 
   filter(recency_days <= 30)
+
 
 #
 rfm_data_customer |> 
