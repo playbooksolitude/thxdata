@@ -6,7 +6,9 @@ library(bbplot)
 library(patchwork)
 
 #anscombe
-anscombe
+data()
+
+
 
 # --------------------------- dataset
 tibble(
