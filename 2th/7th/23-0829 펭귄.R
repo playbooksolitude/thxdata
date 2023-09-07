@@ -5,8 +5,8 @@ library(tidyverse)
 #install.packages("palmerpenguins")
 library(palmerpenguins)
 #library(bookdown)
-library(ploty)
-#ggplotly(p)
+#install.packages("plotly")
+library(plotly)
 library(ggrepel)
 
 #이미지
@@ -114,7 +114,7 @@ penguins |>
   theme(legend.position = "top")
 
 
-#sex
+#sex #male #Adelie -cor
 penguins |> 
   drop_na(bill_length_mm, sex) |> 
   ggplot(aes(x = bill_length_mm,
@@ -126,15 +126,16 @@ penguins |>
   theme(legend.position = "top")
 
 
-#서식지 * 성별
+#서식지 * 성별 #Adelie #all sex #Torgersen
 penguins |> 
   drop_na(bill_length_mm, sex) |> 
   ggplot(aes(x = bill_length_mm,
              y = bill_depth_mm,
              color = species)) +
   geom_point(alpha = .2)  +
-  geom_smooth(method = "lm", se = F, size = 5) +
-  facet_grid(sex~island)
+  geom_smooth(method = "lm", se = F) +
+  facet_grid(sex~island) +
+  theme(legend.position = "top")
 
 #
 penguins |> 
@@ -159,7 +160,8 @@ penguins |>
              color = species)) +
   geom_point() +
   geom_smooth(method = "lm", se = F) +
-  facet_grid(sex~island)
+  facet_grid(sex~island) +
+  theme(legend.position = "top")
 
 #
 anscombe |> 
