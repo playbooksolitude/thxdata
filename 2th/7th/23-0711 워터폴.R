@@ -7,14 +7,21 @@ library(bbplot)
 library(waterfalls)
 
 #히트맵 컬러 그라디언트
-diamonds |> count(cut, clarity) |> 
-  ggplot(aes(clarity, cut, fill = n)) +
+diamonds |> count(cut, color) |> 
+  ggplot(aes(color, cut, fill = n)) +
   geom_tile() +
   scale_fill_gradient(low = "white", high = "red") +
-  geom_text(aes(label = n))
+  geom_text(aes(label = n), size = 5) +
+  theme(panel.background = element_rect(fill = "grey"),
+        axis.ticks = element_blank(),
+        axis.line = element_blank(),
+        panel.grid = element_blank(),
+        axis.text = element_text(size = "15"))
+
 
 # count 계산하기
-diamonds |> count(cut, clarity) |> 
+diamonds |> 
+  count(cut, clarity) |> 
   count(cut == "Fair", wt = n)
 
 # dataset 으로 만들기
@@ -65,7 +72,8 @@ waterfall(values = round(rnorm(5), 1),
           calc_total = TRUE)
 
 waterfall(.data = data.frame(category = letters[1:5],
-                             value = c(100, -20, 10, 20, 110)), 
+                             value = c(100, -20, 10, 
+                                       20, 110)), 
           fill_colours = 
             colorRampPalette(c("#1b7cd6", "#d5e6f2"))(5),
           fill_by_sign = F)
