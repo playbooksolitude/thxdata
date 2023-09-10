@@ -159,7 +159,7 @@ rfm_data_customer |>
   #count
 rfm_data_customer |> 
   mutate(days_30_ceiling = ceiling(recency_days / 30),
-         order_ceiling = ceiling(number_of_orders / 5)) |> 
+         order_ceiling = ceiling(number_of_orders / 3)) |> 
   count(order_ceiling, days_30_ceiling) |> 
   ggplot(aes(x = factor(order_ceiling),
              y = factor(days_30_ceiling), 
