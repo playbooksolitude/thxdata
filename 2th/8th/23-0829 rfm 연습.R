@@ -6,6 +6,7 @@ library(rfm)
 library(bbplot)
 library(showtext)
 showtext_auto()
+library(waterfalls)
 
 #
 rfm_data_customer |> 
@@ -56,7 +57,15 @@ rfm_data_customer
 rfm_data_customer |> filter(recency_days < 31)
 rfm_data_customer |> filter(recency_days > 30, 
                       recency_days < 61)
+
+
+#
 rfm_data_customer |> 
+  count(cut_width(recency_days,center = 5, width = 10)) 
+
+
+#
+(rfm_data_customer |> 
   count(cut_width(recency_days,30, 
     boundary = 0, labels = F)) |> 
   rename("기간" = 1, "users" = 2) |> 
@@ -65,7 +74,7 @@ rfm_data_customer |>
   mutate(cum_users = cumsum(users),
          pop = cum_users/last(cum_users)*100) |> 
   rename("기간"= 1, "고객수" = 2, 
-         "누적고객수" = 3, "비율" = 4) -> rfm_cus_cum
+         "누적고객수" = 3, "비율" = 4) -> rfm_cus_cum)
 
 # 기간별 고객수 분포
 ggplot(data = rfm_cus_cum, 
@@ -178,5 +187,28 @@ rfm_data_customer |>
 
 
 
+# 
+rfm_cus_cum
+waterfalls::waterfall()
+?waterfall()
+
+#
+rfm_cus_cum
+waterfall(values = round(rnorm(5), 1), labels = letters[1:5], calc_total = TRUE)
+
+#
+waterfall(.data = data.frame(category = letters[1:5],
+  value = c(100, -20, 10, 20, 110)), 
+  fill_colours = colorRampPalette(c("#1b7cd6", "#d5e6f2"))(5),
+  fill_by_sign = FALSE)
+
+#
+waterfall(rfm_cus_cum$기간,
+  values = rfm_cus_cum$고객수)
 
 
+#
+
+
+
+#
