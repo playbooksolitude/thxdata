@@ -4,7 +4,7 @@
 library(tidyverse)
 
 
-#
+# ex)
 ggplot(data = mpg,
        mapping = aes(x = displ, y = cty)) +
   geom_point(data = mpg |> select(-drv), 
@@ -14,7 +14,6 @@ ggplot(data = mpg,
 
 #
 library(palmerpenguins)
-
 
 #
 penguins |> names()
@@ -27,51 +26,83 @@ penguins |> names()
 # sex : 성별
 
 
-penguins |> 
+#1 전체
+(penguins |> 
   drop_na(bill_length_mm, bill_depth_mm, sex) |> 
   ggplot(aes(x = bill_length_mm, y = bill_depth_mm)) +
-  geom_point(data = penguins |> 
-               drop_na(bill_depth_mm, bill_depth_mm) |> 
-               select(-sex, island), 
-             color = "grey", alpha = .3) +
-  geom_point(data = penguins |> 
-               drop_na(bill_length_mm, bill_depth_mm, sex),
-             aes(color = sex), show.legend = F) +
-  facet_grid(sex~island) +
-  geom_smooth(se = F, method = "lm") -> pen_sex_island
+  geom_point() +
+  geom_smooth(se = F, method = "lm") -> pen_normal)
 
 #
 is.na(penguins) |> colSums()
 
-penguins |> 
-  drop_na(bill_length_mm, bill_depth_mm, sex) |> 
-  ggplot(aes(x = bill_length_mm, y = bill_depth_mm)) +
-  geom_point(data = penguins |> 
-               drop_na(bill_depth_mm, bill_depth_mm) |> 
-               select(-sex, island), 
-             color = "grey", alpha = .3) +
-  geom_point(data = penguins |> 
-               drop_na(bill_length_mm, bill_depth_mm, sex),
-             aes(color = sex), show.legend = F) +
-  facet_grid(sex~.) +
-  geom_smooth(se = F, method = "lm") -> pen_sex
 
-#
-penguins |> 
+#1-1
+(penguins |> 
+    drop_na(bill_length_mm, bill_depth_mm, sex) |> 
+    ggplot(aes(x = bill_length_mm, y = bill_depth_mm,
+               color = species)) +
+    geom_point() +
+    theme(legend.position = "top") +
+    geom_smooth(se = F, method = "lm") -> pen_normal)
+
+
+#2 sex
+(penguins |> 
   drop_na(bill_length_mm, bill_depth_mm, sex) |> 
-  ggplot(aes(x = bill_length_mm, y = bill_depth_mm)) +
+  ggplot(aes(x = bill_length_mm, y = bill_depth_mm, 
+             color = species)) +
   geom_point(data = penguins |> 
                drop_na(bill_depth_mm, bill_depth_mm) |> 
                select(-sex, island), 
              color = "grey", alpha = .3) +
   geom_point(data = penguins |> 
                drop_na(bill_length_mm, bill_depth_mm, sex),
-             aes(color = sex), show.legend = F) +
+             show.legend = F) +
+  facet_grid(sex~.) +
+  theme(legend.position = "top") +
+  geom_smooth(se = F, method = "lm") -> pen_sex)
+
+
+#3 island
+(penguins |> 
+  drop_na(bill_length_mm, bill_depth_mm, sex) |> 
+  ggplot(aes(x = bill_length_mm, y = bill_depth_mm, 
+             color = species)) +
+  geom_point(data = penguins |> 
+               drop_na(bill_depth_mm, bill_depth_mm) |> 
+               select(-sex, island), 
+             color = "grey", alpha = .3) +
+  geom_point(data = penguins |> 
+               drop_na(bill_length_mm, bill_depth_mm, sex),
+             show.legend = F) +
   facet_grid(.~island) +
-  geom_smooth(se = F, method = "lm") -> pen_island
+  theme(legend.position = "top") +
+  geom_smooth(se = F, method = "lm") -> pen_island)
+
+
+#4 sex_island
+(penguins |> 
+    drop_na(bill_length_mm, bill_depth_mm, sex) |> 
+    ggplot(aes(x = bill_length_mm, y = bill_depth_mm,
+               color = species)) +
+    geom_point(data = penguins |> 
+                 drop_na(bill_depth_mm, bill_depth_mm) |> 
+                 select(-sex, island), 
+               color = "grey", alpha = .3) +
+    geom_point(data = penguins |> 
+                 drop_na(bill_length_mm, bill_depth_mm, sex),
+               show.legend = F) +
+    facet_grid(sex~island) +
+    theme(legend.position = "top") +
+    geom_smooth(se = F, method = "lm") -> pen_sex_island)
+
 
 library(patchwork)
-
+pen_sex
+pen_island
+pen_sex_island
 pen_sex | pen_island
+(pen_sex | pen_island) / (pen_normal | pen_sex_island)
 
-(pen_sex | pen_island) / pen_sex_island
+#
