@@ -163,17 +163,3 @@ penguins |>
   facet_grid(sex~island) +
   theme(legend.position = "top")
 
-#
-anscombe |> 
-  ggplot(aes(x = x, y = y)) +
-  geom_point(stat = "identity") +
-#  geom_text_repel(aes(label = y)) +
-  geom_smooth(method = "lm", se = F)
-
-anscombe |> 
-  ggplot(aes(x = x.1, y = y.1)) +
-  geom_point() +
-  geom_smooth(method = "lm", se = F)
-
-par(mar=c(1, 2, 2, 1), mfrow=c(2, 2))
-
