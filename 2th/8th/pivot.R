@@ -2,9 +2,15 @@
 
 #
 library(tidyverse)
+library(palmerpenguins)
 library(googlesheets4)
 library(bbplot)
+library(showtext)
+showtext_auto()
 
+#https://bbc.github.io/rcookbook/
+#install.packages('devtools')
+#devtools::install_github('bbc/bbplot')
 
 # 일반
 penguins |> 
@@ -56,3 +62,30 @@ thx_3tidy |>
   geom_label(aes(label = 방문자수), size = 7) +
   labs(subtitle = "제주 방문자수")
 
+
+#15시 30분 제거
+thx_3tidy |> 
+  filter(시간대 != "15시30분") |> 
+  filter(월 == "1", 장소 == "제주") |> 
+  ggplot(aes(x = 시간대, y = 방문자수)) +
+  geom_line(stat = "identity", group = 1) +
+  scale_x_discrete(breaks = c("11시", "12시", "13시", 
+    "14시", "15시")) +
+  bbc_style() +
+  geom_point(size = 3) +
+  geom_label(aes(label = 방문자수), size = 7) +
+  labs(subtitle = "제주 방문자수")
+
+
+#15시 30분 제거
+thx_3tidy |> 
+  filter(시간대 != "15시30분") |> 
+  filter(월 == "3", 장소 == "경기") |> 
+  ggplot(aes(x = 시간대, y = 방문자수)) +
+  geom_line(stat = "identity", group = 1) +
+  scale_x_discrete(breaks = c("11시", "12시", "13시", 
+    "14시", "15시")) +
+  bbc_style() +
+  geom_point(size = 3) +
+  geom_label(aes(label = 방문자수), size = 7) +
+  labs(subtitle = "경기 방문자수")
