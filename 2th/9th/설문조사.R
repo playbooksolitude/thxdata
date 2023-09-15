@@ -124,19 +124,61 @@ thx_7tidy |>
   
 
 
-#7
-thx_6tidy
+#8
+thx_7tidy |> filter(
+  구분 == "소득") |> 
+  separate(col = 값, 
+           into = c("소득1", "소득2", "소득3", "소득4", "소득5"), 
+           sep = ", ", remove = T) |> 
+  pivot_longer(cols = c(소득1:소득5),
+               names_to = "얻은것",
+               values_to = "값") |> 
+  drop_na(값) -> thx_8pivot_dropna
+  
+thx_8pivot_dropna
+
+#
+library(wordcloud)
+(thx_8pivot_dropna |> 
+  count(값) -> thx_9wordcloud)
 
 
+#
+wordcloud(words = thx_9wordcloud$값,
+          freq = thx_9wordcloud$n,
+          scale = c(2,.5), min.freq = 1,
+          random.order = F, 
+          random.color = T,
+          colors = brewer.pal(name = "Dark2", 8))
 
 
+#10
+library(tidytext)
+
+#
+extractNoun(text$value)
+text |> 
+  unnest_tokens(input = value,
+                output = words,
+                token = extractNoun)
+
+#8_edit
+extractNoun(thx_8pivot_dropna$값)
+(thx_8pivot_dropna$값 |> as_tibble() -> thx_8koNLP)
 
 
+(thx_8koNLP |> 
+  unnest_tokens(input = value,
+                output = words,
+                token = extractNoun) |> 
+  count(words) -> thx_8koNLP2)
 
-
-
-
-
-
+#
+thx_8koNLP2 |> 
+  filter(str_count(thx_8koNLP2$words) > 1) |> 
+  with(wordcloud(words = words, freq = n, min.freq = 2,
+                 random.color = T, random.order = F,
+                 colors = brewer.pal("Dark2", n = 8)))
+  
 
 
