@@ -183,12 +183,17 @@ thx_8koNLP2 |>
   
 
 # --------------------------------------------------------
+library(nord)
+nord::nord_palettes
 thx_7tidy |> 
-  filter(구분 == "자기평가") |> 
+  filter(구분 %in% c("실력과역량", "태도와자세",
+                   "자기평가", "총평")) |> 
   ggplot(aes(x = factor(num), y = value)) +
   geom_bar(aes(fill = 스터디방식), 
-           stat = "identity", 
-           position = "dodge")
+           stat = "identity") +
+  facet_wrap(.~구분, ncol = 2)+
+  scale_fill_nord(palette = "afternoon_prarie") +
+  theme(legend.position = "top")
 
 
 
