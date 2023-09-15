@@ -109,7 +109,8 @@ thx_7tidy |>
              y = value)) +
   geom_bar(stat = "identity") 
 
-#
+
+# ----------------------------------------------------------
 library(showtext)  
 showtext_auto()
 
@@ -180,5 +181,30 @@ thx_8koNLP2 |>
                  random.color = T, random.order = F,
                  colors = brewer.pal("Dark2", n = 8)))
   
+
+# --------------------------------------------------------
+thx_7tidy |> 
+  filter(구분 == "자기평가") |> 
+  ggplot(aes(x = factor(num), y = value)) +
+  geom_bar(aes(fill = 스터디방식), 
+           stat = "identity", 
+           position = "dodge")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
