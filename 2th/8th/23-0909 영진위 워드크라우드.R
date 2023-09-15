@@ -3,6 +3,7 @@
 
 #
 library(tidyverse)
+library(wordcloud)
 
 #1 불러오기 ------------------------------------------------
 #1-1 Import Dataset
@@ -95,8 +96,8 @@ kobis_word2 |>
             random.color = T,    #컬러 랜덤 (중요)
             colors = brewer.pal(8, "Dark2"))) 
 
-library(nord)
 #
+library(nord)
 wordcloud(words = kobis_word2$영화명,
           freq = kobis_word2$sum,
           min.freq = 100000,
