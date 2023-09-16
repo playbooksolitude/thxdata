@@ -74,7 +74,8 @@ thx_3tidy |>
   bbc_style() +
   geom_point(size = 3) +
   geom_label(aes(label = 방문자수), size = 7) +
-  labs(subtitle = "제주 방문자수")
+  labs(subtitle = "제주 방문자수
+    ")
 
 
 #15시 30분 제거
