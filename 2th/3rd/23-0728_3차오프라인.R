@@ -49,6 +49,7 @@ top_n(Cars93$Width, 5)
 
 Cars93  |> colnames()
 glimpse(Cars93)
+Cars93 |> str()
 
 #7 table
   #count
