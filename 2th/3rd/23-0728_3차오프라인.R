@@ -78,12 +78,13 @@ glimpse(Cars93)
   
 #9 colsum, rowsum
 
-  Cars93 |> count(Type, AirBags) |> 
+  (Cars93 |> count(Type, AirBags) |> 
     pivot_wider(
       names_from = AirBags,
       values_from = n
-    ) -> temp1
-
+    ) -> temp1)
+  
+  
   # error
 rowSums(temp1[1,2:4], na.rm = T, dims = 2L)
 colSums(temp1[,2:4], na.rm = T)
@@ -121,10 +122,15 @@ Cars93 |> count(Manufacturer, Type) |>
   coord_flip()
 
 # heatmap
+library(scales)
 diamonds |> count(cut, color) |> 
   ggplot(aes(x = cut, y = color, fill = n)) +
   geom_tile() +
-  geom_label(aes(label = n))
+  geom_text(aes(label = comma(n)), color = "black", 
+            size = 5) +
+  scale_fill_gradient(low = "pink", high = "red") +
+  labs(title = "Diamonds data set", 
+       subtitle = "")
 
 # 합치기
 mpg |> mutate(new_model = bind_cols(model, trans)) #error
