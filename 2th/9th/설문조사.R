@@ -2,6 +2,7 @@
 
 #
 library(tidyverse)
+#install_java("googlesheets4")
 library(googlesheets4)
 
 #1
@@ -10,6 +11,7 @@ read_sheet("https://docs.google.com/spreadsheets/d/1pAcNs4HYfD8ttGwpKPi0mPhf3KK7
 
 
   ##
+
 thx_1sheet |> dim()        #13 * 17
 thx_1sheet |> glimpse()
 thx_1sheet #|> view()
@@ -29,27 +31,27 @@ thx_2slice |>
   rename("스터디방식입니다" = "설문조사는 무기명으로 하며, 결과는 카페에 공유해 다함께 봅니다." ) |> colnames()
 
 #
-thx_2slice |> 
-  rename("스터디방식" = 2,
-         "스터디 목표" = 3,
-         "자신에대한 평가" = 4,
-         "실력과 역량" = 5,
-         "태도와 자세" = 6,
-         "공부 계획" = 7,
-         "시작전과 비교" = 8,
-         "소득" = 9,
-         "공부 횟수" = 10,
-         "스터디평가" = 11,
-         "장점" = 12,
-         "개선점" = 13,
-         StudyWithMe = 14,
-         "미니 프로젝트 참여" = 15) |> colnames()
+# thx_2slice |> 
+#   rename("스터디방식" = 2,
+#          "스터디 목표" = 3,
+#          "자신에대한 평가" = 4,
+#          "실력과 역량" = 5,
+#          "태도와 자세" = 6,
+#          "공부 계획" = 7,
+#          "시작전과 비교" = 8,
+#          "소득" = 9,
+#          "공부 횟수" = 10,
+#          "스터디평가" = 11,
+#          "장점" = 12,
+#          "개선점" = 13,
+#          StudyWithMe = 14,
+#          "미니 프로젝트 참여" = 15) |> colnames()
 
 #3
 thx_2slice |> 
   rename("스터디방식" = 2,
          "목표" = 3,
-         "자기 평가" = 4,
+         "목표 달성" = 4,
          "실력과 역량" = 5,
          "태도와 자세" = 6,
          "공부계획" = 7,
@@ -79,9 +81,9 @@ thx_3rename
 
 letters
 
-thx_4index |> 
+(thx_4index |> 
   mutate(
-  num = letters[1:12], .before = 1) -> thx_5number
+  num = letters[1:13], .before = 1) -> thx_5number)
 
 #
 thx_5number |> 
@@ -199,7 +201,7 @@ nord::nord_palettes
 
 thx_7tidy |> 
   filter(구분 %in% c("실력과 역량", "태도와 자세",
-                   "자기 평가", "스터디평가")) |> 
+                   "목표 달성", "스터디평가")) |> 
   ggplot(aes(x = factor(num), y = value)) +
   geom_bar(aes(fill = 스터디방식), 
            stat = "identity") +
@@ -230,20 +232,20 @@ thx_5number |>
   geom_label(aes(label = stat(count)), 
     stat = "count", size = 7) +
   theme(axis.title = element_blank()) +
-  scale_y_continuous(breaks = c(0,2,4,6,8,10))
+  scale_y_continuous(breaks = c(0,2,4,6,8,10, 12))
 
 
 #스터디는 시작전과 비교해?
 thx_5number |> colnames()
 
-thx_5number |> filter(str_c(`시작전과 비교`)>10)
+thx_5number |> filter(str_c(`시작전과 비교`)>10) |> 
   ggplot(aes(x = `시작전과 비교`)) +
   geom_bar() +
   coord_flip() +
   geom_label(aes(label = stat(count)), 
-    stat = "count", size = 7) +
-  theme(axis.title = element_blank()) #+
-  scale_y_continuous(breaks = c(0,2,4,6,8,10))
+    stat = "count", size = 7) #+
+  theme(axis.title = element_blank()) +
+  scale_y_continuous(breaks = c(0,2,4,6,8,10, 12))
 
 library(gt)
 thx_5number$`시작전과 비교` 
@@ -335,6 +337,9 @@ thx_5number |> filter(num != "k") |>
 
 #
 thx_5number |> colnames()
+library(bbplot)
+
+thx_7tidy$num |> table()
 
 thx_7tidy |> 
   drop_na(value) |> 
@@ -345,8 +350,16 @@ thx_7tidy |>
   geom_text(aes(label = n), color = "white") +
   scale_fill_gradient(low = "grey", high = "red") +
   facet_wrap(.~스터디방식) +
-  theme(axis.title = element_blank())
+  theme(axis.title = element_blank(),
+        legend.position = "none",
+        strip.text = element_text(size = 20),
+        axis.text = element_text(size = 13),
+        plot.title = element_text(size = 20)) +
+  labs(title = "설문조사 객관식 항목",
+       subtitle = "참여: 오프라인 7명, 온라인 6명
+       ") 
 
+bbc_style
 
 #평균
 thx_7tidy |> 
