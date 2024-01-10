@@ -1,6 +1,6 @@
 ---
-title: "Poverty Pornography"
-author: "땡스데이터"
+title: "Poverty Pornography.Rmd"
+author: "리포트: 땡스데이터"
 date: "2023-10-26"
 output: html_document
 ---
@@ -16,8 +16,6 @@ library(tidyverse)
 ---
 
 <br>
-
-## 기부자/비기부자/실무자 대상 빈곤 포르노에 대한 인식 조사
 
 ![설문조사표지](./images/title.png)
 

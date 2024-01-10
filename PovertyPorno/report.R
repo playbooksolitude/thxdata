@@ -5,9 +5,13 @@ library(tidyverse)
 library(bbplot)
 library(showtext)
 showtext_auto()
+#install.packages("geomtextpath")
+library(geomtextpath)
+library(bbplot)
 
 #
-googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1kWw5IbuS9L9EwX3lfu6gPrLhrnWlBWrXX0k8GfEoEf0/edit?usp=sharing") -> pp1_csv
+googlesheets4::read_sheet("https://docs.google.com/spreadsheets/d/1kWw5IbuS9L9EwX3lfu6gPrLhrnWlBWrXX0k8GfEoEf0/edit?usp=sharing",
+                          sheet = "설문지 응답 시트1의 사본 1") -> pp1_csv
 
 #
 pp1_csv |> dim()
@@ -15,7 +19,8 @@ pp1_csv |> dim()
 #
 pp1_csv |> colnames()
 
-pp1_csv |> view()
+pp1_csv |> head(20) |> 
+  view()
 
 #
 pp1_csv$`3. 귀하가 해당하는 유형을 선택해주세요.` |> 
@@ -75,6 +80,7 @@ pp2_rename$유형 |> table() |>
   mutate(pop = round(prop.table(Freq),2)*100,
          대상자 = ifelse(Var1 == "기부자 (기부를 하고 있거나 한 경험이 있는 사람)", "기부자",
                 ifelse(Var1 == "비기부자 (기부한 경험이 없는 사람)", "비기부자", "실무자"))) -> pp2_1table
+
 pp2_1table
 
 
@@ -109,23 +115,170 @@ pp3_1기부자 |> nrow() +
   pp3_3실무자 |> nrow()       #602명
 pp2_rename |> nrow()          #602명
 
+# ------------- 기부자
+pp3_1기부자 #|> view()
+
+pp3_1기부자 |> 
+  colnames()
+
 #
-pp3_1기부자
+pp3_1기부자 |>
+  filter(성별 != "기타") |> 
+  count(성별, 연령대) |> 
+  ggplot(aes(x = 연령대, y = 성별, fill = n)) +
+  geom_tile() +
+  geom_text(aes(label = n), size = 8) +
+  scale_fill_gradient2(low = "grey", high = "red") +
+  theme(panel.background = element_blank(),
+        axis.text = element_text(size = 20),
+        axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        legend.position = "none") +
+  labs(title = "기부자 성별/연령 분포")
+  
+#
+pp3_2비기부자 |>
+  filter(성별 != "기타") |> 
+  count(성별, 연령대) |> 
+  ggplot(aes(x = 연령대, y = 성별, fill = n)) +
+  geom_tile() +
+  geom_text(aes(label = n), size = 8) +
+  scale_fill_gradient2(low = "grey", high = "red") +
+  theme(panel.background = element_blank(),
+        axis.text = element_text(size = 20),
+        axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        legend.position = "none") +
+  labs(title = "비기부자 성별/연령 분포")
+
+#
+#
+pp3_3실무자 |>
+  filter(성별 != "기타") |> 
+  count(성별, 연령대) |> 
+  ggplot(aes(x = 연령대, y = 성별, fill = n)) +
+  geom_tile() +
+  geom_text(aes(label = n), size = 8) +
+  scale_fill_gradient2(low = "grey", high = "red") +
+  theme(panel.background = element_blank(),
+        axis.text = element_text(size = 20),
+        axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        legend.position = "none") +
+  labs(title = "비기부자 성별/연령 분포")
+
+#
+pp2_rename |>
+  filter(성별 != "기타") |> 
+  count(성별, 연령대) |> 
+  ggplot(aes(x = 연령대, y = 성별, fill = n)) +
+  geom_tile() +
+  geom_text(aes(label = n), size = 8) +
+  scale_fill_gradient2(low = "grey", high = "red") +
+  theme(panel.background = element_blank(),
+        axis.text = element_text(size = 20),
+        axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        legend.position = "none") +
+  labs(title = "비기부자 성별/연령 분포")
 
 
+#성별 분포
+# pp2_rename |> 
+#   filter(성별 != "기타") |> 
+#   ggplot(aes(x = 성별, y = stat(count))) +
+#   geom_bar() + 
+#   geom_label(aes(label = stat(count)), 
+#              stat = "count", size = 15) +
+#   geom_text(aes(label = scales::percent(after_stat(prop),
+#                                         accuracy = 1)),
+#              stat = "prop", size = 15) +
+#   bbc_style()
 
 
+#
+pp2_rename |> 
+  filter(성별 != "기타") |> 
+  count(성별) |> 
+  mutate(sum = sum(n),
+         비율 = n/sum)
+
+#
+pp2_rename$기부_시작_계기 |> table()
+pp2_rename |> count(기부_시작_계기)
 
 
+#계기-1
+pp2_rename |> 
+  mutate(num = row_number(), .before = 1) |> 
+  separate(col = 기부_시작_계기, 
+           into = c("계기1", "계기2", "계기3","계기4",
+                    "계기5", "계기6", "계기7",
+                    "계기8", "계기9"), 
+           sep = ", ", remove = T) |> 
+  select(1,5:16) |> 
+  filter(!is.na(계기8)) |> view()
 
 
+  #계기-2 ------- 기타때문에 다시
+pp2_rename |> 
+  mutate(번호 = row_number(), .before = 1) |> 
+  separate(col = 기부_시작_계기, 
+           into = c("계기1", "계기2", "계기3","계기4",
+                    "계기5", "계기6", "계기7",
+                    "계기8", "계기9"), 
+           sep = ", ", remove = T) |> 
+  select(1,5:16) |> 
+  pivot_longer(cols = contains("계기"), 
+               names_to = "계기",
+               values_to = "value") |> 
+  filter(!is.na(value)) |> 
+  group_by(value) |> 
+  summarise(n = n()) |> view()
+
+  ggplot(aes(x = value, y = n)) +
+  geom_bar(stat = "identity") +
+  bbc_style()
+  
+  #계기-3
+  pp2_rename |> 
+    mutate(번호 = row_number(), .before = 1) -> pp2_2rownumber
+
+  # #계기-4
+  # pp2_2rownumber |> 
+  #   mutate(기부_시작_계기2 = 
+  #            ifelse(pp2_2rownumber$기부_시작_계기 == "시민으로서의 책임이라고 생각해서", 기부_시작_계기,
+  #                   ifelse(pp2_2rownumber$기부_시작_계기 == "기부단체 등의 직접적인 요청을 받아서 (모금 요청 전화, 길거리 캠페인 등)", "기부단체 등의 직접적인 요청을 받아서",
+  #                          ifelse(pp2_2rownumber$기부_시작_계기 == "어려운 처지의 사람을 돕고 싶어서", 기부_시작_계기,
+  #                                 ifelse(pp2_2rownumber$기부_시작_계기 == "종교적 신념 때문에", 기부_시작_계기,
+  #                                        ifelse(pp2_2rownumber$기부_시작_계기 == "세제 혜택 때문에", 기부_시작_계기,
+  #                                               ifelse(pp2_2rownumber$기부_시작_계기 == "지인의 소개를 통해서", 기부_시작_계기,
+  #                                                      ifelse(pp2_2rownumber$기부_시작_계기 == "남의 도움을 받은적이 있고, 이를 갚고 싶어서", "도움 받은 경험을 보답하고 싶어서",
+  #                                                             ifelse(pp2_2rownumber$기부_시작_계기 == "남을 돕는 것이 행복해서", 기부_시작_계기,
+  #                                                                    ifelse(pp2_2rownumber$기부_시작_계기 == "미디어에서의 후원광고를 보고", 기부_시작_계기, "기타")))))))))) |> 
+  #   head() |> view()
+
+# --------------------------------------
+pp3_1기부자 |> 
+    ggplot(aes(x = 모금액_사용처명시, 
+                      y = after_stat(count))) +
+    geom_bar(aes(fill = 모금액_사용처명시)) +
+    geom_label(aes(label = after_stat(count)), 
+               stat = "count", size = 12) +
+    bbc_style() +
+    scale_fill_manual(values = c("#bf616a", "#81a1c1",
+                                 "#a3be8c")) +
+    theme(legend.position = "none")
 
 
-
-
-
-
-
-
-
+  pp3_3실무자 |> 
+    ggplot(aes(x = 모금액_사용처명시, 
+               y = after_stat(count))) +
+    geom_bar(aes(fill = 모금액_사용처명시)) +
+    geom_label(aes(label = after_stat(count)), 
+               stat = "count", size = 12) +
+    bbc_style() +
+    scale_fill_manual(values = c("#bf616a", "#81a1c1",
+                                 "#a3be8c")) +
+    theme(legend.position = "none")
 
