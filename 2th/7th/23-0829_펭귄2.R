@@ -26,6 +26,12 @@ penguins |> names()
 # sex : 성별
 
 
+#0 
+penguins |> 
+  drop_na(bill_length_mm, bill_depth_mm, sex) |> 
+  ggplot(aes(x = bill_length_mm, y = bill_depth_mm)) +
+  geom_point()
+
 #1 전체
 (penguins |> 
   drop_na(bill_length_mm, bill_depth_mm, sex) |> 
@@ -42,7 +48,7 @@ is.na(penguins) |> colSums()
     drop_na(bill_length_mm, bill_depth_mm, sex) |> 
     ggplot(aes(x = bill_length_mm, y = bill_depth_mm,
                color = species)) +
-    geom_point() +
+    geom_point(size = 1) +
     theme(legend.position = "top") +
     geom_smooth(se = F, method = "lm") -> pen_normal)
 
@@ -91,11 +97,17 @@ is.na(penguins) |> colSums()
                  select(-sex, island), 
                color = "grey", alpha = .3) +
     geom_point(data = penguins |> 
-                 drop_na(bill_length_mm, bill_depth_mm, sex),
+                 drop_na(bill_length_mm, 
+                   bill_depth_mm, sex),
                show.legend = F) +
     facet_grid(sex~island) +
     theme(legend.position = "top") +
-    geom_smooth(se = F, method = "lm") -> pen_sex_island)
+    geom_smooth(se = F, method = "lm", 
+      size = 3) -> pen_sex_island)
+
+
+penguins |> 
+  lm(bill_depth_mm ~ bill_length_mm)
 
 
 library(patchwork)

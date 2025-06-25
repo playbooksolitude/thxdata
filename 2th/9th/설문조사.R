@@ -1,32 +1,34 @@
 #23-0915 fri 09:02
 
+
 #
 library(tidyverse)
 #install_java("googlesheets4")
 library(googlesheets4)
 
-#1
+
+#1 googlesheets
 read_sheet("https://docs.google.com/spreadsheets/d/1pAcNs4HYfD8ttGwpKPi0mPhf3KK7EtMQrczkiC2MIHw/edit#gid=100333345",
            sheet = "설문지 응답 시트1") -> thx_1sheet
 
 
-  ##
-
+## 구조 분석
 thx_1sheet |> dim()        #13 * 17
 thx_1sheet |> glimpse()
 thx_1sheet #|> view()
 
 
-#2
+#2 테스트 설문조사 제거
 (thx_1sheet |> slice(-1) -> thx_2slice)     #12 * 17
 
 
-#3 제목
+#3 제목이 너무 긴 문제 확인
 thx_2slice |> colnames()
 thx_2slice |> 
   rename("스터디방식" = 2) |> colnames()
 
-#
+
+# 제목 변경 테스트
 thx_2slice |> 
   rename("스터디방식입니다" = "설문조사는 무기명으로 하며, 결과는 카페에 공유해 다함께 봅니다." ) |> colnames()
 
@@ -64,13 +66,13 @@ thx_2slice |>
          StudyWithMe = 14,
          미니프로젝트 = 15) -> thx_3rename
 
-#ifelse
+###### ifelse를 사용해 값을 변경 (컬럼 변경과 다름)
 ifelse(thx_3rename$스터디방식 == "오프라인 스터디 참여",
        "오프라인", "온라인") -> thx_3rename$스터디방식
 thx_3rename
 
 
-#4
+#4 시간은 불필요해서 제거하는 방법 2가지
 #thx_3rename |> select(-1)
 (thx_3rename[,2:15] -> thx_4index)
 
@@ -79,20 +81,22 @@ thx_3rename
 # thx_4index |> mutate(
 #   num = row_number(), .before = 1) -> thx_5number
 
-letters
+#무기명이라 알파벳을 이름대신 사용하기
+letters #기본 데이터셋
 
 (thx_4index |> 
   mutate(
   num = letters[1:13], .before = 1) -> thx_5number)
 
-#
+
+#피벗 테스트
 thx_5number |> 
   pivot_longer(cols = c(목표:미니프로젝트),
                names_to = "구분",
                values_to = "값") #|> view()
 
 
-#6
+#6 피벗
 (thx_5number |> 
   pivot_longer(cols = c(목표:미니프로젝트),
                names_to = "구분",
@@ -105,11 +109,12 @@ thx_5number |>
 #   mutate(value = parse_number(thx_6pivot$값)) |> view()
 
 
-#7
+#7 객관식에서 점수(숫자)만 가져오기
 (thx_6pivot |> 
   mutate(value = parse_number(thx_6pivot$값)) -> thx_7tidy)
 
-#
+
+# 그래프
 thx_7tidy |> 
   filter(구분 == "스터디평가") |> 
   ggplot(aes(x = as_factor(num), 
@@ -121,19 +126,23 @@ thx_7tidy |>
 library(showtext)  
 showtext_auto()
 
+
+library(nord)
+
 thx_7tidy |> 
   filter(구분 == "스터디평가") |> 
   ggplot(aes(x = as_factor(num), 
-             y = value)) +
+             y = value, fill = 스터디방식)) +
   geom_bar(stat = "identity") +
+  scale_fill_nord("afternoon_prarie") +
   labs(x = "참여 번호", y = "평가 점수", 
        title = "THX 2기 스터디 설문조사",
        subtitle = "스터디 평가")
   
 
 
-#8
-thx_7tidy |> filter(
+#8 문제 분리하기
+(thx_7tidy |> filter(
   구분 == "소득") |> 
   separate(col = 값, 
            into = c("소득1", "소득2", "소득3", 
@@ -142,7 +151,7 @@ thx_7tidy |> filter(
   pivot_longer(cols = c(소득1:소득5),
                names_to = "얻은것",
                values_to = "값") |> 
-  drop_na(값) -> thx_8pivot_dropna
+  drop_na(값) -> thx_8pivot_dropna)
   
 thx_8pivot_dropna
 
