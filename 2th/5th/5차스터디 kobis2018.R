@@ -19,7 +19,7 @@ showtext_auto()
 
 
 #1 불러오기
-(read_excel("./2th/5st/excel/rawdata/KOBIS_2022.xlsx",
+(read_excel("./2th/5th/excel/rawdata/KOBIS_2022.xlsx",
            skip = 4, ) -> kobis2022_1excel)
 
 #2 구조파악
@@ -71,15 +71,51 @@ kobis2022_3under |>
   filter(연도 == "2022") |> 
   drop_na(월) |> 
   count(대표국적, 월, sort = T) |> 
-  ggplot(aes(x= 대표국적, y = 월, fill = n)) +
-  geom_tile() +
-  geom_text(aes(label = n)) +
-  scale_fill_gradient(low = "grey", high = "red") +
-  scale_y_continuous(breaks = c(1:12)) +
-  theme(axis.title = element_blank(),
-        panel.background = element_blank()) +
-  coord_flip()
+  ggplot(aes(x= 대표국적, 
+             y = factor(월), 
+             fill = n)) +
+  geom_tile(show.legend = F) +
+  geom_text(aes(label = n), size = 5) +
+  scale_fill_gradient(low = "#EDDAEB", 
+                      high = "#C33333") +
+  scale_y_discrete() +
+  bbc_style() +
+  coord_flip() +
+  ggtitle(label = "2022년 월별 * 제작국가별 개봉편수", 
+          subtitle = "관객수 1,000명 이상") +
+  #scale_y_continuous(breaks = c(1:12)) +
+  theme(legend.position = "none", 
+        panel.grid.major.y = element_line(color = "white"),
+        panel.grid.major.x = element_blank(),
+        #panel.grid.major.x = element_line(color = "grey"),
+        #axis.text = element_text(size = 28), 
+        axis.ticks = element_blank(), 
+        axis.ticks.y = element_blank())
 
+# 월별, 개봉작, 대표국적, geom_tile() ----
+  kobis2022_3under |> 
+    filter(연도 == "2022") |> 
+    drop_na(월) |> 
+    count(대표국적, 월, sort = T) |> 
+    ggplot(aes(x= 대표국적, 
+               y = factor(월), fill = n)) +
+    geom_tile(show.legend = F) +
+    geom_text(aes(label = n)) +
+    scale_fill_gradient(low = "#EDDAEB", 
+                        high = "#C33333") +
+    scale_y_discrete() +
+    bbc_style() +
+    coord_flip() +
+    ggtitle(subtitle = "22년 월별 * 제작국가별 개봉편수", " ") +
+  #scale_y_continuous(breaks = c(1:12)) +
+  theme(legend.position = "none", 
+        #panel.grid.major.y = element_blank(),
+        #panel.grid.major.x = element_blank(),
+        panel.grid.major.x = element_line(color = "grey"),
+        panel.grid.major.y = element_line(color = "grey"),
+        #axis.text = element_text(size = 28), 
+        axis.ticks = element_blank(), 
+        axis.ticks.y = element_blank())
 
 #
 kobis2022_3under |> 
@@ -124,10 +160,12 @@ library(scales)
 
 #월별 관객수
 library(bbplot)
+library(nord)
 kobis2022_4월별관객수 |> 
   ggplot(aes(x = as.factor(월) |> fct_reorder((월)), 
              y = 관객수합계/1000000)) + 
-  geom_bar(stat = "identity") +
+  geom_bar(stat = "identity", aes(fill = factor(월)),
+           show.legend = F) +
   labs(x = "월", y = "월별 누적 관객수") +
   geom_label(aes(label = round(관객수합계/1000000,1)), size = 7) +
   scale_y_continuous(breaks = c(5,10,15,20)) +
@@ -135,6 +173,7 @@ kobis2022_4월별관객수 |>
        subtitle = "단위: 백만 명
        ") +
   #bbc_style()
+  scale_fill_nord(palette = "moose_pond") +
   theme(panel.background = element_blank(),
         plot.title = element_text(size = 28), 
         plot.subtitle = element_text(size = 22), 
@@ -142,8 +181,6 @@ kobis2022_4월별관객수 |>
         axis.text = element_text(size = 18),
         axis.title = element_blank(),
         axis.ticks = element_blank())
-bbc_style
-geom_point
 
 #check
 library(gt)
@@ -217,19 +254,21 @@ kobis2022_3under |> filter(순위 < 51) |>
              subgroup = 대표국적,
              subgroup2 = 
                paste(round(관객수/10000,0), "만명"))) +
-  geom_treemap(alpha = .5) +
-  geom_treemap_text(color = "black", alpha = .7) +
+  geom_treemap(alpha = .9) +
+  geom_treemap_text(color = "black", alpha = .9) +
   geom_treemap_subgroup_text(place = "centre",
                              grow = T,
                              min.size = 0,
-                             alpha = .2,
-                             fontface = "italic") +
+                             alpha = .9,
+                             fontface = "italic",
+                             size = 8) +
   theme(legend.position = "none") +
   geom_treemap_subgroup2_text(color = "white",size = 12,
-                              place = "center") +
+                              place = "center",
+                              alpha = .9) +
   scale_fill_manual(values =  
-                       c("한국" = "blue", 
-                         "미국" = "red"))
+                       c("한국" = "#FF2200", 
+                         "미국" = "#04967F"))
 
 # 관객수 표
 kobis2022_3under |> filter(순위 < 51) |> 

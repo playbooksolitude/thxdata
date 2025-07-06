@@ -11,6 +11,8 @@ library(ggrepel)     #글자가 겹치지 않도록 하는 함수
 #install.packages("patchwork")   
 library(patchwork)   #그래프를 나란히 2개 보여주는 함수
 library(treemapify)
+library(scales)
+library(bbplot)
 
 
 #
@@ -21,7 +23,7 @@ library(treemapify)
 #https://www.kobis.or.kr/kobis/business/stat/boxs/findPeriodBoxOfficeList.do
 
 #1-2
-read_csv("./2th/4st/thxdata - KOBIS_23-01-06.csv",
+read_csv("./2th/4th/thxdata - KOBIS_23-01-06.csv",
          skip = 4) -> kobis_1csv
 
 getwd() #파일의 기본 위치
@@ -79,10 +81,9 @@ kobis_2날짜 |>
 
 
 #3 top 100 -------------------------------------------------
-kobis_2날짜 |> 
+(kobis_2날짜 |> 
   drop_na(연도, 월, 일) |> 
-  filter(순위 < 101) -> kobis_3top100
-
+  filter(순위 < 101) -> kobis_3top100)
 
 #4 ROI 계산
 #관객수
@@ -133,7 +134,8 @@ kobis_4ROI |> ggplot(aes(x = 스크린ROI,
   geom_rect(aes(xmin = 0, xmax = 2000,
                 ymin = 0, ymax = 20), alpha = .005, fill = "black") +
   geom_rect(aes(xmin = 2000, xmax = 5000,
-                ymin = 20, ymax = 40), alpha = .005, fill = "red")
+                ymin = 20, ymax = 40), alpha = .005, fill = "red") +
+  theme_minimal()
 
 #
 kobis_4ROI |> filter(상영횟수ROI > 30) |> view()
@@ -171,7 +173,26 @@ kobis_4ROI |>
   geom_text_repel(data = kobis_4ROI |> filter(스크린수 > 1500 |
                                                 관객수 > 1700000), 
             aes(label = paste(영화명, comma(상영횟수)))) +
-  scale_y_continuous(labels = comma) -> kobis_5smooth)
+  scale_y_continuous(labels = comma) -> kobis_5smooth) 
+
+
+kobis_4ROI |> 
+  ggplot(aes(x = 스크린수, y = 관객수)) +
+  geom_smooth(method = "lm") +
+  #geom_smooth() +
+  geom_point() +
+  geom_text_repel(data = kobis_4ROI |> filter(스크린수 > 1500 |
+                                                관객수 > 1700000), 
+                  aes(label = paste(영화명, "\n",comma(상영횟수))),
+                  size = 4) +
+  scale_y_continuous(labels = comma) +
+  bbc_style() +
+  ggtitle("극장관객수와 스크린수로 보는 흥행 추세",
+          "타이틀(상영횟수)") +
+  theme(panel.grid.major.x = element_line(color = "grey"),
+        axis.title = element_text(size = 28))
+
+
 
 # 스크린수 vs 관객수 선형회귀
 (kobis_4ROI |> 
@@ -213,7 +234,7 @@ kobis_2날짜 |>
 
 
 #
-(read_csv("./2th/4st/thxdata - KOBIS_SLAMDUNK.csv",
+(read_csv("./2th/4th/thxdata - KOBIS_SLAMDUNK.csv",
          skip = 3) -> slam_1csv)
 
 #

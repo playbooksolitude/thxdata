@@ -356,14 +356,16 @@ thx_7tidy |>
   reframe(n = n()) |> 
   ggplot(aes(x = 구분, y = value, fill = n)) +
   geom_tile() +
-  geom_text(aes(label = n), color = "white") +
+  geom_text(aes(label = n), color = "white", size = 7) +
   scale_fill_gradient(low = "grey", high = "red") +
   facet_wrap(.~스터디방식) +
   theme(axis.title = element_blank(),
         legend.position = "none",
         strip.text = element_text(size = 20),
         axis.text = element_text(size = 13),
-        plot.title = element_text(size = 20)) +
+        plot.title = element_text(size = 20),
+        axis.ticks = element_blank(),
+        panel.background = element_blank()) +
   labs(title = "설문조사 객관식 항목",
        subtitle = "참여: 오프라인 7명, 온라인 6명
        ") 
