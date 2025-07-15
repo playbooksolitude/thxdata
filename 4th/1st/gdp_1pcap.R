@@ -2,6 +2,7 @@
 
 library(tidyverse)
 read_csv("./4th/files/lex.csv") -> life_1exp
+
 life_1exp |> 
   #colnames()
   select(1,208:256) -> life_2exp
