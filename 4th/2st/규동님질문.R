@@ -26,3 +26,5 @@ ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
 #비교2
 ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
   geom_smooth(se = F, data = filter(mpg, class == 'subcompact'))
+
+data()

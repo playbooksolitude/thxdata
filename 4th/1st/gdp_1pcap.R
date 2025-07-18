@@ -57,6 +57,7 @@ gdp_3pivot  |>
                    breaks = c(1970, 1980, 1990, 2000, 2010)) +
   ggtitle(label = 'gdp_pcap', subtitle = '$1,000') +
   theme(legend.position = 'top') +
+  geom_vline(xintercept = '1998') +
   bbplot::bbc_style() 
   
   
