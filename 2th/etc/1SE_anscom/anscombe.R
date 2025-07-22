@@ -97,3 +97,4 @@ anscombe_x2 |>
   ggplot(aes(x = x2, y = y2)) + geom_point() + 
   geom_smooth(method = "lm", se = F) +
   coord_cartesian(ylim = c(0,12))
+
